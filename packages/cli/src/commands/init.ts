@@ -16,7 +16,17 @@ export const initCommand = {
   async action(options: InitOptions): Promise<void> {
     // 1. 收集用户输入
     const projectName = options.projectName ?? (await promptProjectName());
+    if (!projectName) {
+      console.log("\n⚠️  操作已取消。");
+      return;
+    }
+
     const template = options.template ?? (await promptTemplate());
+    if (!template) {
+      console.log("\n⚠️  操作已取消。");
+      return;
+    }
+
     const targetDir = options.targetDir ?? formatTargetDir(`./${projectName}`);
     const force = options.force ?? false;
 
