@@ -1,0 +1,25 @@
+{
+  "name": "@vyron/release",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "unbuild",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "prompts": "^2.4.2",
+    "semver": "^7.7.1"
+  },
+  "devDependencies": {
+    "@types/semver": "^7.5.8",
+    "typescript": "^5.7.2"
+  }
+}
