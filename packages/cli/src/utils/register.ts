@@ -1,5 +1,4 @@
-import { initCommand } from "../commands/init";
-import { releaseCommand } from "../commands/release";
+import { initCommand, releaseCommand, listCommand } from "../commands";
 
 interface Command<T = object> {
   name: string;
@@ -7,7 +6,7 @@ interface Command<T = object> {
   action: (options: T) => Promise<void>;
 }
 
-const commands: Command[] = [initCommand, releaseCommand];
+const commands: Command[] = [initCommand, releaseCommand, listCommand];
 
 /**
  * 注册命令并执行
@@ -18,10 +17,8 @@ export async function register(args: string[]): Promise<void> {
   const command = commands.find((c) => c.name === commandName);
 
   if (!command) {
-    console.log("可用命令:");
-    for (const cmd of commands) {
-      console.log(`  ${cmd.name} - ${cmd.description}`);
-    }
+    console.log("\n未知命令或参数为空。");
+    console.log('请运行 "vii list" 查看可用的项目模板列表。\n');
     return;
   }
 
