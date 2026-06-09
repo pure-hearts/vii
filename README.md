@@ -39,13 +39,17 @@
 ## 3. 开发指南 (Development Guide & Debugging)
 
 ### 依赖安装
+
 在项目根目录下执行以安装所有依赖并初始化 Git 提交钩子：
+
 ```bash
 pnpm install
 ```
 
 ### 代码规范与极速检查
+
 项目采用 `vite-plus` 整合的超高速代码校验系统（底层为 `oxlint` 和 `oxfmt`）：
+
 ```bash
 # 全局代码检查 (包括 Lint、Format 校验及 TypeScript 类型检测)
 pnpm lint
@@ -56,31 +60,39 @@ pnpm format
 # 仅执行全局 TS 类型检查
 pnpm typecheck
 ```
+
 > [!NOTE]
 > 项目配置了 `simple-git-hooks` 提交守卫。当执行 `git commit` 时，会自动静默执行 `pnpm exec vp check --fix`。未通过校验或无法修复的代码无法被提交，从而确保了代码库质量。
 
 ### 本地开发与实时调试
+
 若想对本地代码（特别是 CLI 命令）进行修改并实时观察效果，可按以下步骤操作：
 
 1. **开启编译监听 (Watch Mode)**：
    在根目录下以并行方式启动 `@vyron/cli` 的实时构建监听（也可以到子包目录下单独运行）：
+
    ```bash
    pnpm dev
    ```
+
    它会自动监测 `packages/cli/src` 下的文件变动，并在毫秒级内重构出最新的 `dist/index.mjs`。
 
 2. **全局命令软链接调试**：
    在 `packages/cli` 目录下运行：
+
    ```bash
    pnpm link --global
    ```
+
    这会将 `vi` 和 `vii` 命令注册到系统的环境变量中，使其直接执行您本地的 `packages/cli/index.js`。
    此时，您可以在系统任意其他文件夹中直接调用：
+
    ```bash
    vii init
    # 或
    vii release
    ```
+
    进行实时调试。
 
 3. **直接路径调试**（无需 link）：
@@ -96,29 +108,69 @@ pnpm typecheck
 项目采用基于 Rust 编译器内核的 `vite-plus` (`vp pack`) 进行一体化打包：
 
 ### 构建配置文件 (`vite.config.ts`)
+
 相较于原先的 `unbuild`，新配置文件基于 Vite 标准进行拓展，支持模块别名（alias）与打包配置（`pack` 属性）：
+
 - **`packages/utils`**：打包输出 ESM (`.mjs`) 与 CJS (`.cjs`)，并自动生成 dual-type TS 声明文件 (`.d.mts`, `.d.cts`)。
 - **`packages/release`**：打包输出 ESM 及其 TS 声明文件。
 - **`packages/cli`**：作为 Node CLI 工具，打包为压缩后的 ESM 并不输出类型文件，其中别名设置确保了 `prompts` 的轻量引入。
 
 ### 构建命令
+
 在根目录下执行以下命令，即可完成所有子包的并发构建：
+
 ```bash
 pnpm build
 ```
 
 ---
 
-## 5. 使用指南 (Usage Guide)
+## 5. 发布指南 (Release Guide)
+
+项目采用 `@vyron/release` 模块提供了一键式的自动化包版本升级与多渠道发布流程。
+
+### 发布前置校验
+为确保发布版本及代码的可靠性，`release` 会在执行前进行以下硬性校验：
+1. **Git 仓库验证**：验证当前运行命令的目录是否为 Git 工作区（非 Git 仓库将报错拦截并提示初始化）。
+2. **工作区状态 (Git Status)**：确认无任何未提交的修改，防止脏代码提交（若存在未提交代码，将报错中断发布流程）。
+3. **NPM 登录状态校验**：发布逻辑在执行前会在后台自动校验 `npm whoami`，确保您已在当前环境中正确登录 npm 账号。
+
+### 自动化发布命令
+```bash
+# 执行自动化版本升级与发布
+vii release [options]
+```
+
+### 命令可选参数
+- `--releaseAs <version>`：直接指定要升级的版本号（例如 `1.2.0`）或指定变更层级（`patch` | `minor` | `major`）。
+- `--dryRun`：只模拟运行，会在控制台完整渲染出版本升级过程与提交日志，但不实际修改 `package.json`、不创建 Git Commit 和 Tag，也不执行推送发布。
+- `--skipPush`：跳过推送 Git 分支和 Git 标签。
+- `--skipPublish`：跳过 NPM 发布步骤（保留 package.json 写入与 Git 提交）。
+
+### 发布工作流程
+1. **获取当前版本**：读取当前目录 `package.json` 中的 `name` 和 `version`。
+2. **计算目标版本**：如未显式指定 `--releaseAs`，将以交互式提问（Prompts）询问确定升级类型（`patch` | `minor` | `major`）并计算升级后的版本。
+3. **改写配置**：写入新版本号至包根目录下的 `package.json` 中。
+4. **Git Commit & Tag**：自动执行 `git add` 并创建 commit（提交说明格式：`chore(release): v<version>`），随后为当前 commit 创建 Git tag（命名为：`v<version>`）。
+5. **推送到远程**：若未开启跳过，将执行 `git push` 与 `git push --tags` 将本地版本同步至远程仓库。
+6. **发布到 NPM**：若未开启跳过，进入当前包目录并在控制台以交互方式执行 `npm publish`，完成包的最终发布。
+
+---
+
+## 6. 使用指南 (Usage Guide)
 
 ### 🚀 项目初始化命令 (`vii init`)
+
 用于快速拉取内置的精美模板并初始化新工程。
 
 #### 1. 运行方式
+
 ```bash
 vii init
 ```
+
 #### 2. 执行流程
+
 1. **项目名称询问**：询问您想创建的项目名称（必须符合 NPM 命名规范）。
 2. **选择模板**：提供以下三个精心准备的内置模板：
    - `vue` (Vue 3 + Vite)
@@ -129,29 +181,6 @@ vii init
 
 ---
 
-### 📦 版本自动发布命令 (`vii release`)
-用于快速对当前开发的 npm package 执行自动化版本迭代与推送。其操作体验类似于 `bumpp`。
-
-#### 1. 运行方式
-```bash
-vii release [options]
-```
-
-#### 2. 参数选项
-- `--releaseAs <version>`：直接指定要升级的具体版本号（如 `1.0.1`）或发布级别（`patch` | `minor` | `major`）。
-- `--dryRun`：模拟运行，在控制台打印版本变更流，但不实际修改 `package.json`、不创建 tag 和 commit。
-- `--skipPush`：跳过 Git 推送分支和标签。
-- `--skipPublish`：跳过 NPM 镜像库发布。
-
-#### 3. 执行流程
-1. **Git 工作区检测**：确认当前是 Git 仓库，且没有未提交的代码（如有会报错拦截以防脏提交）。
-2. **读取 package.json**：读取当前 package 的 `name` 和 `version`。
-3. **询问/计算新版本**：如果未提供 `--releaseAs`，交互式提供 `patch`、`minor`、`major` 等计算后的升级建议。
-4. **更新与提交**：将新版本号写入 `package.json`，自动执行 `git add`、`git commit`（消息为 `chore(release): v<version>`）并打上 `v<version>` 版本的 Git Tag。
-5. **网络推送与发布**：根据参数决定是否自动将分支和 Tag 推送至远程仓库（`git push`），并执行 `npm publish` 将产物推送至 NPM 仓库。
-
----
-
-## 6. 许可证
+## 7. 许可证
 
 此项目基于 [LICENSE](LICENSE) 文件中的内容授权。
