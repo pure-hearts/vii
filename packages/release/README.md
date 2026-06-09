@@ -11,17 +11,17 @@ pnpm add @vyron/release
 ## Usage
 
 ```typescript
-import { release } from '@vyron/release'
+import { release } from "@vyron/release";
 
 // 交互式发布
-await release()
+await release();
 
 // 跳过交互
 await release({
   cwd: process.cwd(),
-  releaseAs: 'patch',
+  releaseAs: "patch",
   dryRun: true,
-})
+});
 ```
 
 ## API

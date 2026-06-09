@@ -1,34 +1,32 @@
 {
   "name": "vii",
+  "license": "MIT",
+  "author": "vyron",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vfiee/project-boilerplate.git"
+  },
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "simple-git-hooks",
-    "format": "oxfmt --write .",
-    "lint": "oxlint .",
+    "format": "vp check --fix",
+    "lint": "vp check",
     "dev": "pnpm -r --parallel --filter='./packages/cli' run dev",
     "build": "pnpm -r --filter='./packages/*' run build",
-    "typecheck": "pnpm -r --parallel run typecheck"
+    "typecheck": "vp check --no-fmt --no-lint"
+  },
+  "devDependencies": {
+    "simple-git-hooks": "^2.11.1",
+    "typescript": "^5.7.2",
+    "vite-plus": "^0.1.24"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec vp check --fix"
   },
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=9.15.0"
   },
-  "packageManager": "pnpm@9.15.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vfiee/project-boilerplate.git"
-  },
-  "author": "vyron",
-  "license": "MIT",
-  "simple-git-hooks": {
-    "pre-commit": "pnpm exec oxlint . && pnpm exec oxfmt --write ."
-  },
-  "devDependencies": {
-    "oxfmt": "^0.54.0",
-    "oxlint": "^1.69.0",
-    "simple-git-hooks": "^2.11.1",
-    "typescript": "^5.7.2",
-    "unbuild": "^3.0.0-rc.11"
-  }
+  "packageManager": "pnpm@9.15.0"
 }

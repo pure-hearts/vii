@@ -1,9 +1,14 @@
 {
   "name": "@vyron/cli",
   "version": "1.2.4",
-  "type": "module",
+  "homepage": "https://github.com/vfiee/project-boilerplate",
   "license": "MIT",
   "author": "vyron",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vfiee/project-boilerplate.git",
+    "directory": "packages/cli"
+  },
   "bin": {
     "vi": "index.js",
     "vii": "index.js"
@@ -12,26 +17,22 @@
     "index.js",
     "dist"
   ],
+  "type": "module",
   "scripts": {
-    "dev": "unbuild --stub",
-    "build": "unbuild",
-    "typecheck": "tsc --noEmit",
+    "dev": "vp pack --watch",
+    "build": "vp pack",
+    "typecheck": "vp check --no-fmt --no-lint",
     "prepublishOnly": "pnpm run build"
   },
-  "engines": {
-    "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vfiee/project-boilerplate.git",
-    "directory": "packages/cli"
-  },
-  "homepage": "https://github.com/vfiee/project-boilerplate",
   "dependencies": {
     "prompts": "^2.4.2"
   },
   "devDependencies": {
     "@types/prompts": "^2.4.9",
-    "unbuild": "^3.3.1"
+    "typescript": "^5.7.2",
+    "vite-plus": "^0.1.24"
+  },
+  "engines": {
+    "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
   }
 }

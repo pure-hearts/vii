@@ -1,34 +1,34 @@
-import { initCommand } from '../commands/init'
-import { releaseCommand } from '../commands/release'
+import { initCommand } from "../commands/init";
+import { releaseCommand } from "../commands/release";
 
 interface Command<T = object> {
-  name: string
-  description: string
-  action: (options: T) => Promise<void>
+  name: string;
+  description: string;
+  action: (options: T) => Promise<void>;
 }
 
-const commands: Command[] = [initCommand, releaseCommand]
+const commands: Command[] = [initCommand, releaseCommand];
 
 /**
  * 注册命令并执行
  */
 export async function register(args: string[]): Promise<void> {
-  const [commandName] = args.slice(2) // 跳过 node 和脚本路径
+  const [commandName] = args.slice(2); // 跳过 node 和脚本路径
 
-  const command = commands.find((c) => c.name === commandName)
+  const command = commands.find((c) => c.name === commandName);
 
   if (!command) {
-    console.log('可用命令:')
+    console.log("可用命令:");
     for (const cmd of commands) {
-      console.log(`  ${cmd.name} - ${cmd.description}`)
+      console.log(`  ${cmd.name} - ${cmd.description}`);
     }
-    return
+    return;
   }
 
   try {
-    await command.action({})
+    await command.action({});
   } catch (error) {
-    console.error(`命令执行失败: ${error}`)
-    process.exit(1)
+    console.error(`命令执行失败: ${error}`);
+    process.exit(1);
   }
 }

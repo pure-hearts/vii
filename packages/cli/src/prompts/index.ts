@@ -1,2 +1,2 @@
-export { promptProjectName } from './project'
-export { promptTemplate, BUILTIN_TEMPLATES } from './template'
+export { promptProjectName } from "./project";
+export { promptTemplate, BUILTIN_TEMPLATES } from "./template";

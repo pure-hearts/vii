@@ -3,10 +3,10 @@ name: Publish Package
 on:
   push:
     tags:
-      - 'cli@*'
-      - 'utils@*'
-      - 'release-scripts@*'
-      - 'use-axios@*'
+      - "cli@*"
+      - "utils@*"
+      - "release-scripts@*"
+      - "use-axios@*"
 
 jobs:
   publish:
@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install deps
         run: pnpm install

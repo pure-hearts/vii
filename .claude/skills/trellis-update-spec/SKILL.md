@@ -1,6 +1,6 @@
 ---
 name: trellis-update-spec
-description: 'Captures executable contracts and coding conventions into .trellis/spec/ documents. Use when learning something valuable from debugging, implementing, or discussion that should be preserved for future sessions.'
+description: "Captures executable contracts and coding conventions into .trellis/spec/ documents. Use when learning something valuable from debugging, implementing, or discussion that should be preserved for future sessions."
 ---
 
 # Update Code-Spec - Capture Executable Contracts

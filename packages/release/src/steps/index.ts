@@ -1,5 +1,5 @@
-export { checkGitStatus } from './check-git'
-export { bumpVersion } from './bump-version'
-export { commitAndTag } from './commit'
-export { pushToRemote } from './push'
-export { publishToNpm } from './publish'
+export { checkGitStatus } from "./check-git";
+export { bumpVersion } from "./bump-version";
+export { commitAndTag } from "./commit";
+export { pushToRemote } from "./push";
+export { publishToNpm } from "./publish";

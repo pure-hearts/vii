@@ -74,25 +74,25 @@ cli/
 ```typescript
 // 命令接口
 interface Command {
-  name: string
-  description: string
-  options: Option[]
-  action: (args: ParsedArgs, ctx: Context) => Promise<void>
+  name: string;
+  description: string;
+  options: Option[];
+  action: (args: ParsedArgs, ctx: Context) => Promise<void>;
 }
 
 // Scaffold 配置
 interface ScaffoldOptions {
-  projectName: string
-  template: string
-  targetDir: string
-  force?: boolean
+  projectName: string;
+  template: string;
+  targetDir: string;
+  force?: boolean;
 }
 
 // Context 上下文
 interface Context {
-  cwd: string
-  verbose: boolean
-  dryRun: boolean
+  cwd: string;
+  verbose: boolean;
+  dryRun: boolean;
 }
 ```
 
@@ -100,12 +100,12 @@ interface Context {
 
 ```typescript
 // cli/src/index.ts
-import { register } from './utils/register'
-import { initCommand } from './commands/init'
-import { releaseCommand } from './commands/release'
+import { register } from "./utils/register";
+import { initCommand } from "./commands/init";
+import { releaseCommand } from "./commands/release";
 
 export async function main() {
-  await register([initCommand, releaseCommand])
+  await register([initCommand, releaseCommand]);
 }
 ```
 
@@ -113,11 +113,11 @@ export async function main() {
 
 ```typescript
 // cli/src/scaffold/scaffold.ts
-export async function scaffold(options: ScaffoldOptions): Promise<void>
+export async function scaffold(options: ScaffoldOptions): Promise<void>;
 
 // 可单独使用的子模块
-export { downloadTemplate } from './download'
-export { validateProjectName } from './validators'
+export { downloadTemplate } from "./download";
+export { validateProjectName } from "./validators";
 ```
 
 **Prompts 设计**（使用 prompts 库）：
@@ -126,12 +126,12 @@ export { validateProjectName } from './validators'
 // cli/src/prompts/project.ts
 export async function promptProjectName(): Promise<string> {
   const { name } = await prompts({
-    type: 'text',
-    name: 'name',
-    message: 'Project name:',
-    validate: (value) => validateProjectName(value) || 'Invalid project name',
-  })
-  return name
+    type: "text",
+    name: "name",
+    message: "Project name:",
+    validate: (value) => validateProjectName(value) || "Invalid project name",
+  });
+  return name;
 }
 ```
 
@@ -169,25 +169,25 @@ release/
 
 ```typescript
 export interface ReleaseOptions {
-  cwd?: string // 工作目录，默认 process.cwd()
-  dryRun?: boolean // 仅预览，不实际发布
-  skipTests?: boolean // 跳过测试
-  skipPublish?: boolean // 仅更新版本，不发布到 npm
-  skipPush?: boolean // 跳过 git push
-  releaseAs?: string // 手动指定版本（如 '1.0.0'、'minor'、'major'）
-  all?: boolean // 发布所有包（monorepo 模式）
-  package?: string // 指定单个包
+  cwd?: string; // 工作目录，默认 process.cwd()
+  dryRun?: boolean; // 仅预览，不实际发布
+  skipTests?: boolean; // 跳过测试
+  skipPublish?: boolean; // 仅更新版本，不发布到 npm
+  skipPush?: boolean; // 跳过 git push
+  releaseAs?: string; // 手动指定版本（如 '1.0.0'、'minor'、'major'）
+  all?: boolean; // 发布所有包（monorepo 模式）
+  package?: string; // 指定单个包
 }
 
-export async function release(options?: ReleaseOptions): Promise<void>
+export async function release(options?: ReleaseOptions): Promise<void>;
 
 // 独立步骤（可按需调用）
-export { readPkg, writePkg } from './pkg'
-export { bumpVersion } from './steps/bump-version'
-export { generateChangelog } from './steps/generate-changelog'
-export { commitAndTag } from './steps/commit'
-export { pushToRemote } from './steps/push'
-export { publishToNpm } from './steps/publish'
+export { readPkg, writePkg } from "./pkg";
+export { bumpVersion } from "./steps/bump-version";
+export { generateChangelog } from "./steps/generate-changelog";
+export { commitAndTag } from "./steps/commit";
+export { pushToRemote } from "./steps/push";
+export { publishToNpm } from "./steps/publish";
 ```
 
 **package.json 读取与写入**：
@@ -195,16 +195,16 @@ export { publishToNpm } from './steps/publish'
 ```typescript
 // pkg.ts
 export interface PkgInfo {
-  name: string
-  version: string
-  path: string
+  name: string;
+  version: string;
+  path: string;
 }
 
 // 从 package.json 读取版本
-export function readPkg(cwd: string = process.cwd()): PkgInfo
+export function readPkg(cwd: string = process.cwd()): PkgInfo;
 
 // 更新 package.json 版本号
-export function writePkg(cwd: string, newVersion: string): Promise<void>
+export function writePkg(cwd: string, newVersion: string): Promise<void>;
 ```
 
 **一键发布流水线**（类似 bumpp）：
@@ -212,39 +212,39 @@ export function writePkg(cwd: string, newVersion: string): Promise<void>
 ```typescript
 // run.ts
 export async function release(options: ReleaseOptions = {}) {
-  const cwd = options.cwd ?? process.cwd()
+  const cwd = options.cwd ?? process.cwd();
 
   // 1. 读取当前版本
-  const pkg = readPkg(cwd)
-  console.log(`📦 当前版本: ${pkg.name}@${pkg.version}`)
+  const pkg = readPkg(cwd);
+  console.log(`📦 当前版本: ${pkg.name}@${pkg.version}`);
 
   // 2. 交互式选择发布类型（patch/minor/major/指定版本）
-  const releaseType = options.releaseAs ?? (await promptReleaseType()) // 使用 prompts 交互
+  const releaseType = options.releaseAs ?? (await promptReleaseType()); // 使用 prompts 交互
 
   // 3. 计算新版本
-  const newVersion = calculateNewVersion(pkg.version, releaseType)
+  const newVersion = calculateNewVersion(pkg.version, releaseType);
 
   // 4. 更新 package.json
-  await writePkg(cwd, newVersion)
+  await writePkg(cwd, newVersion);
 
   // 5. Git 提价
   if (!options.dryRun) {
-    await gitAdd('.')
-    await commit(`release: ${pkg.name}@${newVersion}`)
-    await tag(`v${newVersion}`)
+    await gitAdd(".");
+    await commit(`release: ${pkg.name}@${newVersion}`);
+    await tag(`v${newVersion}`);
   }
 
   // 6. Git Push
   if (!options.skipPush && !options.dryRun) {
-    await pushToRemote()
+    await pushToRemote();
   }
 
   // 7. NPM 发布
   if (!options.skipPublish && !options.dryRun) {
-    await publishToNpm({ cwd })
+    await publishToNpm({ cwd });
   }
 
-  console.log(`✅ 发布完成: ${pkg.name}@${newVersion}`)
+  console.log(`✅ 发布完成: ${pkg.name}@${newVersion}`);
 }
 ```
 
@@ -252,39 +252,37 @@ export async function release(options: ReleaseOptions = {}) {
 
 ```typescript
 // prompts.ts
-export async function promptReleaseType(
-  currentVersion: string,
-): Promise<string> {
+export async function promptReleaseType(currentVersion: string): Promise<string> {
   const versions = {
-    patch: calculateNewVersion(currentVersion, 'patch'),
-    minor: calculateNewVersion(currentVersion, 'minor'),
-    major: calculateNewVersion(currentVersion, 'major'),
-  }
+    patch: calculateNewVersion(currentVersion, "patch"),
+    minor: calculateNewVersion(currentVersion, "minor"),
+    major: calculateNewVersion(currentVersion, "major"),
+  };
 
   const { type } = await prompts({
-    type: 'select',
-    name: 'type',
-    message: '选择发布类型:',
+    type: "select",
+    name: "type",
+    message: "选择发布类型:",
     choices: [
-      { value: 'patch', label: `Patch (bugfix) → ${versions.patch}` },
-      { value: 'minor', label: `Minor (新功能) → ${versions.minor}` },
-      { value: 'major', label: `Major (破坏性更新) → ${versions.major}` },
-      { value: 'custom', label: '自定义版本' },
+      { value: "patch", label: `Patch (bugfix) → ${versions.patch}` },
+      { value: "minor", label: `Minor (新功能) → ${versions.minor}` },
+      { value: "major", label: `Major (破坏性更新) → ${versions.major}` },
+      { value: "custom", label: "自定义版本" },
     ],
-  })
+  });
 
-  if (type === 'custom') {
+  if (type === "custom") {
     const { version } = await prompts({
-      type: 'text',
-      name: 'version',
-      message: '输入版本号:',
+      type: "text",
+      name: "version",
+      message: "输入版本号:",
       hint: currentVersion,
-      initial: '',
-    })
-    return version || currentVersion
+      initial: "",
+    });
+    return version || currentVersion;
   }
 
-  return type
+  return type;
 }
 ```
 
@@ -366,9 +364,9 @@ utils/
 // 1. 主 API（主要用途）
 // 2. 子模块（可供独立使用）
 // 3. 类型定义
-export { scaffold } from './scaffold'
-export { downloadTemplate } from './scaffold/download'
-export type { ScaffoldOptions } from './scaffold'
+export { scaffold } from "./scaffold";
+export { downloadTemplate } from "./scaffold/download";
+export type { ScaffoldOptions } from "./scaffold";
 ```
 
 ### 错误处理规范
@@ -381,19 +379,19 @@ export class DownloadError extends Error {
     public url: string,
     public cause?: unknown,
   ) {
-    super(message)
-    this.name = 'DownloadError'
+    super(message);
+    this.name = "DownloadError";
   }
 }
 
 // 统一错误处理
 try {
-  await scaffold(options)
+  await scaffold(options);
 } catch (error) {
   if (error instanceof DownloadError) {
-    console.error(`下载失败: ${error.url}`)
+    console.error(`下载失败: ${error.url}`);
   }
-  process.exit(1)
+  process.exit(1);
 }
 ```
 
@@ -419,27 +417,27 @@ vyron init my-project
 ```typescript
 // cli/src/commands/upgrade.ts
 export const upgradeCommand: Command = {
-  name: 'upgrade',
-  description: 'Upgrade project dependencies',
+  name: "upgrade",
+  description: "Upgrade project dependencies",
   options: [
     {
-      name: 'package',
-      short: 'p',
-      type: 'string',
-      description: 'Specific package to upgrade',
+      name: "package",
+      short: "p",
+      type: "string",
+      description: "Specific package to upgrade",
     },
   ],
   async action(args, ctx) {
     // 实现
   },
-}
+};
 ```
 
 然后在 `index.ts` 注册：
 
 ```typescript
-import { upgradeCommand } from './commands/upgrade'
-await register([initCommand, releaseCommand, upgradeCommand])
+import { upgradeCommand } from "./commands/upgrade";
+await register([initCommand, releaseCommand, upgradeCommand]);
 ```
 
 ---
@@ -473,9 +471,9 @@ vyron [command]
 ### 作为模块使用
 
 ```typescript
-import { mainApi } from '@vyron/[package-name]'
+import { mainApi } from "@vyron/[package-name]";
 
-await mainApi()
+await mainApi();
 ```
 
 ## API

@@ -1,10 +1,10 @@
-import { execSync } from 'node:child_process'
+import { execSync } from "node:child_process";
 
 /**
  * 执行 git 命令
  */
 function execGit(args: string): string {
-  return execSync(`git ${args}`, { encoding: 'utf-8', stdio: 'pipe' })
+  return execSync(`git ${args}`, { encoding: "utf-8", stdio: "pipe" });
 }
 
 /**
@@ -12,44 +12,44 @@ function execGit(args: string): string {
  */
 export function hasUncommittedChanges(): boolean {
   try {
-    const status = execGit('status --porcelain')
-    return status.trim().length > 0
+    const status = execGit("status --porcelain");
+    return status.trim().length > 0;
   } catch {
-    return false
+    return false;
   }
 }
 
 /**
  * Git add
  */
-export function gitAdd(files: string = '.'): void {
-  execGit(`add ${files}`)
+export function gitAdd(files: string = "."): void {
+  execGit(`add ${files}`);
 }
 
 /**
  * Git commit
  */
 export function gitCommit(message: string): void {
-  execGit(`commit -m "${message}"`)
+  execGit(`commit -m "${message}"`);
 }
 
 /**
  * Git tag
  */
 export function gitTag(tag: string): void {
-  execGit(`tag ${tag}`)
+  execGit(`tag ${tag}`);
 }
 
 /**
  * Git push
  */
 export function gitPush(): void {
-  execSync('git push', { stdio: 'pipe' })
+  execSync("git push", { stdio: "pipe" });
 }
 
 /**
  * Git push with tags
  */
 export function gitPushTags(): void {
-  execSync('git push --tags', { stdio: 'pipe' })
+  execSync("git push --tags", { stdio: "pipe" });
 }

@@ -1,24 +1,24 @@
-import { scaffold } from '../scaffold'
-import { promptProjectName, promptTemplate } from '../prompts'
-import { formatTargetDir } from '../scaffold/validators'
+import { scaffold } from "../scaffold";
+import { promptProjectName, promptTemplate } from "../prompts";
+import { formatTargetDir } from "../scaffold/validators";
 
 export interface InitOptions {
-  projectName?: string
-  template?: string
-  targetDir?: string
-  force?: boolean
+  projectName?: string;
+  template?: string;
+  targetDir?: string;
+  force?: boolean;
 }
 
 export const initCommand = {
-  name: 'init',
-  description: '创建新项目',
+  name: "init",
+  description: "创建新项目",
 
   async action(options: InitOptions): Promise<void> {
     // 1. 收集用户输入
-    const projectName = options.projectName ?? (await promptProjectName())
-    const template = options.template ?? (await promptTemplate())
-    const targetDir = options.targetDir ?? formatTargetDir(`./${projectName}`)
-    const force = options.force ?? false
+    const projectName = options.projectName ?? (await promptProjectName());
+    const template = options.template ?? (await promptTemplate());
+    const targetDir = options.targetDir ?? formatTargetDir(`./${projectName}`);
+    const force = options.force ?? false;
 
     // 2. 执行脚手架
     await scaffold({
@@ -26,6 +26,6 @@ export const initCommand = {
       template,
       targetDir,
       force,
-    })
+    });
   },
-}
+};

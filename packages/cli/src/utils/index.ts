@@ -1,2 +1,2 @@
-export { logger } from './logger'
-export { register } from './register'
+export { logger } from "./logger";
+export { register } from "./register";

@@ -1,3 +1,3 @@
 packages:
-  - 'packages/*'
-  - '!packages/ui'
+  - "packages/*"
+  - "!packages/ui"

@@ -1,15 +1,15 @@
-import { existsSync } from 'node:fs'
-import { isEmpty } from './fs/empty'
+import { existsSync } from "node:fs";
+import { isEmpty } from "./fs/empty";
 
 /**
  * 验证项目名是否合法
  */
 export function validateProjectName(name: string): boolean {
-  if (!name) return false
+  if (!name) return false;
 
   // NPM 包名规则: @scope/name 或 name
-  const namePattern = /^(?:@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
-  return namePattern.test(name)
+  const namePattern = /^(?:@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/;
+  return namePattern.test(name);
 }
 
 /**
@@ -20,17 +20,17 @@ export function validateTargetDir(
   force: boolean = false,
 ): { valid: boolean; error?: string } {
   if (!existsSync(targetDir)) {
-    return { valid: true }
+    return { valid: true };
   }
 
   if (!isEmpty(targetDir)) {
     if (force) {
-      return { valid: true }
+      return { valid: true };
     }
-    return { valid: false, error: '目标目录不为空，请使用 --force 覆盖' }
+    return { valid: false, error: "目标目录不为空，请使用 --force 覆盖" };
   }
 
-  return { valid: true }
+  return { valid: true };
 }
 
 /**
@@ -38,5 +38,5 @@ export function validateTargetDir(
  */
 export function formatTargetDir(targetDir: string): string {
   // 移除末尾的 /
-  return targetDir.replace(/\/$/, '')
+  return targetDir.replace(/\/$/, "");
 }

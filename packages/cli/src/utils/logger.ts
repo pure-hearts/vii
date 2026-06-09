@@ -1,14 +1,14 @@
 export const logger = {
   info(message: string): void {
-    console.log(`ℹ️  ${message}`)
+    console.log(`ℹ️  ${message}`);
   },
   success(message: string): void {
-    console.log(`✅ ${message}`)
+    console.log(`✅ ${message}`);
   },
   error(message: string): void {
-    console.error(`❌ ${message}`)
+    console.error(`❌ ${message}`);
   },
   warn(message: string): void {
-    console.warn(`⚠️  ${message}`)
+    console.warn(`⚠️  ${message}`);
   },
-}
+};
