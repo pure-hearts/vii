@@ -7,7 +7,7 @@ export default defineConfig({
     },
   },
   pack: {
-    format: ["esm"],
+    format: ["esm", "cjs"],
     minify: true,
   } as any,
 });
