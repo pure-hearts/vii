@@ -4,7 +4,7 @@ import {
   validateTargetDir,
 } from './validators'
 import { downloadTemplate } from './download'
-import { emptyDir, isEmpty  } from './fs/empty'
+import { emptyDir, isEmpty } from './fs/empty'
 import type { ScaffoldOptions } from './types'
 
 /**

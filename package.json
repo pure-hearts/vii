@@ -4,8 +4,8 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "simple-git-hooks",
-    "format": "prettier --write --cache .",
-    "lint": "eslint --cache .",
+    "format": "oxfmt --write .",
+    "lint": "oxlint .",
     "dev": "pnpm -r --parallel --filter='./packages/cli' run dev",
     "build": "pnpm -r --filter='./packages/*' run build",
     "typecheck": "pnpm -r --parallel run typecheck",
@@ -29,18 +29,7 @@
   "author": "vyron",
   "license": "MIT",
   "simple-git-hooks": {
-    "pre-commit": "pnpm exec lint-staged --concurrent false"
-  },
-  "lint-staged": {
-    "*": [
-      "prettier --write --cache --ignore-unknown"
-    ],
-    "packages/*/{src,types}/**/*.ts": [
-      "eslint --cache --fix"
-    ],
-    "packages/**/*.d.ts": [
-      "eslint --cache --fix"
-    ]
+    "pre-commit": "pnpm exec oxlint . && pnpm exec oxfmt --write ."
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.6",
@@ -50,22 +39,16 @@
     "bumpp": "^9.9.0",
     "conventional-changelog-cli": "^5.0.0",
     "cross-env": "^7.0.3",
-    "eslint": "^9.16.0",
-    "eslint-plugin-import-x": "^4.6.1",
-    "eslint-plugin-n": "^17.15.1",
-    "eslint-plugin-regexp": "^2.7.0",
-    "globals": "^15.14.0",
     "less": "^4.2.1",
-    "lint-staged": "^15.4.2",
+    "oxfmt": "^0.54.0",
+    "oxlint": "^1.69.0",
     "picocolors": "^1.1.1",
-    "prettier": "^3.4.2",
     "prompts": "^2.4.2",
     "publint": "^0.3.8",
     "semver": "^7.7.1",
     "simple-git-hooks": "^2.11.1",
     "tsx": "^4.19.3",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.21.0",
     "unbuild": "3.0.0-rc.11",
     "vite": "^6.0.3",
     "vite-plugin-dts": "^4.3.0",

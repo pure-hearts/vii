@@ -46,6 +46,7 @@ packages/
 ### Task 1: 创建 release/ 包基础结构
 
 **Files:**
+
 - Create: `packages/release/package.json`
 - Create: `packages/release/build.config.ts`
 - Create: `packages/release/tsconfig.json`
@@ -137,6 +138,7 @@ git commit -m "feat(release): create release package structure"
 ### Task 2: 创建 release/src/types.ts
 
 **Files:**
+
 - Create: `packages/release/src/types.ts`
 
 - [ ] **Step 1: 创建类型定义**
@@ -180,7 +182,13 @@ export type ReleaseType = 'patch' | 'minor' | 'major' | 'custom'
 - [ ] **Step 2: 更新 packages/release/src/index.ts 导入类型**
 
 ```typescript
-export type { ReleaseOptions, PkgInfo, ReleaseStep, CommitInfo, ReleaseType } from './types'
+export type {
+  ReleaseOptions,
+  PkgInfo,
+  ReleaseStep,
+  CommitInfo,
+  ReleaseType,
+} from './types'
 ```
 
 - [ ] **Step 3: Commit**
@@ -195,6 +203,7 @@ git commit -m "feat(release): add type definitions"
 ### Task 3: 创建 release/src/pkg.ts (package.json 读写)
 
 **Files:**
+
 - Create: `packages/release/src/pkg.ts`
 
 - [ ] **Step 1: 创建 pkg.ts**
@@ -252,6 +261,7 @@ git commit -m "feat(release): add pkg.ts for package.json read/write"
 ### Task 4: 创建 release/src/version.ts (版本计算)
 
 **Files:**
+
 - Create: `packages/release/src/version.ts`
 
 - [ ] **Step 1: 创建 version.ts**
@@ -265,14 +275,17 @@ import type { ReleaseType } from './types'
  */
 export function calculateNewVersion(
   currentVersion: string,
-  releaseType: ReleaseType | string
+  releaseType: ReleaseType | string,
 ): string {
   if (releaseType === 'custom') {
     return currentVersion
   }
 
   if (['patch', 'minor', 'major'].includes(releaseType)) {
-    return semver.inc(currentVersion, releaseType as 'patch' | 'minor' | 'major') ?? currentVersion
+    return (
+      semver.inc(currentVersion, releaseType as 'patch' | 'minor' | 'major') ??
+      currentVersion
+    )
   }
 
   // 已经是完整版本号
@@ -311,6 +324,7 @@ git commit -m "feat(release): add version calculation"
 ### Task 5: 创建 cli/ 新目录结构
 
 **Files:**
+
 - Create: `packages/cli/src/commands/`
 - Create: `packages/cli/src/scaffold/`
 - Create: `packages/cli/src/scaffold/fs/`
@@ -340,6 +354,7 @@ git commit -m "feat(cli): create new directory structure"
 ### Task 6: 创建 cli/src/scaffold/types.ts
 
 **Files:**
+
 - Create: `packages/cli/src/scaffold/types.ts`
 
 - [ ] **Step 1: 创建脚手架类型定义**
@@ -378,6 +393,7 @@ git commit -m "feat(cli): add scaffold type definitions"
 ### Task 7: 创建 cli/src/scaffold/fs/ (文件系统操作)
 
 **Files:**
+
 - Create: `packages/cli/src/scaffold/fs/empty.ts`
 - Create: `packages/cli/src/scaffold/fs/copy.ts`
 - Create: `packages/cli/src/scaffold/fs/write.ts`
@@ -435,8 +451,7 @@ export function copyDir(src: string, dest: string): void {
 
     if (entry.isDirectory()) {
       copyDir(srcPath, destPath)
-    }
-    else {
+    } else {
       copyFileSync(srcPath, destPath)
     }
   }
@@ -476,6 +491,7 @@ git commit -m "feat(cli): add scaffold filesystem utilities"
 ### Task 8: 创建 cli/src/scaffold/validators.ts
 
 **Files:**
+
 - Create: `packages/cli/src/scaffold/validators.ts`
 
 - [ ] **Step 1: 创建 validators.ts**
@@ -499,7 +515,10 @@ export function validateProjectName(name: string): boolean {
 /**
  * 验证目标目录
  */
-export function validateTargetDir(targetDir: string, force: boolean = false): { valid: boolean; error?: string } {
+export function validateTargetDir(
+  targetDir: string,
+  force: boolean = false,
+): { valid: boolean; error?: string } {
   if (!existsSync(targetDir)) {
     return { valid: true }
   }
@@ -535,6 +554,7 @@ git commit -m "feat(cli): add scaffold validators"
 ### Task 9: 创建 cli/src/scaffold/download.ts
 
 **Files:**
+
 - Create: `packages/cli/src/scaffold/download.ts`
 
 - [ ] **Step 1: 创建 download.ts**
@@ -554,7 +574,10 @@ const exec = promisify(execSync)
 /**
  * 下载远程模板
  */
-export async function downloadTemplate(url: string, target: string): Promise<void> {
+export async function downloadTemplate(
+  url: string,
+  target: string,
+): Promise<void> {
   const tmp = tmpdir()
   const tmpPath = `${tmp}/scaffold-${Date.now()}`
 
@@ -582,13 +605,18 @@ git commit -m "feat(cli): add download template functionality"
 ### Task 10: 创建 cli/src/scaffold/scaffold.ts
 
 **Files:**
+
 - Create: `packages/cli/src/scaffold/scaffold.ts`
 - Create: `packages/cli/src/scaffold/index.ts`
 
 - [ ] **Step 1: 创建 scaffold.ts**
 
 ```typescript
-import { formatTargetDir, validateProjectName, validateTargetDir } from './validators'
+import {
+  formatTargetDir,
+  validateProjectName,
+  validateTargetDir,
+} from './validators'
 import { downloadTemplate } from './download'
 import { emptyDir } from './fs/empty'
 import { isEmpty } from './fs/empty'
@@ -632,8 +660,16 @@ export async function scaffold(options: ScaffoldOptions): Promise<void> {
 ```typescript
 export { scaffold } from './scaffold'
 export { downloadTemplate } from './download'
-export { validateProjectName, validateTargetDir, formatTargetDir } from './validators'
-export type { ScaffoldOptions, DownloadOptions, ValidationResult } from './types'
+export {
+  validateProjectName,
+  validateTargetDir,
+  formatTargetDir,
+} from './validators'
+export type {
+  ScaffoldOptions,
+  DownloadOptions,
+  ValidationResult,
+} from './types'
 ```
 
 - [ ] **Step 3: Commit**
@@ -648,6 +684,7 @@ git commit -m "feat(cli): add scaffold main logic"
 ### Task 11: 创建 cli/src/prompts/ (交互式 prompts)
 
 **Files:**
+
 - Create: `packages/cli/src/prompts/project.ts`
 - Create: `packages/cli/src/prompts/template.ts`
 - Create: `packages/cli/src/prompts/index.ts`
@@ -681,9 +718,21 @@ import prompts from 'prompts'
 
 // 内置模板列表
 export const BUILTIN_TEMPLATES = [
-  { name: 'vue', value: 'github:vfiee/template-vue', description: 'Vue 3 + Vite' },
-  { name: 'react', value: 'github:vfiee/template-react', description: 'React 18 + Vite' },
-  { name: 'node', value: 'github:vfiee/template-node', description: 'Node.js CLI' },
+  {
+    name: 'vue',
+    value: 'github:vfiee/template-vue',
+    description: 'Vue 3 + Vite',
+  },
+  {
+    name: 'react',
+    value: 'github:vfiee/template-react',
+    description: 'React 18 + Vite',
+  },
+  {
+    name: 'node',
+    value: 'github:vfiee/template-node',
+    description: 'Node.js CLI',
+  },
 ]
 
 /**
@@ -723,6 +772,7 @@ git commit -m "feat(cli): add interactive prompts"
 ### Task 12: 创建 cli/src/commands/ (命令定义)
 
 **Files:**
+
 - Create: `packages/cli/src/commands/init.ts`
 - Create: `packages/cli/src/commands/release.ts`
 - Create: `packages/cli/src/commands/index.ts`
@@ -747,8 +797,8 @@ export const initCommand = {
 
   async action(options: InitOptions): Promise<void> {
     // 1. 收集用户输入
-    const projectName = options.projectName ?? await promptProjectName()
-    const template = options.template ?? await promptTemplate()
+    const projectName = options.projectName ?? (await promptProjectName())
+    const template = options.template ?? (await promptTemplate())
     const targetDir = options.targetDir ?? formatTargetDir(`./${projectName}`)
     const force = options.force ?? false
 
@@ -802,6 +852,7 @@ git commit -m "feat(cli): add command definitions"
 ### Task 13: 创建 cli/src/utils/ (通用工具)
 
 **Files:**
+
 - Create: `packages/cli/src/utils/logger.ts`
 - Create: `packages/cli/src/utils/register.ts`
 - Create: `packages/cli/src/utils/index.ts`
@@ -857,8 +908,7 @@ export async function register(args: string[]): Promise<void> {
 
   try {
     await command.action({})
-  }
-  catch (error) {
+  } catch (error) {
     console.error(`命令执行失败: ${error}`)
     process.exit(1)
   }
@@ -886,6 +936,7 @@ git commit -m "feat(cli): add utility modules"
 ### Task 14: 重构 cli/src/index.ts (入口文件)
 
 **Files:**
+
 - Modify: `packages/cli/src/index.ts`
 
 - [ ] **Step 1: 读取现有 index.ts**
@@ -918,6 +969,7 @@ git commit -m "feat(cli): refactor entry point"
 ### Task 15: 创建 release/src/git.ts
 
 **Files:**
+
 - Create: `packages/release/src/git.ts`
 
 - [ ] **Step 1: 创建 git.ts**
@@ -939,8 +991,7 @@ export function hasUncommittedChanges(): boolean {
   try {
     const status = execGit('status --porcelain')
     return status.trim().length > 0
-  }
-  catch {
+  } catch {
     return false
   }
 }
@@ -993,6 +1044,7 @@ git commit -m "feat(release): add git operations"
 ### Task 16: 创建 release/src/npm.ts
 
 **Files:**
+
 - Create: `packages/release/src/npm.ts`
 
 - [ ] **Step 1: 创建 npm.ts**
@@ -1017,8 +1069,7 @@ export function isNpmLoggedIn(): boolean {
   try {
     execSync('npm whoami', { stdio: 'pipe' })
     return true
-  }
-  catch {
+  } catch {
     return false
   }
 }
@@ -1036,6 +1087,7 @@ git commit -m "feat(release): add npm operations"
 ### Task 17: 创建 release/src/prompts.ts (交互式发布选择)
 
 **Files:**
+
 - Create: `packages/release/src/prompts.ts`
 
 - [ ] **Step 1: 创建 prompts.ts**
@@ -1048,7 +1100,9 @@ import type { ReleaseType } from './types'
 /**
  * 交互式选择发布类型
  */
-export async function promptReleaseType(currentVersion: string): Promise<string> {
+export async function promptReleaseType(
+  currentVersion: string,
+): Promise<string> {
   const versions = {
     patch: calculateNewVersion(currentVersion, 'patch'),
     minor: calculateNewVersion(currentVersion, 'minor'),
@@ -1094,6 +1148,7 @@ git commit -m "feat(release): add interactive release prompts"
 ### Task 18: 创建 release/src/steps/ (发布步骤)
 
 **Files:**
+
 - Create: `packages/release/src/steps/check-git.ts`
 - Create: `packages/release/src/steps/bump-version.ts`
 - Create: `packages/release/src/steps/commit.ts`
@@ -1126,7 +1181,10 @@ import type { ReleaseType } from '../types'
 /**
  * 更新版本号
  */
-export function bumpVersion(cwd: string, releaseType: ReleaseType | string): string {
+export function bumpVersion(
+  cwd: string,
+  releaseType: ReleaseType | string,
+): string {
   const pkg = readPkg(cwd)
   const newVersion = calculateNewVersion(pkg.version, releaseType)
   writePkg(cwd, newVersion)
@@ -1198,6 +1256,7 @@ git commit -m "feat(release): add release steps"
 ### Task 19: 创建 release/src/run.ts (主流水线)
 
 **Files:**
+
 - Create: `packages/release/src/run.ts`
 
 - [ ] **Step 1: 创建 run.ts**
@@ -1226,7 +1285,8 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
   console.log(`📦 当前版本: ${pkg.name}@${pkg.version}`)
 
   // 3. 计算新版本
-  const releaseType = options.releaseAs ?? await promptReleaseType(pkg.version)
+  const releaseType =
+    options.releaseAs ?? (await promptReleaseType(pkg.version))
   const newVersion = calculateNewVersion(pkg.version, releaseType)
   console.log(`🚀 版本更新: ${pkg.version} → ${newVersion}`)
 
@@ -1288,6 +1348,7 @@ git commit -m "feat(release): add main release pipeline"
 ### Task 20: 删除 ui/ 包
 
 **Files:**
+
 - Delete: `packages/ui/` (entire directory)
 
 - [ ] **Step 1: 删除 ui 目录**
@@ -1308,6 +1369,7 @@ git commit -m "chore: remove ui package (no source code)"
 ### Task 21: 删除 use-axios/ 包
 
 **Files:**
+
 - Delete: `packages/use-axios/` (entire directory)
 
 - [ ] **Step 1: 删除 use-axios 目录**
@@ -1328,6 +1390,7 @@ git commit -m "chore: remove use-axios package (not in toolchain scope)"
 ### Task 22: 合并 release-scripts 到 release/
 
 **Files:**
+
 - Read: `packages/release-scripts/src/` files
 - Modify: `packages/release/src/` files to incorporate release-scripts logic
 - Delete: `packages/release-scripts/`
@@ -1366,13 +1429,14 @@ git commit -m "chore: merge release-scripts into release package"
 ### Task 23: 创建各包 README
 
 **Files:**
+
 - Create: `packages/cli/README.md`
 - Create: `packages/release/README.md`
 - Create: `packages/utils/README.md`
 
 - [ ] **Step 1: 创建 packages/cli/README.md**
 
-```markdown
+````markdown
 # @vyron/cli
 
 > VII 工具链 CLI 入口
@@ -1382,6 +1446,7 @@ git commit -m "chore: merge release-scripts into release package"
 ```bash
 pnpm add -g @vyron/cli
 ```
+````
 
 ## Usage
 
@@ -1412,7 +1477,8 @@ vyron release
 vyron release --dry-run
 vyron release --release-as minor
 ```
-```
+
+````
 
 - [ ] **Step 2: 创建 packages/release/README.md**
 
@@ -1425,7 +1491,7 @@ vyron release --release-as minor
 
 ```bash
 pnpm add @vyron/release
-```
+````
 
 ## Usage
 
@@ -1437,7 +1503,8 @@ await release({
   dryRun: true,
 })
 ```
-```
+
+````
 
 - [ ] **Step 3: 创建 packages/utils/README.md**
 
@@ -1450,7 +1517,7 @@ await release({
 
 ```bash
 pnpm add @vyron/utils
-```
+````
 
 ## Usage
 
@@ -1460,20 +1527,22 @@ import { getStorage, setStorage } from '@vyron/utils'
 setStorage('key', 'value')
 const value = getStorage('key')
 ```
-```
+
+````
 
 - [ ] **Step 4: Commit**
 
 ```bash
 git add packages/*/README.md
 git commit -m "docs: add README for each package"
-```
+````
 
 ---
 
 ### Task 24: 更新 workspace 配置
 
 **Files:**
+
 - Modify: `pnpm-workspace.yaml`
 - Modify: `package.json` (scripts)
 

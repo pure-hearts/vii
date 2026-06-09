@@ -6,14 +6,17 @@ import type { ReleaseType } from './types'
  */
 export function calculateNewVersion(
   currentVersion: string,
-  releaseType: ReleaseType | string
+  releaseType: ReleaseType | string,
 ): string {
   if (releaseType === 'custom') {
     return currentVersion
   }
 
   if (['patch', 'minor', 'major'].includes(releaseType)) {
-    return semver.inc(currentVersion, releaseType as 'patch' | 'minor' | 'major') ?? currentVersion
+    return (
+      semver.inc(currentVersion, releaseType as 'patch' | 'minor' | 'major') ??
+      currentVersion
+    )
   }
 
   // 已经是完整版本号
