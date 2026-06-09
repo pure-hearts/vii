@@ -5,7 +5,6 @@
 
 ---
 
-
 ## Session 1: Migrate project core build and tooling to vite-plus
 
 **Date**: 2026-06-09
@@ -23,8 +22,8 @@ Migrated build backend from unbuild to vite-plus. Consolidated configurations by
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `5f66ebe` | (see git log) |
 | `d1141d3` | (see git log) |
 

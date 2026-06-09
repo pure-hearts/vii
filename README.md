@@ -166,6 +166,7 @@ vii release [options]
 
 1. **账户验证与登录**：
    确保您的终端已登录 npm 官方源（发布必须使用 npm 官方镜像源 `https://registry.npmjs.org/`）：
+
    ```bash
    # 验证当前登录身份
    npm whoami
@@ -176,12 +177,14 @@ vii release [options]
 
 2. **切换到子包根目录**：
    进入脚手架所在的子包目录：
+
    ```bash
    cd packages/cli
    ```
 
 3. **执行发布命令**：
    在子包目录下，直接调用之前已经全局 link 好的 `vii` 命令。如果您希望对本次更新进行小版本（patch 级别的 Bug 修复，如 `1.2.4` -> `1.2.5`）升级发布，可以直接运行：
+
    ```bash
    vii release --releaseAs patch
    ```
