@@ -130,30 +130,68 @@ pnpm build
 项目采用 `@vyron/release` 模块提供了一键式的自动化包版本升级与多渠道发布流程。
 
 ### 发布前置校验
+
 为确保发布版本及代码的可靠性，`release` 会在执行前进行以下硬性校验：
+
 1. **Git 仓库验证**：验证当前运行命令的目录是否为 Git 工作区（非 Git 仓库将报错拦截并提示初始化）。
 2. **工作区状态 (Git Status)**：确认无任何未提交的修改，防止脏代码提交（若存在未提交代码，将报错中断发布流程）。
 3. **NPM 登录状态校验**：发布逻辑在执行前会在后台自动校验 `npm whoami`，确保您已在当前环境中正确登录 npm 账号。
 
 ### 自动化发布命令
+
 ```bash
 # 执行自动化版本升级与发布
 vii release [options]
 ```
 
 ### 命令可选参数
+
 - `--releaseAs <version>`：直接指定要升级的版本号（例如 `1.2.0`）或指定变更层级（`patch` | `minor` | `major`）。
 - `--dryRun`：只模拟运行，会在控制台完整渲染出版本升级过程与提交日志，但不实际修改 `package.json`、不创建 Git Commit 和 Tag，也不执行推送发布。
 - `--skipPush`：跳过推送 Git 分支和 Git 标签。
 - `--skipPublish`：跳过 NPM 发布步骤（保留 package.json 写入与 Git 提交）。
 
 ### 发布工作流程
+
 1. **获取当前版本**：读取当前目录 `package.json` 中的 `name` 和 `version`。
 2. **计算目标版本**：如未显式指定 `--releaseAs`，将以交互式提问（Prompts）询问确定升级类型（`patch` | `minor` | `major`）并计算升级后的版本。
 3. **改写配置**：写入新版本号至包根目录下的 `package.json` 中。
 4. **Git Commit & Tag**：自动执行 `git add` 并创建 commit（提交说明格式：`chore(release): v<version>`），随后为当前 commit 创建 Git tag（命名为：`v<version>`）。
 5. **推送到远程**：若未开启跳过，将执行 `git push` 与 `git push --tags` 将本地版本同步至远程仓库。
 6. **发布到 NPM**：若未开启跳过，进入当前包目录并在控制台以交互方式执行 `npm publish`，完成包的最终发布。
+
+### 💡 最佳实战：如何发布 `@vyron/cli` 到 npmjs 仓库
+
+以将本 Monorepo 仓库下的 `@vyron/cli` 脚手架发布至 npmjs 镜像源为例，推荐的操作步骤如下：
+
+1. **账户验证与登录**：
+   确保您的终端已登录 npm 官方源（发布必须使用 npm 官方镜像源 `https://registry.npmjs.org/`）：
+   ```bash
+   # 验证当前登录身份
+   npm whoami
+
+   # 若未登录，请执行登录命令
+   npm login
+   ```
+
+2. **切换到子包根目录**：
+   进入脚手架所在的子包目录：
+   ```bash
+   cd packages/cli
+   ```
+
+3. **执行发布命令**：
+   在子包目录下，直接调用之前已经全局 link 好的 `vii` 命令。如果您希望对本次更新进行小版本（patch 级别的 Bug 修复，如 `1.2.4` -> `1.2.5`）升级发布，可以直接运行：
+   ```bash
+   vii release --releaseAs patch
+   ```
+
+4. **工具全自动化接管**：
+   - 脚本首先校验并确保本地的 `packages/cli` 没有任何未提交的脏代码。
+   - 自动修改 `packages/cli/package.json` 中的版本号为 `1.2.5`。
+   - 自动执行 Git 提交 `chore(release): v1.2.5` 并生成对应版本标签 `v1.2.5`。
+   - 自动将本地变更与 Tag 推送至远程仓库。
+   - 自动在发布前执行 `prepublishOnly` 构建出最新版 ESM 压缩代码，随后自动调用 `npm publish` 将最新脚手架代码推送到 npmjs 仓库。
 
 ---
 
