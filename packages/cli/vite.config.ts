@@ -7,8 +7,7 @@ export default defineConfig({
     },
   },
   pack: {
-    entry: ["src/index.ts"],
     format: ["esm"],
     minify: true,
-  },
+  } as any,
 });

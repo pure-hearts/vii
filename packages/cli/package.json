@@ -19,8 +19,8 @@
   ],
   "type": "module",
   "scripts": {
-    "dev": "vp pack --watch",
-    "build": "vp pack",
+    "dev": "node -e \"import('fs').then(fs => fs.writeFileSync('index.js', '#!/usr/bin/env node\\nimport \\'./dist/index.mjs\\'\\n', { mode: 0o755 }))\" && vp pack --watch",
+    "build": "vp pack && node -e \"import('fs').then(fs => fs.writeFileSync('index.js', '#!/usr/bin/env node\\nimport \\'./dist/index.mjs\\'\\n', { mode: 0o755 }))\"",
     "typecheck": "vp check --no-fmt --no-lint",
     "prepublishOnly": "pnpm run build"
   },
