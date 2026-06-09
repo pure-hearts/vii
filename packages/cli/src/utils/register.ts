@@ -1,10 +1,10 @@
 import { initCommand } from '../commands/init'
 import { releaseCommand } from '../commands/release'
 
-interface Command {
+interface Command<T = object> {
   name: string
   description: string
-  action: (options: unknown) => Promise<void>
+  action: (options: T) => Promise<void>
 }
 
 const commands: Command[] = [initCommand, releaseCommand]
@@ -32,5 +32,3 @@ export async function register(args: string[]): Promise<void> {
     process.exit(1)
   }
 }
-
-export { register }
