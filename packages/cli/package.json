@@ -16,9 +16,7 @@
     "dev": "unbuild --stub",
     "build": "unbuild",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm run build",
-    "release": "bumpp -y --all",
-    "start": "tsx ./src/index.ts"
+    "prepublishOnly": "pnpm run build"
   },
   "engines": {
     "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
@@ -29,16 +27,11 @@
     "directory": "packages/cli"
   },
   "homepage": "https://github.com/vfiee/project-boilerplate",
-  "devDependencies": {
-    "@types/minimist": "^1.2.5",
-    "@types/prompts": "^2.4.9",
-    "cross-spawn": "^7.0.6",
-    "minimist": "^1.2.8",
-    "picocolors": "^1.1.1",
-    "prompts": "^2.4.2",
-    "unbuild": "^3.3.1"
-  },
   "dependencies": {
-    "download-git-repo": "^3.0.2"
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/prompts": "^2.4.9",
+    "unbuild": "^3.3.1"
   }
 }

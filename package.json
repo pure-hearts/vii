@@ -8,14 +8,7 @@
     "lint": "oxlint .",
     "dev": "pnpm -r --parallel --filter='./packages/cli' run dev",
     "build": "pnpm -r --filter='./packages/*' run build",
-    "typecheck": "pnpm -r --parallel run typecheck",
-    "release": "tsx scripts/release.ts",
-    "ci-publish": "tsx scripts/publishCI.ts"
-  },
-  "nano-staged": {
-    "*.md": "prettier --write",
-    "*.{ts,tsx,js,vue,less}": "prettier --write",
-    "*.{ts,tsx,js,vue}": "eslint --fix"
+    "typecheck": "pnpm -r --parallel run typecheck"
   },
   "engines": {
     "node": ">=20.0.0",
@@ -32,26 +25,10 @@
     "pre-commit": "pnpm exec oxlint . && pnpm exec oxfmt --write ."
   },
   "devDependencies": {
-    "@types/cross-spawn": "^6.0.6",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vyron/release-scripts": "^1.0.0",
-    "add": "^2.0.6",
-    "bumpp": "^9.9.0",
-    "conventional-changelog-cli": "^5.0.0",
-    "cross-env": "^7.0.3",
-    "less": "^4.2.1",
     "oxfmt": "^0.54.0",
     "oxlint": "^1.69.0",
-    "picocolors": "^1.1.1",
-    "prompts": "^2.4.2",
-    "publint": "^0.3.8",
-    "semver": "^7.7.1",
     "simple-git-hooks": "^2.11.1",
-    "tsx": "^4.19.3",
     "typescript": "^5.7.2",
-    "unbuild": "3.0.0-rc.11",
-    "vite": "^6.0.3",
-    "vite-plugin-dts": "^4.3.0",
-    "vue": "^3.5.13"
+    "unbuild": "^3.0.0-rc.11"
   }
 }
