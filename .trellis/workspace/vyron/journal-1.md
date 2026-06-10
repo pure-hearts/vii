@@ -38,3 +38,37 @@ Migrated build backend from unbuild to vite-plus. Consolidated configurations by
 ### Next Steps
 
 - None - task complete
+
+
+## Session 2: Complete CLI unit tests and project guidelines
+
+**Date**: 2026-06-10
+**Task**: Complete CLI unit tests and project guidelines
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+Implemented comprehensive Vitest unit tests for packages/cli, optimized Git cloning filtration by stripping metadata, and filled Bootstrap guidelines inside the project specification directory.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d630ca1` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
