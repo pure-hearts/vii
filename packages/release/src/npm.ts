@@ -13,17 +13,32 @@ export function npmVersionExists(pkgName: string, version: string): boolean {
 }
 
 /**
- * NPM 发布
+ * 带重试的 NPM 发布
  */
-export function npmPublish(cwd: string): void {
-  try {
-    console.log("📦 正在发布到 npm...");
-    execSync("npm publish", {
-      cwd,
-      stdio: "inherit",
-    });
-  } catch {
-    throw new Error("npm publish 失败，请确认已登录 npm（npm login）");
+export function npmPublish(cwd: string, retries = 3): void {
+  for (let i = 0; i < retries; i++) {
+    try {
+      console.log(`📦 正在发布到 npm (${i + 1}/${retries})...`);
+      execSync("npm publish", {
+        cwd,
+        stdio: "inherit",
+      });
+      console.log(`✅ npm publish 完成 (${i + 1}/${retries})\n`);
+      return;
+    } catch {
+      if (i === retries - 1) {
+        throw new Error("npm publish 失败，请确认已登录 npm（npm login）");
+      }
+      console.log(`⚠️  npm publish 失败，${i + 1} 秒后重试...\n`);
+      sleep(i + 1);
+    }
+  }
+}
+
+function sleep(seconds: number): void {
+  const end = Date.now() + seconds * 1000;
+  while (Date.now() < end) {
+    // busy wait
   }
 }
 

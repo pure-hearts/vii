@@ -1,5 +1,71 @@
 import prompts from "prompts";
 import { calculateNewVersion } from "./version";
+import { readPkg } from "./pkg";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+
+/**
+ * 发现 packages 目录下的所有包
+ */
+export function discoverPackages(cwd: string): string[] {
+  const packagesDir = join(cwd, "packages");
+  if (!existsSync(packagesDir)) {
+    return [];
+  }
+
+  const { readdirSync } = require("node:fs");
+  try {
+    return readdirSync(packagesDir, { withFileTypes: true })
+      .filter((dirent: { isDirectory: () => boolean }) => dirent.isDirectory())
+      .filter((dirent: { name: string }) =>
+        existsSync(join(packagesDir, dirent.name, "package.json")),
+      )
+      .map((dirent: { name: string }) => join(packagesDir, dirent.name));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * 交互式选择要发布的包
+ */
+export async function promptSelectPackages(cwd: string): Promise<string[] | null> {
+  const packages = discoverPackages(cwd);
+
+  if (packages.length === 0) {
+    return null;
+  }
+
+  const packageOptions = packages.map((pkgPath) => {
+    const name = pkgPath.split("/").pop() || pkgPath;
+    return {
+      value: pkgPath,
+      title: name,
+      description: pkgPath,
+    };
+  });
+
+  const { selected } = await prompts({
+    type: "multiselect",
+    name: "selected",
+    message: "选择要发布的包:",
+    choices: [
+      { value: "__all__", title: "全部包", description: "发布 packages 下的所有包" },
+      ...packageOptions,
+    ],
+  });
+
+  if (!selected || selected.length === 0) {
+    console.log("已取消发布");
+    return null;
+  }
+
+  if (selected.includes("__all__")) {
+    return packages;
+  }
+
+  return selected;
+}
 
 /**
  * 交互式选择发布类型

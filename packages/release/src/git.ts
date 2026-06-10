@@ -8,6 +8,23 @@ function execGit(args: string): string {
 }
 
 /**
+ * 带进度提示执行 git 命令
+ */
+function execGitWithSpinner(args: string, message: string): string {
+  process.stdout.write(`⏳ ${message}...`);
+  const start = Date.now();
+  try {
+    const result = execSync(`git ${args}`, { encoding: "utf-8", stdio: "pipe" });
+    const elapsed = ((Date.now() - start) / 1000).toFixed(1);
+    console.log(`\r✅ ${message} (${elapsed}s)\n`);
+    return result;
+  } catch (error) {
+    console.log(`\r❌ ${message} 失败\n`);
+    throw error;
+  }
+}
+
+/**
  * 校验当前是否是 Git 仓库
  */
 export function isGitRepository(): boolean {
@@ -78,23 +95,44 @@ export function gitTag(tag: string): void {
 }
 
 /**
- * Git push
+ * 带重试的 Git push
  */
-export function gitPush(): void {
-  try {
-    execSync("git push", { stdio: "pipe" });
-  } catch {
-    throw new Error("git push 失败，请检查网络或 remote 配置");
+export function gitPush(retries = 3): void {
+  for (let i = 0; i < retries; i++) {
+    try {
+      execGitWithSpinner("push", `Git push (${i + 1}/${retries})`);
+      return;
+    } catch {
+      if (i === retries - 1) {
+        throw new Error("git push 失败，请检查网络或 remote 配置");
+      }
+      console.log(`⚠️  push 失败，${i + 1} 秒后重试...\n`);
+      sleep(i + 1);
+    }
   }
 }
 
 /**
- * Git push with tags
+ * 带重试的 Git push --tags
  */
-export function gitPushTags(): void {
-  try {
-    execSync("git push --tags", { stdio: "pipe" });
-  } catch {
-    throw new Error("git push --tags 失败，请检查网络或 remote 配置");
+export function gitPushTags(retries = 3): void {
+  for (let i = 0; i < retries; i++) {
+    try {
+      execGitWithSpinner("push --tags", `Git push tags (${i + 1}/${retries})`);
+      return;
+    } catch {
+      if (i === retries - 1) {
+        throw new Error("git push --tags 失败，请检查网络或 remote 配置");
+      }
+      console.log(`⚠️  push --tags 失败，${i + 1} 秒后重试...\n`);
+      sleep(i + 1);
+    }
+  }
+}
+
+function sleep(seconds: number): void {
+  const end = Date.now() + seconds * 1000;
+  while (Date.now() < end) {
+    // busy wait
   }
 }
