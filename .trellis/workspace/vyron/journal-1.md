@@ -538,7 +538,6 @@ finish-work 调用：无活动任务，检查工作目录干净
 
 - None - task complete
 
-
 ## Session 17: @vyron/release 包功能优化
 
 **Date**: 2026-06-10
@@ -556,8 +555,8 @@ finish-work 调用：无活动任务，检查工作目录干净
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `2d3127b` | (see git log) |
 | `d4eb66e` | (see git log) |
 | `b98c307` | (see git log) |
