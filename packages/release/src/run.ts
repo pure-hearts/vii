@@ -1,6 +1,6 @@
 import { readPkg, writePkg } from "./pkg";
 import { calculateNewVersion } from "./version";
-import { promptReleaseType } from "./prompts";
+import { promptReleaseType, promptCommitMessage } from "./prompts";
 import { checkGitStatus } from "./steps/check-git";
 import { commitAndTag } from "./steps/commit";
 import { pushToRemote } from "./steps/push";
@@ -22,20 +22,28 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
 
   // 3. 计算新版本
   const releaseType = options.releaseAs ?? (await promptReleaseType(pkg.version));
+  if (releaseType === null) return;
+
   const newVersion = calculateNewVersion(pkg.version, releaseType);
-  console.log(`🚀 版本更新: ${pkg.version} → ${newVersion}`);
+  console.log(`\n🚀 版本更新: ${pkg.version} → ${newVersion}\n`);
 
   // 4. 更新 package.json
   writePkg(cwd, newVersion);
 
   if (options.dryRun) {
-    console.log("🔍 DryRun 模式，未实际执行");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("🔍 [DRY RUN] 未实际执行");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━\n");
     return;
   }
 
   // 5. Git commit & tag
+  const defaultMsg = `release: ${newVersion}`;
+  const commitMsg = options.commitMessage ?? (await promptCommitMessage(defaultMsg));
+  if (commitMsg === null) return;
+
   console.log("📝 Git commit & tag...");
-  commitAndTag(cwd, newVersion);
+  commitAndTag(cwd, newVersion, commitMsg);
 
   // 6. Git push
   if (!options.skipPush) {
@@ -49,5 +57,5 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
     publishToNpm(cwd);
   }
 
-  console.log(`✅ 发布完成: ${pkg.name}@${newVersion}`);
+  console.log(`\n✅ 发布完成: ${pkg.name}@${newVersion}`);
 }
