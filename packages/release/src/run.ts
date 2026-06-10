@@ -14,7 +14,7 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
   const cwd = options.cwd ?? process.cwd();
 
   // 1. 检查 Git 状态
-  checkGitStatus();
+  await checkGitStatus();
 
   // 2. 读取当前版本
   const pkg = readPkg(cwd);

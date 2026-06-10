@@ -8,9 +8,7 @@ import type { PkgInfo } from "./types";
 export function readPkg(cwd: string = process.cwd()): PkgInfo {
   const pkgPath = resolve(cwd, "package.json");
   if (!existsSync(pkgPath)) {
-    throw new Error(
-      `未找到 package.json 文件。请确认当前运行目录（或传入的 cwd: "${cwd}"）是合法的 npm 包目录。`,
-    );
+    throw new Error(`未找到 package.json`);
   }
   const content = readFileSync(pkgPath, "utf-8");
   const pkg = JSON.parse(content) as { name: string; version: string };
@@ -28,7 +26,7 @@ export function readPkg(cwd: string = process.cwd()): PkgInfo {
 export function writePkg(cwd: string, newVersion: string): void {
   const pkgPath = resolve(cwd, "package.json");
   if (!existsSync(pkgPath)) {
-    throw new Error(`未找到要写入的 package.json 文件（路径: "${pkgPath}"）。`);
+    throw new Error(`未找到 package.json`);
   }
   const content = readFileSync(pkgPath, "utf-8");
   const pkg = JSON.parse(content) as { version: string };

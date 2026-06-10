@@ -14,7 +14,7 @@ export async function promptReleaseType(currentVersion: string): Promise<string>
   const { type } = await prompts({
     type: "select",
     name: "type",
-    message: "选择发布类型:",
+    message: "选择版本类型:",
     choices: [
       { value: "patch", title: `Patch (bugfix) → ${versions.patch}` },
       { value: "minor", title: `Minor (新功能) → ${versions.minor}` },

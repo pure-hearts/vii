@@ -33,13 +33,25 @@ export function hasUncommittedChanges(): boolean {
 }
 
 /**
+ * 检查是否有 remote
+ */
+export function hasRemote(): boolean {
+  try {
+    const remote = execGit("remote get-url origin");
+    return remote.trim().length > 0;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Git add
  */
 export function gitAdd(files: string = "."): void {
   try {
     execGit(`add ${files}`);
   } catch (error: any) {
-    throw new Error(`Git add 失败 (文件: "${files}"): ${error.message || error}`);
+    throw new Error(`git add 失败`);
   }
 }
 
@@ -50,7 +62,7 @@ export function gitCommit(message: string): void {
   try {
     execGit(`commit -m "${message}"`);
   } catch (error: any) {
-    throw new Error(`Git commit 失败 (消息: "${message}"): ${error.message || error}`);
+    throw new Error(`git commit 失败`);
   }
 }
 
@@ -61,7 +73,7 @@ export function gitTag(tag: string): void {
   try {
     execGit(`tag ${tag}`);
   } catch (error: any) {
-    throw new Error(`Git tag 失败 (标签: "${tag}"): ${error.message || error}`);
+    throw new Error(`git tag 失败`);
   }
 }
 
@@ -72,7 +84,7 @@ export function gitPush(): void {
   try {
     execSync("git push", { stdio: "pipe" });
   } catch (error: any) {
-    throw new Error(`Git push 失败，请检查远程仓库连接与推送权限: ${error.message || error}`);
+    throw new Error(`git push 失败`);
   }
 }
 
@@ -83,6 +95,6 @@ export function gitPushTags(): void {
   try {
     execSync("git push --tags", { stdio: "pipe" });
   } catch (error: any) {
-    throw new Error(`Git push --tags 推送标签失败: ${error.message || error}`);
+    throw new Error(`git push --tags 失败`);
   }
 }
