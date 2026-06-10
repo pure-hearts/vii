@@ -204,7 +204,6 @@ Enriched the packages/cli/README.md documentation by writing comprehensive guide
 
 - None - task complete
 
-
 ## Session 7: Add test-mirror command for github latency test
 
 **Date**: 2026-06-10
@@ -222,8 +221,8 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `aa75b94` | (see git log) |
 
 ### Testing
