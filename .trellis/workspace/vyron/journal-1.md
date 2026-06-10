@@ -71,3 +71,37 @@ Implemented comprehensive Vitest unit tests for packages/cli, optimized Git clon
 ### Next Steps
 
 - None - task complete
+
+
+## Session 3: Validate CLI npm pack installation
+
+**Date**: 2026-06-10
+**Task**: Validate CLI npm pack installation
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+Verified the CLI npm pack tarball structure and its successful execution in a clean temporary directory. Commands 'vii --help', 'vii list' and validation logics (like misspelled options or positional argument bounds) all function as expected under dual ESM/CJS build configuration.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `75c9848` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
