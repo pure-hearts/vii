@@ -9,7 +9,7 @@ export const MIRRORS = [
 /**
  * 测试单个地址的延迟 (不使用代理)
  */
-async function testLatency(url: string): Promise<number> {
+export async function testLatency(url: string): Promise<number> {
   const start = Date.now();
   try {
     const controller = new AbortController();

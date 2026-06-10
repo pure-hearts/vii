@@ -3,3 +3,4 @@ export type { InitOptions } from "./init";
 export { releaseCommand } from "./release";
 export type { ReleaseCommandOptions } from "./release";
 export { listCommand } from "./list";
+export { testMirrorCommand } from "./test-mirror";

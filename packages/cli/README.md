@@ -103,6 +103,22 @@ vii list
 
 ---
 
+### 2.5 `vii test-mirror` 或 `vii speed`
+
+手动对内置的 GitHub 镜像源进行非代理并发测速，在终端中直观展示延迟报告，并自动推荐最快的源和命令样例。
+
+- 该命令不接受任何参数。
+
+**示例**：
+
+```bash
+vii test-mirror
+# 或者使用别名
+vii speed
+```
+
+---
+
 ### 3. `vii release`
 
 一键版本发布工具。帮助您快速修改包版本、生成 Git Tag 并自动发布到 NPM。
