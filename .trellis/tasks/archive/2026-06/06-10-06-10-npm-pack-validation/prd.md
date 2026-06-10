@@ -3,6 +3,7 @@
 ## Goal
 
 Validate the `@vyron/cli` package post-build using `npm pack` in a clean environment to ensure:
+
 - The package bundles correct files (`index.js`, `dist`, etc.).
 - There are no package execution, dual ESM/CJS path resolution, or `require` parsing errors.
 - The command line utility `vii` runs correctly when installed locally.
@@ -26,4 +27,3 @@ Validate the `@vyron/cli` package post-build using `npm pack` in a clean environ
 - [ ] Run `npx vii --help` and verify it prints the CLI instructions properly.
 - [ ] Run `npx vii list` and ensure it runs the registered command logic without module import or path resolution errors.
 - [ ] Clean up the temporary workspace folder.
-
