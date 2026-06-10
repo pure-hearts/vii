@@ -336,7 +336,6 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 - None - task complete
 
-
 ## Session 11: Optimize Mermaid syntax for antigravity-ide preview
 
 **Date**: 2026-06-10
@@ -354,9 +353,44 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 ### Git Commits
 
+| Hash      | Message       |
+| --------- | ------------- |
+| `6fc1e82` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
+
+
+## Session 12: Add loading spinner and fallback retry for git clone
+
+**Date**: 2026-06-10
+**Task**: Add loading spinner and fallback retry for git clone
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+为 vii CLI 添加了优秀的克隆模板 loading 体验。重构 execSync 为异步 spawn 并解析 Git 输出百分比和速率，在非 TTY/CI 环境下自动降级，支持 45s 超时保护、Ctrl+C 进程及目录清理、镜像失败自动回滚重试官方源等功能。同时修复了延迟测速未校验 HTTP 状态码的 Bug。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
 | Hash | Message |
 |------|---------|
-| `6fc1e82` | (see git log) |
+| `3ccd68b` | (see git log) |
+| `5c8e86b` | (see git log) |
 
 ### Testing
 
