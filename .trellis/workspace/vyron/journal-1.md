@@ -471,3 +471,37 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+
+## Session 15: 移除 test-mirror 命令
+
+**Date**: 2026-06-10
+**Task**: 移除 test-mirror 命令
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+移除 test-mirror 命令及相关测试文件，删除命令实现、导出、注册逻辑和单元测试
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `06553d8` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
