@@ -30,7 +30,13 @@ export function discoverPackages(cwd: string): string[] {
 export async function promptSelectPackages(cwd: string): Promise<string[] | null> {
   const packages = discoverPackages(cwd);
 
+  // 单包模式：如果没有 packages 目录，检查根目录是否有 package.json
   if (packages.length === 0) {
+    const rootPkgPath = join(cwd, "package.json");
+    if (existsSync(rootPkgPath)) {
+      return [cwd];
+    }
+    console.error("❌ 未找到可发布的包，请确保项目根目录有 package.json 或 packages/ 目录下有子包");
     return null;
   }
 

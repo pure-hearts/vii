@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { writeFileSync, mkdirSync, existsSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { run, getReleaseType } from "../src/run";
 import { calculateNewVersion } from "../src/version";
@@ -10,7 +10,6 @@ const TEST_DIR = join(__dirname, "temp-e2e-test");
 // 模拟 prompts
 vi.mock("prompts", () => ({
   default: vi.fn(async ({ name }: { name: string }) => {
-    if (name === "selected") return { selected: ["__all__"] };
     if (name === "type") return { type: "patch" };
     if (name === "confirm") return { confirm: true };
     if (name === "message") return { message: "chore: release" };
@@ -19,9 +18,10 @@ vi.mock("prompts", () => ({
 }));
 
 beforeEach(() => {
-  if (!existsSync(TEST_DIR)) {
-    mkdirSync(TEST_DIR, { recursive: true });
+  if (existsSync(TEST_DIR)) {
+    rmSync(TEST_DIR, { recursive: true, force: true });
   }
+  mkdirSync(TEST_DIR, { recursive: true });
 });
 
 describe("run E2E", () => {

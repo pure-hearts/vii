@@ -46,9 +46,14 @@ export function getReleaseType(options: ReleaseOptions): string | null {
 /**
  * 发布单个包
  */
-async function releaseSingle(cwd: string, pkgName: string, options: ReleaseOptions): Promise<void> {
+async function releaseSingle(
+  cwd: string,
+  currentVersion: string,
+  options: ReleaseOptions,
+): Promise<void> {
   // 保存原始版本用于回滚
   const originalPkg = readPkg(cwd);
+  const pkgName = originalPkg.name;
   let versionUpdated = false;
 
   try {
@@ -57,18 +62,10 @@ async function releaseSingle(cwd: string, pkgName: string, options: ReleaseOptio
     const releaseType = specifiedType ?? (await promptReleaseType(""));
     if (releaseType === null) return;
 
-    const newVersion = calculateNewVersion(pkgName, releaseType);
+    const newVersion = calculateNewVersion(currentVersion, releaseType);
     console.log(`\n🚀 版本更新: ${pkgName} → ${newVersion}\n`);
 
-    // 2. 检查版本是否已存在
-    if (!options.skipPublish && npmVersionExists(pkgName, newVersion)) {
-      throw new Error(`版本 ${newVersion} 已存在于 npm，请使用新版本号`);
-    }
-
-    // 3. 更新 package.json
-    writePkg(cwd, newVersion);
-    versionUpdated = true;
-
+    // Dry-run: 显示信息后直接返回
     if (options.dryRun) {
       console.log("━━━━━━━━━━━━━━━━━━━━━━━━");
       console.log("🔍 [DRY RUN] 未实际执行");
@@ -76,11 +73,20 @@ async function releaseSingle(cwd: string, pkgName: string, options: ReleaseOptio
       return;
     }
 
-    // 4. 发布前确认
+    // 2. 检查版本是否已存在
+    if (!options.skipPublish && npmVersionExists(pkgName, newVersion)) {
+      throw new Error(`版本 ${newVersion} 已存在于 npm，请使用新版本号`);
+    }
+
+    // 3. 发布前确认
     if (!options.skipConfirm && !(await promptConfirm(pkgName, newVersion))) {
       console.log("已取消发布");
       return;
     }
+
+    // 4. 更新 package.json
+    writePkg(cwd, newVersion);
+    versionUpdated = true;
 
     // 5. Changelog
     if (!options.skipChangelog) {
@@ -163,7 +169,7 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
         console.log(`\n${"=".repeat(50)}`);
         console.log(`📦 准备发布: ${pkg.name}@${pkg.version}`);
         console.log("=".repeat(50));
-        return releaseSingle(pkgPath, pkg.name, {
+        return releaseSingle(pkgPath, pkg.version, {
           ...mergedOptions,
           package: undefined,
         });
@@ -177,7 +183,7 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
       console.log(`📦 准备发布: ${pkg.name}@${pkg.version}`);
       console.log("=".repeat(50));
 
-      await releaseSingle(pkgPath, pkg.name, {
+      await releaseSingle(pkgPath, pkg.version, {
         ...mergedOptions,
         package: undefined,
       });
