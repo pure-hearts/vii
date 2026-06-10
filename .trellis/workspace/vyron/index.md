@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 8
+- **Total Sessions**: 9
 - **Last Active**: 2026-06-10
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~272 | Active |
+| `journal-1.md` | ~305 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -30,14 +30,15 @@
 
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
-| 8 | 2026-06-10 | Support custom GitHub mirror management via vii mirror command | `5b0458d` | `main` |
-| 7   | 2026-06-10 | Add test-mirror command for github latency test               | `aa75b94`            | `main` |
-| 6   | 2026-06-10 | Enrich CLI README documentation and workflow guides           | `1e4eeff`            | `main` |
-| 5   | 2026-06-10 | Support custom cloning and non-proxy mirror latency speedtest | `0683bee`            | `main` |
-| 4   | 2026-06-10 | Support single repository multi-branch template cloning       | `5f53a55`            | `main` |
-| 3   | 2026-06-10 | Validate CLI npm pack installation                            | `75c9848`            | `main` |
-| 2   | 2026-06-10 | Complete CLI unit tests and project guidelines                | `d630ca1`            | `main` |
-| 1   | 2026-06-09 | Migrate project core build and tooling to vite-plus           | `5f66ebe`, `d1141d3` | `main` |
+| 9 | 2026-06-10 | Update CLI workflow diagram and usage guides in READMEs | `ce3d7a5` | `main` |
+| 8   | 2026-06-10 | Support custom GitHub mirror management via vii mirror command | `5b0458d`            | `main` |
+| 7   | 2026-06-10 | Add test-mirror command for github latency test                | `aa75b94`            | `main` |
+| 6   | 2026-06-10 | Enrich CLI README documentation and workflow guides            | `1e4eeff`            | `main` |
+| 5   | 2026-06-10 | Support custom cloning and non-proxy mirror latency speedtest  | `0683bee`            | `main` |
+| 4   | 2026-06-10 | Support single repository multi-branch template cloning        | `5f53a55`            | `main` |
+| 3   | 2026-06-10 | Validate CLI npm pack installation                             | `75c9848`            | `main` |
+| 2   | 2026-06-10 | Complete CLI unit tests and project guidelines                 | `d630ca1`            | `main` |
+| 1   | 2026-06-09 | Migrate project core build and tooling to vite-plus            | `5f66ebe`, `d1141d3` | `main` |
 
 <!-- @@@/auto:session-history -->
 

@@ -237,7 +237,6 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 - None - task complete
 
-
 ## Session 8: Support custom GitHub mirror management via vii mirror command
 
 **Date**: 2026-06-10
@@ -255,9 +254,43 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 ### Git Commits
 
+| Hash      | Message       |
+| --------- | ------------- |
+| `5b0458d` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
+
+
+## Session 9: Update CLI workflow diagram and usage guides in READMEs
+
+**Date**: 2026-06-10
+**Task**: Update CLI workflow diagram and usage guides in READMEs
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+更新了 packages/cli/README.md 中的 Mermaid 执行流程图，包含了新增的 vii mirror 管理命令工作流；同步更新了根目录 README.md 的使用指南，确保其列出的模板、镜像源管理器子命令和一键版本发布选项与最新实现一致。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
 | Hash | Message |
 |------|---------|
-| `5b0458d` | (see git log) |
+| `ce3d7a5` | (see git log) |
 
 ### Testing
 
