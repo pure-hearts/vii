@@ -43,25 +43,40 @@ export async function register(args: string[]): Promise<void> {
     const releaseArgs = cliArgs.slice(1);
     for (let i = 0; i < releaseArgs.length; i++) {
       const arg = releaseArgs[i];
-      if (arg === "--dryRun") {
+      if (arg === "--dry-run") {
         releaseOptions.dryRun = true;
-      } else if (arg === "--skipPush") {
+      } else if (arg === "--skip-push") {
         releaseOptions.skipPush = true;
-      } else if (arg === "--skipPublish") {
+      } else if (arg === "--skip-publish") {
         releaseOptions.skipPublish = true;
-      } else if (arg === "--releaseAs") {
+      } else if (arg === "--skip-confirm") {
+        releaseOptions.skipConfirm = true;
+      } else if (arg === "--skip-changelog") {
+        releaseOptions.skipChangelog = true;
+      } else if (arg === "--skip-github-release") {
+        releaseOptions.skipGithubRelease = true;
+      } else if (arg === "--patch" || arg === "-p") {
+        releaseOptions.releaseAs = "patch";
+      } else if (arg === "--minor" || arg === "-m") {
+        releaseOptions.releaseAs = "minor";
+      } else if (arg === "--major") {
+        releaseOptions.releaseAs = "major";
+      } else if (arg === "--custom") {
         const nextVal = releaseArgs[i + 1];
         if (nextVal && !nextVal.startsWith("-")) {
           releaseOptions.releaseAs = nextVal;
           i++;
         } else {
-          logger.error(`选项 --releaseAs 需要指定版本号`);
+          logger.error(`选项 --custom 需要指定版本号`);
           process.exit(1);
         }
-      } else if (arg.startsWith("--releaseAs=")) {
+      } else if (arg.startsWith("--custom=")) {
         releaseOptions.releaseAs = arg.split("=")[1];
+      } else if (arg.startsWith("-")) {
+        logger.error(`不支持的选项: ${arg}`);
+        process.exit(1);
       } else {
-        logger.error(`不支持的选项或参数: ${arg}`);
+        logger.error(`不支持的参数: ${arg}`);
         process.exit(1);
       }
     }

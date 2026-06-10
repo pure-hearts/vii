@@ -42,20 +42,31 @@ await release({ dryRun: true });
 # 交互式发布
 pnpm release
 
-# 指定版本
-pnpm release --release-as minor
+# 指定版本类型
+pnpm release --minor
+pnpm release --patch
+pnpm release --major
+
+# 指定自定义版本
+pnpm release --custom 2.0.0
 
 # 预览模式
 pnpm release --dry-run
 
 # 跳过确认
-pnpm release --no-confirm
+pnpm release --skip-confirm
 
 # 发布后跳过 GitHub Release
-pnpm release --no-github-release
+pnpm release --skip-github-release
 
 # 发布后跳过 CHANGELOG
-pnpm release --no-changelog
+pnpm release --skip-changelog
+
+# 跳过 Git Push
+pnpm release --skip-push
+
+# 跳过 NPM Publish
+pnpm release --skip-publish
 ```
 
 ## API
@@ -272,18 +283,18 @@ flowchart TD
 
 ### 流程说明
 
-| 步骤 | 说明 | 可跳过 |
-|------|------|--------|
-| Git 状态检查 | 检查仓库状态，提示初始化/提交/设置 remote | 否 |
-| 选择包 | 多包模式下选择要发布的包 | 单包模式自动跳过 |
-| 版本选择 | 选择 patch/minor/major 或自定义版本 | 可指定 `releaseAs` |
-| 版本检查 | 验证 npm 是否已有该版本 | 否 |
-| 发布确认 | 二次确认是否发布 | `--skip-confirm` |
-| CHANGELOG | 自动更新 CHANGELOG.md | `--skip-changelog` |
-| GitHub Release | 创建 GitHub Release 和 Release Notes | `--skip-github-release` |
-| Git Commit | 提交更改并打标签 | 否 |
-| Git Push | 推送到远程仓库 | `--skip-push` |
-| NPM Publish | 发布到 npm | `--skip-publish` |
+| 步骤           | 说明                                      | 可跳过                  |
+| -------------- | ----------------------------------------- | ----------------------- |
+| Git 状态检查   | 检查仓库状态，提示初始化/提交/设置 remote | 否                      |
+| 选择包         | 多包模式下选择要发布的包                  | 单包模式自动跳过        |
+| 版本选择       | 选择 patch/minor/major 或自定义版本       | 可指定 `releaseAs`      |
+| 版本检查       | 验证 npm 是否已有该版本                   | 否                      |
+| 发布确认       | 二次确认是否发布                          | `--skip-confirm`        |
+| CHANGELOG      | 自动更新 CHANGELOG.md                     | `--skip-changelog`      |
+| GitHub Release | 创建 GitHub Release 和 Release Notes      | `--skip-github-release` |
+| Git Commit     | 提交更改并打标签                          | 否                      |
+| Git Push       | 推送到远程仓库                            | `--skip-push`           |
+| NPM Publish    | 发布到 npm                                | `--skip-publish`        |
 
 ## Error Handling
 
