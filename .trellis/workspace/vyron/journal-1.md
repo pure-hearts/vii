@@ -438,7 +438,6 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 - None - task complete
 
-
 ## Session 14: finish-work
 
 **Date**: 2026-06-10
@@ -456,8 +455,8 @@ finish-work 调用：无活动任务，检查工作目录干净
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `06553d8` | (see git log) |
 | `5b80298` | (see git log) |
 
