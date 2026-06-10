@@ -7,6 +7,7 @@
 ## Current Status
 
 <!-- @@@auto:current-status -->
+
 - **Active File**: `journal-1.md`
 - **Total Sessions**: 2
 - **Last Active**: 2026-06-10
@@ -17,9 +18,11 @@
 ## Active Documents
 
 <!-- @@@auto:active-documents -->
-| File | Lines | Status |
-|------|-------|--------|
-| `journal-1.md` | ~74 | Active |
+
+| File           | Lines | Status |
+| -------------- | ----- | ------ |
+| `journal-1.md` | ~74   | Active |
+
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -28,9 +31,9 @@
 
 <!-- @@@auto:session-history -->
 
-| # | Date | Title | Commits | Branch |
-|---|------|-------|---------|--------|
-| 2 | 2026-06-10 | Complete CLI unit tests and project guidelines | `d630ca1` | `main` |
+| #   | Date       | Title                                               | Commits              | Branch |
+| --- | ---------- | --------------------------------------------------- | -------------------- | ------ |
+| 2   | 2026-06-10 | Complete CLI unit tests and project guidelines      | `d630ca1`            | `main` |
 | 1   | 2026-06-09 | Migrate project core build and tooling to vite-plus | `5f66ebe`, `d1141d3` | `main` |
 
 <!-- @@@/auto:session-history -->

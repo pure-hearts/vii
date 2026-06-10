@@ -39,7 +39,6 @@ Migrated build backend from unbuild to vite-plus. Consolidated configurations by
 
 - None - task complete
 
-
 ## Session 2: Complete CLI unit tests and project guidelines
 
 **Date**: 2026-06-10
@@ -57,8 +56,8 @@ Implemented comprehensive Vitest unit tests for packages/cli, optimized Git clon
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `d630ca1` | (see git log) |
 
 ### Testing
