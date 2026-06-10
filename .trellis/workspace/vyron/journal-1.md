@@ -369,7 +369,6 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 - None - task complete
 
-
 ## Session 12: Add loading spinner and fallback retry for git clone
 
 **Date**: 2026-06-10
@@ -387,10 +386,46 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `3ccd68b` | (see git log) |
 | `5c8e86b` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
+
+
+## Session 13: 更新 GitHub 镜像源并实现直连 Git 协议探测
+
+**Date**: 2026-06-10
+**Task**: 更新 GitHub 镜像源并实现直连 Git 协议探测
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+扩展内置镜像源至 5 个（GitHub/Akams/Gitee/GHProxy/GHFast），移除不可用的 KKGitHub(404)和 GitClone(502)。重构 applyGithubMirror 支持 domain/gitclone/prefix/gitee 四种 URL 拼接风格，新增 MirrorCloneStyle 类型。重构 testLatency：探测前清除所有代理环境变量（强制直连），探测点从域名根目录升级为具体仓库的 info/refs Git 协议端点（默认 vuejs/vue）。vii speed 命令注明直连检测及参照仓库。97 个测试全绿，lint 通过。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a0ae353` | (see git log) |
+| `cd06e6c` | (see git log) |
+| `cd7e960` | (see git log) |
 
 ### Testing
 
