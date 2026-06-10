@@ -7,9 +7,8 @@
 ## Current Status
 
 <!-- @@@auto:current-status -->
-
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 7
+- **Total Sessions**: 8
 - **Last Active**: 2026-06-10
 <!-- @@@/auto:current-status -->
 
@@ -18,11 +17,9 @@
 ## Active Documents
 
 <!-- @@@auto:active-documents -->
-
-| File           | Lines | Status |
-| -------------- | ----- | ------ |
-| `journal-1.md` | ~239  | Active |
-
+| File | Lines | Status |
+|------|-------|--------|
+| `journal-1.md` | ~272 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -31,8 +28,9 @@
 
 <!-- @@@auto:session-history -->
 
-| #   | Date       | Title                                                         | Commits              | Branch |
-| --- | ---------- | ------------------------------------------------------------- | -------------------- | ------ |
+| # | Date | Title | Commits | Branch |
+|---|------|-------|---------|--------|
+| 8 | 2026-06-10 | Support custom GitHub mirror management via vii mirror command | `5b0458d` | `main` |
 | 7   | 2026-06-10 | Add test-mirror command for github latency test               | `aa75b94`            | `main` |
 | 6   | 2026-06-10 | Enrich CLI README documentation and workflow guides           | `1e4eeff`            | `main` |
 | 5   | 2026-06-10 | Support custom cloning and non-proxy mirror latency speedtest | `0683bee`            | `main` |

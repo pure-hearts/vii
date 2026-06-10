@@ -236,3 +236,37 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 ### Next Steps
 
 - None - task complete
+
+
+## Session 8: Support custom GitHub mirror management via vii mirror command
+
+**Date**: 2026-06-10
+**Task**: Support custom GitHub mirror management via vii mirror command
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+实现了内置与自定义 GitHub 镜像合并逻辑并持久化至 ~/.viirc。提供了 vii mirror 独立命令（及其 list/ls, speed, add, delete 二级子指令）。更新了交互式创建流程中对动态镜像列表的拉取。补充了各层级命令路由及核心功能的单元测试与 README 文档说明。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `5b0458d` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
