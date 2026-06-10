@@ -26,6 +26,18 @@ describe("version.ts", () => {
     it("非法类型 - 返回原版本", () => {
       expect(calculateNewVersion("1.2.3", "invalid")).toBe("1.2.3");
     });
+
+    it("零版本 patch 升级", () => {
+      expect(calculateNewVersion("1.0.0", "patch")).toBe("1.0.1");
+    });
+
+    it("0.0.1 patch 升级到 0.0.2", () => {
+      expect(calculateNewVersion("0.0.1", "patch")).toBe("0.0.2");
+    });
+
+    it("带构建元数据的版本", () => {
+      expect(calculateNewVersion("1.0.0+build.123", "patch")).toBe("1.0.1");
+    });
   });
 
   describe("isValidVersion", () => {
@@ -37,6 +49,14 @@ describe("version.ts", () => {
       expect(isValidVersion("1.2.3-beta.1")).toBe(true);
     });
 
+    it("带构建元数据", () => {
+      expect(isValidVersion("1.0.0+build")).toBe(true);
+    });
+
+    it("带预发布和构建元数据", () => {
+      expect(isValidVersion("1.0.0-beta.1+build")).toBe(true);
+    });
+
     it("非法版本号", () => {
       expect(isValidVersion("invalid")).toBe(false);
     });
@@ -45,6 +65,14 @@ describe("version.ts", () => {
       expect(isValidVersion("not-a-version")).toBe(false);
       expect(isValidVersion("1.2")).toBe(false);
       expect(isValidVersion("1.2.3.4")).toBe(false);
+    });
+
+    it("空字符串", () => {
+      expect(isValidVersion("")).toBe(false);
+    });
+
+    it("负数版本", () => {
+      expect(isValidVersion("-1.0.0")).toBe(false);
     });
   });
 });
