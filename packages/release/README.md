@@ -217,29 +217,73 @@ isValidVersion("invalid"); // false
 
 发布流程：
 
+```mermaid
+flowchart TD
+    A[开始] --> B{Git 状态检查}
+    B -->|未初始化| C[初始化 Git 仓库]
+    B -->|有未提交更改| D[提交或暂存更改]
+    B -->|无 remote| E[设置 remote]
+    C --> F
+    D --> F
+    E --> F
+
+    F{单包或多包模式?} -->|单包| G[读取当前包信息]
+    F -->|多包| H[选择要发布的包]
+
+    H --> I[循环处理每个包]
+    G --> I
+
+    I --> J[选择版本类型]
+    J -->|Patch| K["版本升级: 1.0.0 → 1.0.1"]
+    J -->|Minor| L["版本升级: 1.0.0 → 1.1.0"]
+    J -->|Major| M["版本升级: 1.0.0 → 2.0.0"]
+    J -->|Custom| N[输入自定义版本]
+    J -->|Cancel| Z[取消发布]
+
+    K --> O{npm 已存在该版本?}
+    L --> O
+    M --> O
+    N --> O
+
+    O -->|是| P[错误: 版本已存在]
+    O -->|否| Q[更新 package.json]
+
+    P --> Z
+    Q --> R{确认发布?}
+
+    R -->|否| Z
+    R -->|是| S[更新 CHANGELOG]
+
+    S --> T[创建 GitHub Release]
+    T --> U[Git Commit & Tag]
+    U --> V[Git Push]
+    V --> W[NPM Publish]
+    W --> X[成功]
+
+    X --> Y{"还有更多包?"}
+    Y -->|是| I
+    Y -->|否| AA[🎉 全部完成]
+
+    style Z fill:#ff6b6b,color:#fff
+    style P fill:#ff6b6b,color:#fff
+    style X fill:#51cf66,color:#fff
+    style AA fill:#51cf66,color:#fff
 ```
-1. 检查 Git 状态
-   ↓
-2. 选择要发布的包（多包模式）
-   ↓
-3. 选择版本类型 / 输入自定义版本
-   ↓
-4. 检查版本是否已存在于 npm
-   ↓
-5. 更新 package.json 版本号
-   ↓
-6. 发布前确认（可跳过）
-   ↓
-7. 更新 CHANGELOG（可跳过）
-   ↓
-8. 创建 GitHub Release（可跳过）
-   ↓
-9. Git commit & tag
-   ↓
-10. Git push（可跳过）
-    ↓
-11. NPM publish（可跳过）
-```
+
+### 流程说明
+
+| 步骤 | 说明 | 可跳过 |
+|------|------|--------|
+| Git 状态检查 | 检查仓库状态，提示初始化/提交/设置 remote | 否 |
+| 选择包 | 多包模式下选择要发布的包 | 单包模式自动跳过 |
+| 版本选择 | 选择 patch/minor/major 或自定义版本 | 可指定 `releaseAs` |
+| 版本检查 | 验证 npm 是否已有该版本 | 否 |
+| 发布确认 | 二次确认是否发布 | `--skip-confirm` |
+| CHANGELOG | 自动更新 CHANGELOG.md | `--skip-changelog` |
+| GitHub Release | 创建 GitHub Release 和 Release Notes | `--skip-github-release` |
+| Git Commit | 提交更改并打标签 | 否 |
+| Git Push | 推送到远程仓库 | `--skip-push` |
+| NPM Publish | 发布到 npm | `--skip-publish` |
 
 ## Error Handling
 
