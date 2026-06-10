@@ -137,3 +137,37 @@ Refactored the template definitions and download script in @vyron/cli. Built-in 
 ### Next Steps
 
 - None - task complete
+
+
+## Session 5: Support custom cloning and non-proxy mirror latency speedtest
+
+**Date**: 2026-06-10
+**Task**: Support custom cloning and non-proxy mirror latency speedtest
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+Added feature to clone from any custom GitHub repository inside the template prompts. Built interactive selector for choosing GitHub mirrors featuring a parallel, non-proxy latency speedtest mapping response times. Updated packages/cli/README.md with a Mermaid workflow flowchart and added helper unit tests.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `0683bee` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
