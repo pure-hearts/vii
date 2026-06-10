@@ -6,6 +6,12 @@
   "sortPackageJson": false,
   "ignorePatterns": [
     ".trellis/**",
+    ".agent/**",
+    ".agents/**",
+    ".claude/**",
+    ".codex/**",
+    ".gemini/**",
+    ".github/**",
     "packages/*/CHANGELOG.md",
     "dist/",
     "temp/",
