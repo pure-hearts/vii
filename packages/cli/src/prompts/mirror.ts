@@ -14,12 +14,17 @@ export async function testLatency(url: string): Promise<number> {
     const id = setTimeout(() => controller.abort(), 1500); // 1.5秒超时
 
     // HEAD 请求只关心连接快慢，所以只要有任何回应即可
-    await fetch(url, {
+    const res = await fetch(url, {
       method: "HEAD",
       signal: controller.signal,
     });
 
     clearTimeout(id);
+
+    if (!res.ok) {
+      return -1;
+    }
+
     return Date.now() - start;
   } catch {
     return -1; // 失败或超时
