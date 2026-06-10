@@ -7,6 +7,7 @@
 ## Current Status
 
 <!-- @@@auto:current-status -->
+
 - **Active File**: `journal-1.md`
 - **Total Sessions**: 16
 - **Last Active**: 2026-06-10
@@ -17,9 +18,11 @@
 ## Active Documents
 
 <!-- @@@auto:active-documents -->
-| File | Lines | Status |
-|------|-------|--------|
-| `journal-1.md` | ~540 | Active |
+
+| File           | Lines | Status |
+| -------------- | ----- | ------ |
+| `journal-1.md` | ~540  | Active |
+
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -28,9 +31,9 @@
 
 <!-- @@@auto:session-history -->
 
-| # | Date | Title | Commits | Branch |
-|---|------|-------|---------|--------|
-| 16 | 2026-06-10 | 提交 test-mirror 移除代码 | `f9c5160` | `main` |
+| #   | Date       | Title                                                          | Commits                         | Branch |
+| --- | ---------- | -------------------------------------------------------------- | ------------------------------- | ------ |
+| 16  | 2026-06-10 | 提交 test-mirror 移除代码                                      | `f9c5160`                       | `main` |
 | 15  | 2026-06-10 | 移除 test-mirror 命令                                          | `06553d8`                       | `main` |
 | 14  | 2026-06-10 | finish-work                                                    | `06553d8`, `5b80298`            | `main` |
 | 13  | 2026-06-10 | 更新 GitHub 镜像源并实现直连 Git 协议探测                      | `a0ae353`, `cd06e6c`, `cd7e960` | `main` |
