@@ -105,7 +105,6 @@ Verified the CLI npm pack tarball structure and its successful execution in a cl
 
 - None - task complete
 
-
 ## Session 4: Support single repository multi-branch template cloning
 
 **Date**: 2026-06-10
@@ -123,8 +122,8 @@ Refactored the template definitions and download script in @vyron/cli. Built-in 
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `5f53a55` | (see git log) |
 
 ### Testing
