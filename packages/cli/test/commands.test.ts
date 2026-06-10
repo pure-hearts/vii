@@ -3,7 +3,7 @@ import { listCommand } from "../src/commands/list";
 import { releaseCommand } from "../src/commands/release";
 import { initCommand } from "../src/commands/init";
 import { release } from "../../release/src/index.js";
-import { promptProjectName, promptTemplate } from "../src/prompts";
+import { promptProjectName, promptTemplate, promptMirror } from "../src/prompts";
 import { scaffold } from "../src/scaffold";
 
 // Mock commands dependencies
@@ -14,6 +14,7 @@ vi.mock("../../release/src/index.js", () => ({
 vi.mock("../src/prompts", () => ({
   promptProjectName: vi.fn(),
   promptTemplate: vi.fn(),
+  promptMirror: vi.fn(),
   BUILTIN_TEMPLATES: [{ name: "vue-pc", value: "vue-pc", description: "Vue 3 PC Template" }],
 }));
 
@@ -58,15 +59,18 @@ describe("CLI Commands", () => {
         template: "vue-pc",
         targetDir: "./my-project",
         force: false,
+        mirror: "https://kkgithub.com",
       };
       await initCommand.action(options);
       expect(promptProjectName).not.toHaveBeenCalled();
       expect(promptTemplate).not.toHaveBeenCalled();
+      expect(promptMirror).not.toHaveBeenCalled();
       expect(scaffold).toHaveBeenCalledWith({
         projectName: "my-project",
         template: "vue-pc",
         targetDir: "./my-project",
         force: false,
+        mirror: "https://kkgithub.com",
       });
     });
 
@@ -91,14 +95,17 @@ describe("CLI Commands", () => {
     it("交互式收集完参数后应成功执行 scaffold", async () => {
       vi.mocked(promptProjectName).mockResolvedValueOnce("my-project");
       vi.mocked(promptTemplate).mockResolvedValueOnce("vue-pc");
+      vi.mocked(promptMirror).mockResolvedValueOnce("https://kkgithub.com");
       await initCommand.action({});
       expect(promptProjectName).toHaveBeenCalled();
       expect(promptTemplate).toHaveBeenCalled();
+      expect(promptMirror).toHaveBeenCalled();
       expect(scaffold).toHaveBeenCalledWith({
         projectName: "my-project",
         template: "vue-pc",
         targetDir: "./my-project",
         force: false,
+        mirror: "https://kkgithub.com",
       });
     });
   });

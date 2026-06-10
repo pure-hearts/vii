@@ -8,7 +8,7 @@ import { logger } from "../utils";
  * 脚手架主逻辑
  */
 export async function scaffold(options: ScaffoldOptions): Promise<void> {
-  const { projectName, template, targetDir, force = false } = options;
+  const { projectName, template, targetDir, force = false, mirror } = options;
 
   // 格式化路径
   const formattedTargetDir = formatTargetDir(targetDir);
@@ -30,7 +30,7 @@ export async function scaffold(options: ScaffoldOptions): Promise<void> {
   }
 
   // 下载模板
-  await downloadTemplate(template, formattedTargetDir);
+  await downloadTemplate(template, formattedTargetDir, mirror);
 
   logger.success(`项目 ${projectName} 已创建在 ${formattedTargetDir}`);
 }

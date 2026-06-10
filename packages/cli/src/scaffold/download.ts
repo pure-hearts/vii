@@ -4,7 +4,39 @@ import { tmpdir } from "node:os";
 /**
  * 下载远程模板
  */
-export async function downloadTemplate(url: string, target: string): Promise<void> {
+/**
+ * 应用 GitHub 镜像地址转换
+ */
+export function applyGithubMirror(gitUrl: string, mirror: string): string {
+  if (!mirror) return gitUrl;
+
+  const normalizedMirror = mirror.trim().replace(/\/$/, "");
+
+  // GitClone 镜像特殊路径规则
+  if (normalizedMirror.includes("gitclone.com")) {
+    const repoPath = gitUrl.replace(/^https:\/\/github\.com\//, "");
+    return `https://gitclone.com/github.com/${repoPath}`;
+  }
+
+  // 默认域名替换 (如 kkgithub.com)
+  if (gitUrl.startsWith("https://github.com")) {
+    const mirrorWithProto = normalizedMirror.startsWith("http")
+      ? normalizedMirror
+      : `https://${normalizedMirror}`;
+    return gitUrl.replace("https://github.com", mirrorWithProto);
+  }
+
+  return gitUrl;
+}
+
+/**
+ * 下载远程模板
+ */
+export async function downloadTemplate(
+  url: string,
+  target: string,
+  mirror?: string,
+): Promise<void> {
   const tmp = tmpdir();
   const tmpPath = `${tmp}/scaffold-${Date.now()}`;
 
@@ -25,6 +57,11 @@ export async function downloadTemplate(url: string, target: string): Promise<voi
     gitUrl = `https://github.com/${repository}.git`;
   }
 
+  // 应用镜像地址转换
+  if (mirror) {
+    gitUrl = applyGithubMirror(gitUrl, mirror);
+  }
+
   try {
     // Git clone 模板仓库
     const cloneCmd = branch
@@ -39,7 +76,7 @@ export async function downloadTemplate(url: string, target: string): Promise<voi
   } catch (error: any) {
     const branchTip = branch ? ` (分支: ${branch})` : "";
     throw new Error(
-      `下载模版失败。\n1. 请检查您的网络连接或代理设置；\n2. 请确保已在本地安装 git 命令；\n3. 请确认模板仓库地址及分支有效 (${gitUrl}${branchTip})。\n\n具体错误: ${error.message || error}`,
+      `下载模版失败。\n1. 请检查您的网络连接或代理设置；\n2. 请确保已在本地安装 git命令；\n3. 请确认模板仓库地址及分支有效 (${gitUrl}${branchTip})。\n\n具体错误: ${error.message || error}`,
     );
   } finally {
     // 确保清理临时目录

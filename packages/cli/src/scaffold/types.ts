@@ -4,6 +4,7 @@ export interface ScaffoldOptions {
   template: string;
   targetDir: string;
   force?: boolean;
+  mirror?: string;
 }
 
 // 下载选项

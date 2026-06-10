@@ -1,5 +1,5 @@
 import { scaffold } from "../scaffold";
-import { promptProjectName, promptTemplate, BUILTIN_TEMPLATES } from "../prompts";
+import { promptProjectName, promptTemplate, promptMirror, BUILTIN_TEMPLATES } from "../prompts";
 import { formatTargetDir } from "../scaffold/validators";
 
 export interface InitOptions {
@@ -7,6 +7,7 @@ export interface InitOptions {
   template?: string;
   targetDir?: string;
   force?: boolean;
+  mirror?: string;
 }
 
 export const initCommand = {
@@ -15,6 +16,7 @@ export const initCommand = {
 
   async action(options: InitOptions): Promise<void> {
     // 1. 收集用户输入
+    const isInteractive = !options.projectName || !options.template;
     const projectName = options.projectName ?? (await promptProjectName());
     if (!projectName) {
       console.log("\n⚠️  操作已取消。");
@@ -36,6 +38,11 @@ export const initCommand = {
       return;
     }
 
+    let mirror = options.mirror;
+    if (!mirror && isInteractive) {
+      mirror = await promptMirror();
+    }
+
     const targetDir = options.targetDir ?? formatTargetDir(`./${projectName}`);
     const force = options.force ?? false;
 
@@ -45,6 +52,7 @@ export const initCommand = {
       template,
       targetDir,
       force,
+      mirror,
     });
   },
 };

@@ -113,6 +113,7 @@ export async function register(args: string[]): Promise<void> {
 
   // 4. 解析 options 与位置参数
   let template: string | undefined;
+  let mirror: string | undefined;
   let directory: string | undefined;
   let isHelp = false;
   const positionalArgs: string[] = [];
@@ -128,6 +129,15 @@ export async function register(args: string[]): Promise<void> {
         i++;
       } else {
         logger.error(`选项 ${arg} 需要指定模板名称`);
+        process.exit(1);
+      }
+    } else if (arg === "-m" || arg === "--mirror") {
+      const nextVal = cliArgs[i + 1];
+      if (nextVal && !nextVal.startsWith("-")) {
+        mirror = nextVal;
+        i++;
+      } else {
+        logger.error(`选项 ${arg} 需要指定 GitHub 镜像地址`);
         process.exit(1);
       }
     } else if (arg.startsWith("-")) {
@@ -161,7 +171,8 @@ Commands:
   list                       List all built-in templates
 
 Options:
-  -t, --template NAME        use a specific template`);
+  -t, --template NAME        use a specific template
+  -m, --mirror URL           use a specific github mirror for cloning`);
     return;
   }
 
@@ -173,6 +184,7 @@ Options:
         projectName: directory,
         template: template,
         targetDir: directory ? `./${directory}` : undefined,
+        mirror: mirror,
       });
     } catch (error) {
       logger.error(`命令执行失败: ${error}`);
