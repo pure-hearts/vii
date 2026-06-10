@@ -170,3 +170,37 @@ Added feature to clone from any custom GitHub repository inside the template pro
 ### Next Steps
 
 - None - task complete
+
+
+## Session 6: Enrich CLI README documentation and workflow guides
+
+**Date**: 2026-06-10
+**Task**: Enrich CLI README documentation and workflow guides
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+Enriched the packages/cli/README.md documentation by writing comprehensive guides on package features, installation routes, commands, parameters, error mitigation mechanisms, and embedded a detailed workflow flowchart.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `1e4eeff` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

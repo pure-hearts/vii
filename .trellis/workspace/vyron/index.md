@@ -7,9 +7,8 @@
 ## Current Status
 
 <!-- @@@auto:current-status -->
-
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 5
+- **Total Sessions**: 6
 - **Last Active**: 2026-06-10
 <!-- @@@/auto:current-status -->
 
@@ -18,11 +17,9 @@
 ## Active Documents
 
 <!-- @@@auto:active-documents -->
-
-| File           | Lines | Status |
-| -------------- | ----- | ------ |
-| `journal-1.md` | ~173  | Active |
-
+| File | Lines | Status |
+|------|-------|--------|
+| `journal-1.md` | ~206 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -31,8 +28,9 @@
 
 <!-- @@@auto:session-history -->
 
-| #   | Date       | Title                                                         | Commits              | Branch |
-| --- | ---------- | ------------------------------------------------------------- | -------------------- | ------ |
+| # | Date | Title | Commits | Branch |
+|---|------|-------|---------|--------|
+| 6 | 2026-06-10 | Enrich CLI README documentation and workflow guides | `1e4eeff` | `main` |
 | 5   | 2026-06-10 | Support custom cloning and non-proxy mirror latency speedtest | `0683bee`            | `main` |
 | 4   | 2026-06-10 | Support single repository multi-branch template cloning       | `5f53a55`            | `main` |
 | 3   | 2026-06-10 | Validate CLI npm pack installation                            | `75c9848`            | `main` |
