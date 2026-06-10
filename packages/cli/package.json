@@ -26,6 +26,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
+    "ora": "^9.4.0",
     "prompts": "^2.4.2"
   },
   "devDependencies": {
