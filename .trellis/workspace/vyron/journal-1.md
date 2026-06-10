@@ -138,7 +138,6 @@ Refactored the template definitions and download script in @vyron/cli. Built-in 
 
 - None - task complete
 
-
 ## Session 5: Support custom cloning and non-proxy mirror latency speedtest
 
 **Date**: 2026-06-10
@@ -156,8 +155,8 @@ Added feature to clone from any custom GitHub repository inside the template pro
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `0683bee` | (see git log) |
 
 ### Testing
