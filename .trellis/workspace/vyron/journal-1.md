@@ -104,3 +104,37 @@ Verified the CLI npm pack tarball structure and its successful execution in a cl
 ### Next Steps
 
 - None - task complete
+
+
+## Session 4: Support single repository multi-branch template cloning
+
+**Date**: 2026-06-10
+**Task**: Support single repository multi-branch template cloning
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+Refactored the template definitions and download script in @vyron/cli. Built-in templates Vue PC, Vue Mobile, NestJS TS, and uni-app TS are now fetched from branches (vue-pc, vue-mobile, nest-ts, uniapp-ts) of a unified boilerplate repository (vfiee/project-boilerplate). Also implemented Vitest test cases validating the parsing logic and clone CLI commands.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `5f53a55` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
