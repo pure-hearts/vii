@@ -270,7 +270,6 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 - None - task complete
 
-
 ## Session 9: Update CLI workflow diagram and usage guides in READMEs
 
 **Date**: 2026-06-10
@@ -288,9 +287,43 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 ### Git Commits
 
+| Hash      | Message       |
+| --------- | ------------- |
+| `ce3d7a5` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
+
+
+## Session 10: Fix Mermaid syntax in packages/cli/README.md
+
+**Date**: 2026-06-10
+**Task**: Fix Mermaid syntax in packages/cli/README.md
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+修复了 packages/cli/README.md 中 Mermaid 流程图的语法错误：用双引号包裹了所有节点文本与带空格或冒号的连接线文字，并移除了 add/delete 连接线中因尖括号 <...> 导致被解析为非法 HTML 标签的部分。保证了其在 Markdown 预览环境中的正常渲染。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
 | Hash | Message |
 |------|---------|
-| `ce3d7a5` | (see git log) |
+| `3986ea9` | (see git log) |
 
 ### Testing
 
