@@ -303,7 +303,6 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 - None - task complete
 
-
 ## Session 10: Fix Mermaid syntax in packages/cli/README.md
 
 **Date**: 2026-06-10
@@ -321,9 +320,43 @@ Added a standalone command test-mirror (and alias speed) to packages/cli, enabli
 
 ### Git Commits
 
+| Hash      | Message       |
+| --------- | ------------- |
+| `3986ea9` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
+
+
+## Session 11: Optimize Mermaid syntax for antigravity-ide preview
+
+**Date**: 2026-06-10
+**Task**: Optimize Mermaid syntax for antigravity-ide preview
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+进一步优化了 packages/cli/README.md 中的 Mermaid 流程图语法，移除了 %% 注释，并将连线文字语法从 -- "text" --> 全部替换为最标准的 -->|text| 格式，彻底解决了某些 Markdown 解析器和 IDE 预览环境下（例如 Antigravity IDE）Mermaid 无法正常渲染流程图的问题。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
 | Hash | Message |
 |------|---------|
-| `3986ea9` | (see git log) |
+| `6fc1e82` | (see git log) |
 
 ### Testing
 
