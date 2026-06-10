@@ -6,7 +6,6 @@ import {
   isGitRepository,
   hasRemote,
   hasUncommittedChanges,
-  gitAdd,
   gitCommit,
   gitTag,
 } from "../src/git";
