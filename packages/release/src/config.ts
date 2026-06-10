@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
 import type { ReleaseConfig } from "./types";
 
 const CONFIG_FILES = [".releaserc.json", ".releaserc.js", "release.config.js"];
@@ -49,11 +49,11 @@ export function mergeConfig(
     // 命令行选项优先
     githubRelease: {
       ...config.githubRelease,
-      ...((options.githubRelease as Record<string, unknown>) || {}),
+      ...(options.githubRelease as Record<string, unknown>),
     },
     changelog: {
       ...config.changelog,
-      ...((options.changelog as Record<string, unknown>) || {}),
+      ...(options.changelog as Record<string, unknown>),
     },
   };
 }

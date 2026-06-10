@@ -13,7 +13,7 @@ import { publishToNpm } from "./steps/publish";
 import { npmVersionExists } from "./npm";
 import { updateChangelog } from "./changelog";
 import { createGitHubRelease, generateReleaseNotes, getGitHubRemote } from "./github";
-import { loadConfig, mergeConfig } from "./config";
+import { loadConfig } from "./config";
 import type { ReleaseOptions } from "./types";
 
 /**

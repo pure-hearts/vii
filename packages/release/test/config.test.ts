@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { loadConfig } from "../src/config";
 import { validatePackageName } from "../src/pkg";
-import { writeFileSync, mkdirSync, rmSync, existsSync, unlinkSync } from "node:fs";
+import { writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 const TEST_DIR = resolve(__dirname, "temp-config-test");
