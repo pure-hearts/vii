@@ -72,7 +72,6 @@ Implemented comprehensive Vitest unit tests for packages/cli, optimized Git clon
 
 - None - task complete
 
-
 ## Session 3: Validate CLI npm pack installation
 
 **Date**: 2026-06-10
@@ -90,8 +89,8 @@ Verified the CLI npm pack tarball structure and its successful execution in a cl
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `75c9848` | (see git log) |
 
 ### Testing
