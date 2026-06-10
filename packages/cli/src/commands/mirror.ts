@@ -22,9 +22,11 @@ export const mirrorCommand = {
     }
 
     if (subcommand === "speed") {
+      /** 用于探测的参照仓库（vuejs/vue 是热门项目，覆盖大多数镜像的缓存） */
+      const TEST_REPO = "https://github.com/vuejs/vue.git";
       const all = getAllMirrors();
-      console.log("\n⚡️ 开始测试 GitHub 镜像源延迟 (不使用代理)...");
-      const latencies = await Promise.all(all.map((m) => testLatency(m.value)));
+      console.log(`\n⚡️ 开始测试 GitHub 镜像源延迟 (直连，以 vuejs/vue 为参照仓库)...`);
+      const latencies = await Promise.all(all.map((m) => testLatency(m.value, TEST_REPO)));
 
       console.log("\n📋 测试结果如下:");
       let fastestIndex = -1;

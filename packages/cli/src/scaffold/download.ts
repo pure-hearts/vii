@@ -1,22 +1,71 @@
 import { execSync, spawn } from "node:child_process";
 import { tmpdir } from "node:os";
+import { BUILTIN_MIRRORS, getAllMirrors } from "../utils/config";
 import { createCloneSpinner } from "../utils/spinner";
 
 /**
+ * 从原始 GitHub URL 中解析 owner 和 repo
+ * 支持 https://github.com/owner/repo.git 及 github:owner/repo 等格式
+ */
+export function parseGithubRepo(gitUrl: string): { owner: string; repo: string } | null {
+  // 先规范化：去掉末尾 .git 和 /
+  const clean = gitUrl.replace(/\.git$/, "").replace(/\/$/, "");
+  // 匹配 github.com/owner/repo 或 github:owner/repo
+  const match = clean.match(/(?:github\.com\/|github:)([^/]+)\/([^/]+)$/);
+  if (match) return { owner: match[1], repo: match[2] };
+  return null;
+}
+
+/**
  * 应用 GitHub 镜像地址转换
+ * 支持四种转换风格（由 MirrorConfig.cloneStyle 决定）：
+ *   - "gitclone" : https://gitclone.com/github.com/{owner}/{repo}.git
+ *   - "prefix"   : https://{mirrorHost}/https://github.com/{owner}/{repo}.git
+ *   - "gitee"    : https://gitee.com/mirrors/{repo}.git
+ *   - "domain"   : 直接替换域名（默认）
  */
 export function applyGithubMirror(gitUrl: string, mirror: string): string {
   if (!mirror) return gitUrl;
 
   const normalizedMirror = mirror.trim().replace(/\/$/, "");
 
-  // GitClone 镜像特殊路径规则
-  if (normalizedMirror.includes("gitclone.com")) {
+  // 在内置镜像列表中查找 cloneStyle
+  const allMirrors = getAllMirrors();
+  const found = allMirrors.find((m) => m.value.replace(/\/$/, "") === normalizedMirror);
+  const style = found?.cloneStyle ?? "domain";
+
+  const parsed = parseGithubRepo(gitUrl);
+
+  if (style === "gitclone") {
+    // https://gitclone.com/github.com/{owner}/{repo}.git
+    if (parsed) {
+      return `https://gitclone.com/github.com/${parsed.owner}/${parsed.repo}.git`;
+    }
+    // fallback：原来的字符串拼接方式
     const repoPath = gitUrl.replace(/^https:\/\/github\.com\//, "");
     return `https://gitclone.com/github.com/${repoPath}`;
   }
 
-  // 默认域名替换 (如 kkgithub.com)
+  if (style === "prefix") {
+    // https://{mirrorHost}/https://github.com/{owner}/{repo}.git
+    const mirrorBase = normalizedMirror.startsWith("http")
+      ? normalizedMirror
+      : `https://${normalizedMirror}`;
+    if (parsed) {
+      return `${mirrorBase}/https://github.com/${parsed.owner}/${parsed.repo}.git`;
+    }
+    return `${mirrorBase}/${gitUrl}`;
+  }
+
+  if (style === "gitee") {
+    // https://gitee.com/mirrors/{repo}.git
+    if (parsed) {
+      return `https://gitee.com/mirrors/${parsed.repo}.git`;
+    }
+    return gitUrl; // 无法解析则回退原始 URL
+  }
+
+  // 默认："domain" — 直接替换域名，兼容自定义镜像
   if (gitUrl.startsWith("https://github.com")) {
     const mirrorWithProto = normalizedMirror.startsWith("http")
       ? normalizedMirror
@@ -37,15 +86,15 @@ export function getRepoLabel(gitUrl: string): string {
   return "项目模板";
 }
 
-// 提取镜像源名称的辅助函数
+// 提取镜像源名称的辅助函数（查内置表，找不到时回退到 hostname）
 export function getMirrorName(mirror?: string): string {
   if (!mirror) return "官方源";
+  const normalizedMirror = mirror.trim().replace(/\/$/, "");
+  // 优先从内置镜像列表中匹配 name
+  const found = BUILTIN_MIRRORS.find((m) => m.value.replace(/\/$/, "") === normalizedMirror);
+  if (found) return found.name;
   try {
-    const url = new URL(mirror);
-    const host = url.hostname;
-    if (host.includes("kkgithub.com")) return "KKGitHub";
-    if (host.includes("gitclone.com")) return "GitClone";
-    return host;
+    return new URL(mirror).hostname;
   } catch {
     return mirror;
   }

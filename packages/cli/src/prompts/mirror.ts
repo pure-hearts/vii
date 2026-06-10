@@ -5,29 +5,79 @@ import { getAllMirrors } from "../utils/config";
 export const MIRRORS = getAllMirrors();
 
 /**
- * 测试单个地址的延迟 (不使用代理)
+ * 需要临时清除的系统代理环境变量键名列表。
+ * 清除这些变量能确保 fetch/git 操作走直连网络，完全复现国内真实环境。
  */
-export async function testLatency(url: string): Promise<number> {
-  const start = Date.now();
+const PROXY_ENV_KEYS = [
+  "http_proxy",
+  "https_proxy",
+  "HTTP_PROXY",
+  "HTTPS_PROXY",
+  "all_proxy",
+  "ALL_PROXY",
+  "no_proxy",
+  "NO_PROXY",
+] as const;
+
+/**
+ * 测试单个镜像地址对目标 GitHub 仓库的延迟（不使用代理）。
+ *
+ * 不再仅对域名根目录发 HEAD，而是通过请求目标仓库的
+ * `info/refs?service=git-upload-pack` 端点来验证该镜像真正支持
+ * Git 协议，并量化其实际克隆延迟（RTT）。
+ *
+ * @param mirrorValue   - 镜像 value，如 "https://gh-proxy.com" 或 "https://gitee.com/mirrors"
+ * @param targetGitUrl  - 用于探测的目标 GitHub 仓库地址，默认 vuejs/vue
+ * @returns 延迟毫秒数，或 -1（超时 / 不可达 / 非 200）
+ */
+export async function testLatency(
+  mirrorValue: string,
+  targetGitUrl: string = "https://github.com/vuejs/vue.git",
+): Promise<number> {
+  // ── 1. 备份并清除代理环境变量（强制直连）────────────────────────────
+  const envBackup: Record<string, string | undefined> = {};
+  for (const key of PROXY_ENV_KEYS) {
+    envBackup[key] = process.env[key];
+    delete process.env[key];
+  }
+
   try {
+    // ── 2. 将目标 git URL 转换为该镜像的访问地址 ──────────────────────
+    const { applyGithubMirror } = await import("../scaffold/download");
+    const convertedGitUrl = applyGithubMirror(targetGitUrl, mirrorValue);
+
+    // ── 3. 拼接 Git 协议探测端点 ──────────────────────────────────────
+    // 通过请求 info/refs 端点来判断镜像是否真正支持该仓库的 Git 协议。
+    const baseUrl = convertedGitUrl.replace(/\.git$/, "").replace(/\/$/, "");
+    const detectUrl = `${baseUrl}/info/refs?service=git-upload-pack`;
+
+    // ── 4. 发起直连请求，计算 RTT ─────────────────────────────────────
     const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), 1500); // 1.5秒超时
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 秒超时
+    const start = Date.now();
 
-    // HEAD 请求只关心连接快慢，所以只要有任何回应即可
-    const res = await fetch(url, {
-      method: "HEAD",
-      signal: controller.signal,
-    });
-
-    clearTimeout(id);
-
-    if (!res.ok) {
-      return -1;
+    let ok = false;
+    try {
+      const res = await fetch(detectUrl, {
+        method: "GET",
+        signal: controller.signal,
+        // 不设置 mode，Node.js fetch 默认不走系统代理（已靠清除环境变量双重保障）
+      });
+      ok = res.ok; // 200 才算可用
+    } finally {
+      clearTimeout(timeoutId);
     }
 
-    return Date.now() - start;
+    return ok ? Date.now() - start : -1;
   } catch {
-    return -1; // 失败或超时
+    return -1; // 超时 / 网络错误
+  } finally {
+    // ── 5. 恢复代理环境变量，防止影响后续流程 ────────────────────────
+    for (const key of PROXY_ENV_KEYS) {
+      if (envBackup[key] !== undefined) {
+        process.env[key] = envBackup[key];
+      }
+    }
   }
 }
 
