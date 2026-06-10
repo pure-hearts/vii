@@ -6,10 +6,35 @@ export interface ReleaseOptions {
   skipPublish?: boolean;
   skipPush?: boolean;
   skipConfirm?: boolean;
+  skipChangelog?: boolean;
+  skipGithubRelease?: boolean;
   releaseAs?: string;
   commitMessage?: string;
   all?: boolean;
   package?: string;
+  config?: ReleaseConfig;
+}
+
+// 发布配置
+export interface ReleaseConfig {
+  changelog?: ChangelogConfig;
+  githubRelease?: GitHubReleaseConfig;
+  parallel?: boolean;
+}
+
+// Changelog 配置
+export interface ChangelogConfig {
+  output?: string;
+  template?: string;
+}
+
+// GitHub Release 配置
+export interface GitHubReleaseConfig {
+  owner?: string;
+  repo?: string;
+  token?: string;
+  draft?: boolean;
+  prerelease?: boolean;
 }
 
 // package.json 信息

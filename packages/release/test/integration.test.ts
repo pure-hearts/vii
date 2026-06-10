@@ -2,13 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
 import { execSync } from "node:child_process";
 import { writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import {
-  isGitRepository,
-  hasRemote,
-  hasUncommittedChanges,
-  gitCommit,
-  gitTag,
-} from "../src/git";
+import { isGitRepository, hasRemote, hasUncommittedChanges, gitCommit, gitTag } from "../src/git";
 import { npmVersionExists, isNpmLoggedIn } from "../src/npm";
 
 const TEST_DIR = join(__dirname, "temp-integration-test");

@@ -3,6 +3,26 @@ import { resolve } from "node:path";
 import type { PkgInfo } from "./types";
 
 /**
+ * 验证包名格式
+ */
+export function validatePackageName(name: string): { valid: boolean; error?: string } {
+  // scoped package: @scope/name
+  const scopedPattern = /^@[\w-]+\/[\w-]+$/;
+  // unscoped package: name
+  const unscopedPattern = /^[\w-]+$/;
+
+  if (scopedPattern.test(name) || unscopedPattern.test(name)) {
+    return { valid: true };
+  }
+
+  if (name.startsWith("@") && !name.includes("/")) {
+    return { valid: false, error: "scoped 包名格式应为 @scope/name" };
+  }
+
+  return { valid: false, error: "包名只能包含字母、数字、- 和 _" };
+}
+
+/**
  * 从 package.json 读取版本信息
  */
 export function readPkg(cwd: string = process.cwd()): PkgInfo {
@@ -12,6 +32,12 @@ export function readPkg(cwd: string = process.cwd()): PkgInfo {
   }
   const content = readFileSync(pkgPath, "utf-8");
   const pkg = JSON.parse(content) as { name: string; version: string };
+
+  // 校验包名
+  const validation = validatePackageName(pkg.name);
+  if (!validation.valid) {
+    throw new Error(`包名 "${pkg.name}" 格式不正确: ${validation.error}`);
+  }
 
   return {
     name: pkg.name,
