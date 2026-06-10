@@ -97,13 +97,33 @@ export function generateReleaseNotes(pkgName: string, newVersion: string): strin
     }).trim();
 
     if (lastTag) {
-      const commits = execSync(`git log ${lastTag}..HEAD --pretty=format:"- %s (%h)"`, {
+      const commits = execSync(`git log ${lastTag}..HEAD --pretty=format:"%s|%h"`, {
         encoding: "utf-8",
         stdio: "pipe",
       }).trim();
 
       if (commits) {
-        notes += `## Commits\n\n${commits}\n`;
+        const lines = commits.split("\n").filter(Boolean);
+        const categorized = categorizeCommits(lines);
+
+        if (categorized.features.length > 0) {
+          notes += `## ✨ 新功能\n\n`;
+          notes +=
+            categorized.features.map((c) => `- ${c.message} (${c.hash})`).join("\n") + "\n\n";
+        }
+        if (categorized.fixes.length > 0) {
+          notes += `## 🐛 Bug 修复\n\n`;
+          notes += categorized.fixes.map((c) => `- ${c.message} (${c.hash})`).join("\n") + "\n\n";
+        }
+        if (categorized.breaking.length > 0) {
+          notes += `## ⚠️ 破坏性变更\n\n`;
+          notes +=
+            categorized.breaking.map((c) => `- ${c.message} (${c.hash})`).join("\n") + "\n\n";
+        }
+        if (categorized.other.length > 0) {
+          notes += `## 其他变更\n\n`;
+          notes += categorized.other.map((c) => `- ${c.message} (${c.hash})`).join("\n") + "\n\n";
+        }
       }
     }
   } catch {
@@ -111,4 +131,45 @@ export function generateReleaseNotes(pkgName: string, newVersion: string): strin
   }
 
   return notes;
+}
+
+interface CategorizedCommit {
+  message: string;
+  hash: string;
+}
+
+interface CategorizedCommits {
+  features: CategorizedCommit[];
+  fixes: CategorizedCommit[];
+  breaking: CategorizedCommit[];
+  other: CategorizedCommit[];
+}
+
+function categorizeCommits(commits: string[]): CategorizedCommits {
+  const categorized: CategorizedCommits = {
+    features: [],
+    fixes: [],
+    breaking: [],
+    other: [],
+  };
+
+  for (const line of commits) {
+    const [message, hash] = line.split("|");
+    if (!message || !hash) continue;
+
+    const lower = message.toLowerCase();
+    const commit = { message, hash };
+
+    if (lower.startsWith("feat") || lower.startsWith("feature") || lower.startsWith("新增")) {
+      categorized.features.push(commit);
+    } else if (lower.startsWith("fix") || lower.startsWith("bug") || lower.startsWith("修复")) {
+      categorized.fixes.push(commit);
+    } else if (lower.includes("breaking") || lower.includes("破坏") || message.includes("!")) {
+      categorized.breaking.push(commit);
+    } else {
+      categorized.other.push(commit);
+    }
+  }
+
+  return categorized;
 }

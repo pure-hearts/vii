@@ -62,7 +62,7 @@ async function releaseSingle(
     const releaseType = specifiedType ?? (await promptReleaseType(""));
     if (releaseType === null) return;
 
-    const newVersion = calculateNewVersion(currentVersion, releaseType);
+    const newVersion = calculateNewVersion(currentVersion, releaseType, options.preRelease);
     console.log(`\n🚀 版本更新: ${pkgName} → ${newVersion}\n`);
 
     // Dry-run: 显示信息后直接返回

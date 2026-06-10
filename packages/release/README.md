@@ -55,6 +55,11 @@ pnpm release --major
 # 指定自定义版本
 pnpm release --custom 2.0.0
 
+# 预发布版本
+pnpm release --minor --pre-release alpha
+pnpm release --patch --pre-release beta
+pnpm release --major --pre-release rc
+
 # 预览模式
 pnpm release --dry-run
 
@@ -94,6 +99,11 @@ await release({ major: true });
 // 指定自定义版本
 await release({ custom: "2.0.0" });
 
+// 预发布版本
+await release({ minor: true, preRelease: "alpha" });
+await release({ patch: true, preRelease: "beta" });
+await release({ major: true, preRelease: "rc" });
+
 // 完整选项
 await release({
   // 工作目录，默认 process.cwd()
@@ -107,6 +117,7 @@ await release({
   minor: false,
   major: false,
   custom: undefined, // 或指定版本号如 "2.0.0"
+  preRelease: undefined, // "alpha" | "beta" | "rc"
 
   // 自定义 commit message
   commitMessage: "feat: add new feature",
@@ -132,22 +143,23 @@ await release({
 
 ### Options
 
-| Option              | Type      | Default         | Description          |
-| ------------------- | --------- | --------------- | -------------------- |
-| `cwd`               | `string`  | `process.cwd()` | 工作目录             |
-| `dryRun`            | `boolean` | `false`         | 预览模式，不实际执行 |
-| `patch`             | `boolean` | `false`         | 发布 patch 版本      |
-| `minor`             | `boolean` | `false`         | 发布 minor 版本      |
-| `major`             | `boolean` | `false`         | 发布 major 版本      |
-| `custom`            | `string`  | `undefined`     | 指定自定义版本号     |
-| `commitMessage`     | `string`  | 自动生成        | Git commit message   |
-| `skipPublish`       | `boolean` | `false`         | 跳过 NPM 发布        |
-| `skipPush`          | `boolean` | `false`         | 跳过 Git Push        |
-| `skipConfirm`       | `boolean` | `false`         | 跳过发布确认         |
-| `skipChangelog`     | `boolean` | `false`         | 跳过 CHANGELOG 更新  |
-| `skipGithubRelease` | `boolean` | `false`         | 跳过 GitHub Release  |
-| `package`           | `string`  | 自动选择        | 指定发布的包路径     |
-| `config`            | `object`  | -               | 配置文件             |
+| Option              | Type      | Default         | Description                |
+| ------------------- | --------- | --------------- | -------------------------- |
+| `cwd`               | `string`  | `process.cwd()` | 工作目录                   |
+| `dryRun`            | `boolean` | `false`         | 预览模式，不实际执行       |
+| `patch`             | `boolean` | `false`         | 发布 patch 版本            |
+| `minor`             | `boolean` | `false`         | 发布 minor 版本            |
+| `major`             | `boolean` | `false`         | 发布 major 版本            |
+| `custom`            | `string`  | `undefined`     | 指定自定义版本号           |
+| `preRelease`        | `string`  | `undefined`     | 预发布标识 (alpha/beta/rc) |
+| `commitMessage`     | `string`  | 自动生成        | Git commit message         |
+| `skipPublish`       | `boolean` | `false`         | 跳过 NPM 发布              |
+| `skipPush`          | `boolean` | `false`         | 跳过 Git Push              |
+| `skipConfirm`       | `boolean` | `false`         | 跳过发布确认               |
+| `skipChangelog`     | `boolean` | `false`         | 跳过 CHANGELOG 更新        |
+| `skipGithubRelease` | `boolean` | `false`         | 跳过 GitHub Release        |
+| `package`           | `string`  | 自动选择        | 指定发布的包路径           |
+| `config`            | `object`  | -               | 配置文件                   |
 
 ## Configuration
 

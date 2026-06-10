@@ -12,6 +12,7 @@ export interface ReleaseOptions {
   minor?: boolean;
   major?: boolean;
   custom?: string;
+  preRelease?: "alpha" | "beta" | "rc";
   commitMessage?: string;
   all?: boolean;
   package?: string;

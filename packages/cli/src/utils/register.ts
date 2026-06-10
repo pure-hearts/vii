@@ -72,6 +72,23 @@ export async function register(args: string[]): Promise<void> {
         }
       } else if (arg.startsWith("--custom=")) {
         releaseOptions.custom = arg.split("=")[1];
+      } else if (arg === "--pre-release" || arg === "--prerelease") {
+        const nextVal = releaseArgs[i + 1];
+        if (nextVal && ["alpha", "beta", "rc"].includes(nextVal)) {
+          releaseOptions.preRelease = nextVal as "alpha" | "beta" | "rc";
+          i++;
+        } else {
+          logger.error(`选项 --pre-release 需要指定 alpha|beta|rc`);
+          process.exit(1);
+        }
+      } else if (arg.startsWith("--pre-release=") || arg.startsWith("--prerelease=")) {
+        const val = arg.split("=")[1];
+        if (["alpha", "beta", "rc"].includes(val)) {
+          releaseOptions.preRelease = val as "alpha" | "beta" | "rc";
+        } else {
+          logger.error(`选项 --pre-release 值必须是 alpha|beta|rc`);
+          process.exit(1);
+        }
       } else if (arg.startsWith("-")) {
         logger.error(`不支持的选项: ${arg}`);
         process.exit(1);
