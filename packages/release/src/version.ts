@@ -9,13 +9,11 @@ export function calculateNewVersion(
   releaseType: ReleaseType | string,
   preRelease?: "alpha" | "beta" | "rc",
 ): string {
-  if (releaseType === "custom") {
-    return currentVersion;
-  }
-
   let version = currentVersion;
 
-  if (["patch", "minor", "major"].includes(releaseType)) {
+  if (releaseType === "custom") {
+    // custom 模式下，currentVersion 保持不变，后续会添加 preRelease
+  } else if (["patch", "minor", "major"].includes(releaseType)) {
     version =
       semver.inc(currentVersion, releaseType as "patch" | "minor" | "major") ?? currentVersion;
   } else if (semver.valid(releaseType)) {
