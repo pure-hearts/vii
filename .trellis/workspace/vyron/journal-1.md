@@ -537,3 +537,41 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+
+## Session 17: @vyron/release 包功能优化
+
+**Date**: 2026-06-10
+**Task**: @vyron/release 包功能优化
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+优化 @vyron/release 包：1) 统一 CLI 和 Programmatic API 版本参数格式为 --minor/--patch/--major/--custom；2) 添加预发布版本支持 (alpha/beta/rc)；3) 增强 GitHub Release Notes 按类型分类 commits；4) 支持单包模式；5) 修复多个 bug；6) commit message 格式改为 chore: release v1.0.1；共 72 个测试通过。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `2d3127b` | (see git log) |
+| `d4eb66e` | (see git log) |
+| `b98c307` | (see git log) |
+| `6c68b21` | (see git log) |
+| `39cc9e6` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
