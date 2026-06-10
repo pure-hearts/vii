@@ -5,6 +5,7 @@
   "printWidth": 80,
   "sortPackageJson": false,
   "ignorePatterns": [
+    ".trellis/**",
     "packages/*/CHANGELOG.md",
     "dist/",
     "temp/",
