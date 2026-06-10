@@ -106,7 +106,7 @@ async function releaseSingle(
     }
 
     // 7. Git commit & tag
-    const defaultMsg = `release: ${newVersion}`;
+    const defaultMsg = `release: v${newVersion}`;
     const commitMsg = options.commitMessage ?? (await promptCommitMessage(defaultMsg));
     if (commitMsg === null) return;
 
