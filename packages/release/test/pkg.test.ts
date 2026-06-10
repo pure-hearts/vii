@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { readPkg, writePkg } from "../src/pkg";
-import { readFileSync, writeFileSync, existsSync, unlinkSync } from "fs";
 import { resolve } from "path";
 
 const TEST_DIR = resolve(__dirname, "temp-pkg-test");

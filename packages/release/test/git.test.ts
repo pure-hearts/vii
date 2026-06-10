@@ -1,13 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { execSync } from "node:child_process";
-import {
-  isGitRepository,
-  hasUncommittedChanges,
-  hasRemote,
-  gitAdd,
-  gitCommit,
-  gitTag,
-} from "../src/git";
+import { describe, it, expect } from "vitest";
+import { isGitRepository, hasUncommittedChanges, hasRemote, gitCommit, gitTag } from "../src/git";
 
 describe("git.ts", () => {
   describe("isGitRepository", () => {

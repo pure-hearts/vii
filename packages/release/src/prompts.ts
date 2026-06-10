@@ -76,3 +76,17 @@ export async function promptCommitMessage(defaultMessage: string): Promise<strin
 
   return message;
 }
+
+/**
+ * 发布前确认
+ */
+export async function promptConfirm(pkgName: string, newVersion: string): Promise<boolean> {
+  const { confirm } = await prompts({
+    type: "confirm",
+    name: "confirm",
+    message: `确认发布 ${pkgName}@${newVersion}?`,
+    initial: true,
+  });
+
+  return confirm;
+}

@@ -1,10 +1,23 @@
 import { execSync } from "node:child_process";
 
 /**
+ * 检查 npm 版本是否已存在
+ */
+export function npmVersionExists(pkgName: string, version: string): boolean {
+  try {
+    execSync(`npm view ${pkgName}@${version} version`, { stdio: "pipe" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * NPM 发布
  */
 export function npmPublish(cwd: string): void {
   try {
+    console.log("📦 正在发布到 npm...");
     execSync("npm publish", {
       cwd,
       stdio: "inherit",

@@ -5,6 +5,7 @@ export interface ReleaseOptions {
   skipTests?: boolean;
   skipPublish?: boolean;
   skipPush?: boolean;
+  skipConfirm?: boolean;
   releaseAs?: string;
   commitMessage?: string;
   all?: boolean;
