@@ -1,7 +1,13 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { register } from "../src/utils/register";
 import { logger } from "../src/utils/logger";
-import { initCommand, releaseCommand, listCommand, testMirrorCommand } from "../src/commands";
+import {
+  initCommand,
+  releaseCommand,
+  listCommand,
+  testMirrorCommand,
+  mirrorCommand,
+} from "../src/commands";
 
 // Mock commands
 vi.mock("../src/commands", () => ({
@@ -23,6 +29,11 @@ vi.mock("../src/commands", () => ({
   testMirrorCommand: {
     name: "test-mirror",
     description: "测试 GitHub 镜像源延迟",
+    action: vi.fn(),
+  },
+  mirrorCommand: {
+    name: "mirror",
+    description: "管理 GitHub 镜像源",
     action: vi.fn(),
   },
 }));
@@ -208,6 +219,63 @@ describe("CLI register.ts", () => {
     });
   });
 
+  describe("mirror 命令", () => {
+    it("vii mirror - 不带子命令时，应当调用 mirrorCommand 且 subcommand 为 undefined", async () => {
+      await runRegister(["mirror"]);
+      expect(mirrorCommand.action).toHaveBeenCalledWith({
+        subcommand: undefined,
+        args: [],
+      });
+    });
+
+    it("vii mirror list - 应当以 list 调用 mirrorCommand", async () => {
+      await runRegister(["mirror", "list"]);
+      expect(mirrorCommand.action).toHaveBeenCalledWith({
+        subcommand: "list",
+        args: [],
+      });
+    });
+
+    it("vii mirror ls - 应当以 ls 调用 mirrorCommand", async () => {
+      await runRegister(["mirror", "ls"]);
+      expect(mirrorCommand.action).toHaveBeenCalledWith({
+        subcommand: "ls",
+        args: [],
+      });
+    });
+
+    it("vii mirror speed - 应当以 speed 调用 mirrorCommand", async () => {
+      await runRegister(["mirror", "speed"]);
+      expect(mirrorCommand.action).toHaveBeenCalledWith({
+        subcommand: "speed",
+        args: [],
+      });
+    });
+
+    it("vii mirror add - 应当带参数调用 mirrorCommand", async () => {
+      await runRegister(["mirror", "add", "custom", "https://github.com.cnpmjs.org"]);
+      expect(mirrorCommand.action).toHaveBeenCalledWith({
+        subcommand: "add",
+        args: ["custom", "https://github.com.cnpmjs.org"],
+      });
+    });
+
+    it("vii mirror delete - 应当带参数调用 mirrorCommand", async () => {
+      await runRegister(["mirror", "delete", "custom"]);
+      expect(mirrorCommand.action).toHaveBeenCalledWith({
+        subcommand: "delete",
+        args: ["custom"],
+      });
+    });
+
+    it("vii mirror 执行失败 - 应当捕获错误并以状态码 1 退出", async () => {
+      vi.mocked(mirrorCommand.action).mockRejectedValueOnce(new Error("mirror mock error"));
+      await expect(runRegister(["mirror"])).rejects.toThrow();
+      expect(exitCode).toBe(1);
+      expect(lastErrorMsg).toContain("命令执行失败: Error: mirror mock error");
+    });
+  });
+
   describe("异常拦截与拼写纠错", () => {
     it("vii -t - 缺少模板名称时报错退出", async () => {
       await expect(runRegister(["-t"])).rejects.toThrow();
@@ -237,6 +305,12 @@ describe("CLI register.ts", () => {
       await expect(runRegister(["lis"])).rejects.toThrow();
       expect(exitCode).toBe(1);
       expect(lastErrorMsg).toContain('不支持的命令: lis。您是不是想输入 "list"?');
+    });
+
+    it("vii mirro - 误拼写时提示相似已知命令", async () => {
+      await expect(runRegister(["mirro"])).rejects.toThrow();
+      expect(exitCode).toBe(1);
+      expect(lastErrorMsg).toContain('不支持的命令: mirro。您是不是想输入 "mirror"?');
     });
   });
 

@@ -1,4 +1,10 @@
-import { initCommand, releaseCommand, listCommand, testMirrorCommand } from "../commands";
+import {
+  initCommand,
+  releaseCommand,
+  listCommand,
+  testMirrorCommand,
+  mirrorCommand,
+} from "../commands";
 import { logger } from "./logger";
 
 interface Command<T = object> {
@@ -7,7 +13,13 @@ interface Command<T = object> {
   action: (options: T) => Promise<void>;
 }
 
-const commands: Command[] = [initCommand, releaseCommand, listCommand, testMirrorCommand];
+const commands: Command[] = [
+  initCommand,
+  releaseCommand,
+  listCommand,
+  testMirrorCommand,
+  mirrorCommand,
+];
 
 // 计算编辑距离，用于模糊匹配拼写错误
 function getEditDistance(a: string, b: string): number {
@@ -116,12 +128,28 @@ export async function register(args: string[]): Promise<void> {
     }
   }
 
+  // 2.6 兼容子命令：mirror
+  if (originalFirstArg === "mirror") {
+    const subcommand = cliArgs[1]; // list, ls, speed, add, delete
+    const args = cliArgs.slice(2);
+    const mirrorCmd = commands.find((c) => c.name === "mirror");
+    if (mirrorCmd) {
+      try {
+        await mirrorCmd.action({ subcommand, args });
+      } catch (error) {
+        logger.error(`命令执行失败: ${error}`);
+        process.exit(1);
+      }
+      return;
+    }
+  }
+
   // 3. 剥离可选的创建前缀 init 或 create
   if (originalFirstArg === "init" || originalFirstArg === "create") {
     cliArgs = cliArgs.slice(1);
   } else if (originalFirstArg && !originalFirstArg.startsWith("-")) {
     // 模糊匹配已知命令（防呆纠错），如 "releas" 提示 "release"
-    const knownCommands = ["init", "create", "release", "list", "test-mirror", "speed"];
+    const knownCommands = ["init", "create", "release", "list", "test-mirror", "speed", "mirror"];
     for (const cmd of knownCommands) {
       if (getEditDistance(originalFirstArg, cmd) <= 1) {
         logger.error(`不支持的命令: ${originalFirstArg}。您是不是想输入 "${cmd}"?`);
@@ -189,6 +217,7 @@ Commands:
   release                    Release a new version
   list                       List all built-in templates
   test-mirror                测试 GitHub 镜像源延迟 (别名: speed)
+  mirror                     管理 GitHub 镜像源 (add/delete/list/speed)
 
 Options:
   -t, --template NAME        use a specific template

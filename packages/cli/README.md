@@ -119,6 +119,36 @@ vii speed
 
 ---
 
+### 2.6 `vii mirror [SUBCOMMAND] [ARGS]`
+
+GitHub 镜像源管理器。支持查看、测速、添加及删除自定义加速镜像，配置会自动持久化在用户家目录的 `~/.viirc` 文件中。在执行交互式初始化时，CLI 会自动拉取最新的内置与自定义镜像供用户选择。
+
+- **子命令**：
+  - `默认` (不传子命令) 或 `list` / `ls`：展示当前所有的内置和自定义镜像源列表。
+  - `speed`：对所有已有镜像源进行并发非代理延迟测速，并推荐最快的源。
+  - `add <name> <url>`：添加自定义镜像源，校验 URL 合法性并防止与已有镜像重名。
+  - `delete <name>`：删除指定的自定义镜像源（内置镜像如 GitHub、KKGitHub、GitClone 不允许被删除）。
+
+**示例**：
+
+```bash
+# 1. 查看当前所有镜像源（含 [内置] 和 [自定义] 标识）
+vii mirror
+# 或
+vii mirror list
+
+# 2. 对所有已有镜像源进行并发测速
+vii mirror speed
+
+# 3. 添加一个自定义的 GitHub 镜像加速源
+vii mirror add my-mirror https://github.com.cnps.org
+
+# 4. 删除指定的自定义镜像源
+vii mirror delete my-mirror
+```
+
+---
+
 ### 3. `vii release`
 
 一键版本发布工具。帮助您快速修改包版本、生成 Git Tag 并自动发布到 NPM。

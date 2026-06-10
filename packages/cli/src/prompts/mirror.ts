@@ -1,10 +1,8 @@
 import prompts from "prompts";
 
-export const MIRRORS = [
-  { name: "GitHub 官方源", value: "https://github.com" },
-  { name: "KKGitHub 镜像源", value: "https://kkgithub.com" },
-  { name: "GitClone 镜像源", value: "https://gitclone.com" },
-];
+import { getAllMirrors } from "../utils/config";
+
+export const MIRRORS = getAllMirrors();
 
 /**
  * 测试单个地址的延迟 (不使用代理)
