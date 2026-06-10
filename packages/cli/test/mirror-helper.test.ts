@@ -7,7 +7,7 @@ describe("scaffold/download.ts applyGithubMirror", () => {
     expect(applyGithubMirror(gitUrl, "")).toBe(gitUrl);
   });
 
-  it("如果是 kkgithub 镜像，应替换 github.com 域名", () => {
+  it("如果是 kkgithub 镜像（自定义，已从内置移除），仍应按 domain 风格替换域名", () => {
     const gitUrl = "https://github.com/vfiee/project-boilerplate.git";
     const mirror = "https://kkgithub.com";
     expect(applyGithubMirror(gitUrl, mirror)).toBe(
@@ -15,11 +15,13 @@ describe("scaffold/download.ts applyGithubMirror", () => {
     );
   });
 
-  it("如果是 gitclone 镜像，应使用其特殊的 github.com 路径规则", () => {
+  it("如果是 gitclone 镜像（自定义，已从内置移除），仍应按 domain 风格降级处理", () => {
+    // GitClone 已从内置源移除（直连 HTTP 502），但若用户自行配置，
+    // 因不在内置表中无法识别 cloneStyle，会退化为 domain 替换
     const gitUrl = "https://github.com/vfiee/project-boilerplate.git";
     const mirror = "https://gitclone.com";
     expect(applyGithubMirror(gitUrl, mirror)).toBe(
-      "https://gitclone.com/github.com/vfiee/project-boilerplate.git",
+      "https://gitclone.com/vfiee/project-boilerplate.git",
     );
   });
 

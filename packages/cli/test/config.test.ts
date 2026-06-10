@@ -47,8 +47,8 @@ describe("utils/config.ts (配置持久化测试)", () => {
     saveCustomMirrors(custom);
 
     const all = getAllMirrors();
-    // 应该包含 GitHub, KKGitHub, GitClone 三个内置
-    expect(all.length).toBe(4);
+    // 内置源现在有 5 个：GitHub, Akams, Gitee, GHProxy, GHFast
+    expect(all.length).toBe(6); // 5 内置 + 1 自定义
     expect(all.find((m) => m.name === "GitHub")?.isBuiltin).toBe(true);
     expect(all.find((m) => m.name === "MyMirror")?.isBuiltin).toBe(false);
   });

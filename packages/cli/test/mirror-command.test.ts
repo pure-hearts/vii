@@ -56,27 +56,40 @@ describe("commands/mirror.ts (镜像管理命令接口测试)", () => {
   it("mirror speed - 应当测试延迟并高亮最快者", async () => {
     vi.mocked(getAllMirrors).mockReturnValueOnce([
       { name: "GitHub", value: "https://github.com", isBuiltin: true },
+      {
+        name: "GHProxy",
+        value: "https://gh-proxy.com",
+        isBuiltin: true,
+        cloneStyle: "prefix" as any,
+      },
       { name: "MyMirror", value: "https://example.com", isBuiltin: false },
     ]);
 
-    vi.mocked(testLatency).mockImplementation(async (url) => {
-      if (url === "https://github.com") return 150;
-      return 45; // 最快
+    vi.mocked(testLatency).mockImplementation(async (mirrorValue) => {
+      if (mirrorValue === "https://github.com") return 200;
+      if (mirrorValue === "https://gh-proxy.com") return 80; // 最快
+      return 150;
     });
 
     await mirrorCommand.action({ subcommand: "speed" });
 
-    expect(testLatency).toHaveBeenCalledTimes(2);
+    // testLatency 应携带第二个参数（vuejs/vue 参照仓库）
+    expect(testLatency).toHaveBeenCalledTimes(3);
+    expect(testLatency).toHaveBeenCalledWith(
+      "https://gh-proxy.com",
+      "https://github.com/vuejs/vue.git",
+    );
+
     const logCalls = consoleLogMock.mock.calls.map((c: any) => c[0] as string);
-    expect(logCalls.some((c: string) => c && c.includes("GitHub") && c.includes("150ms"))).toBe(
+    expect(logCalls.some((c: string) => c && c.includes("GitHub") && c.includes("200ms"))).toBe(
       true,
     );
     expect(
       logCalls.some(
-        (c: string) => c && c.includes("MyMirror") && c.includes("45ms") && c.includes("[最快]"),
+        (c: string) => c && c.includes("GHProxy") && c.includes("80ms") && c.includes("[最快]"),
       ),
     ).toBe(true);
-    expect(loggerSuccessSpy).toHaveBeenCalledWith("💡 推荐使用: MyMirror");
+    expect(loggerSuccessSpy).toHaveBeenCalledWith("💡 推荐使用: GHProxy");
   });
 
   it("mirror add - 成功验证并保存镜像源", async () => {
