@@ -8,7 +8,10 @@ export interface ReleaseOptions {
   skipConfirm?: boolean;
   skipChangelog?: boolean;
   skipGithubRelease?: boolean;
-  releaseAs?: string;
+  patch?: boolean;
+  minor?: boolean;
+  major?: boolean;
+  custom?: string;
   commitMessage?: string;
   all?: boolean;
   package?: string;

@@ -30,7 +30,12 @@ import { release } from "@vyron/release";
 await release();
 
 // 指定版本类型
-await release({ releaseAs: "patch" });
+await release({ patch: true });
+await release({ minor: true });
+await release({ major: true });
+
+// 指定自定义版本
+await release({ custom: "2.0.0" });
 
 // 预览模式
 await release({ dryRun: true });
@@ -78,6 +83,18 @@ pnpm release --skip-publish
 ```typescript
 import { release } from "@vyron/release";
 
+// 交互式发布
+await release();
+
+// 指定版本类型
+await release({ minor: true });
+await release({ patch: true });
+await release({ major: true });
+
+// 指定自定义版本
+await release({ custom: "2.0.0" });
+
+// 完整选项
 await release({
   // 工作目录，默认 process.cwd()
   cwd: process.cwd(),
@@ -85,9 +102,11 @@ await release({
   // 预览模式，不实际发布
   dryRun: false,
 
-  // 发布类型: patch | minor | major | custom
-  // 或直接指定版本号如 "2.0.0"
-  releaseAs: "patch",
+  // 版本类型（与 CLI 一致）
+  patch: false,
+  minor: false,
+  major: false,
+  custom: undefined, // 或指定版本号如 "2.0.0"
 
   // 自定义 commit message
   commitMessage: "feat: add new feature",
@@ -117,7 +136,10 @@ await release({
 | ------------------- | --------- | --------------- | -------------------- |
 | `cwd`               | `string`  | `process.cwd()` | 工作目录             |
 | `dryRun`            | `boolean` | `false`         | 预览模式，不实际执行 |
-| `releaseAs`         | `string`  | 交互选择        | 发布类型或指定版本   |
+| `patch`             | `boolean` | `false`         | 发布 patch 版本      |
+| `minor`             | `boolean` | `false`         | 发布 minor 版本      |
+| `major`             | `boolean` | `false`         | 发布 major 版本      |
+| `custom`            | `string`  | `undefined`     | 指定自定义版本号     |
 | `commitMessage`     | `string`  | 自动生成        | Git commit message   |
 | `skipPublish`       | `boolean` | `false`         | 跳过 NPM 发布        |
 | `skipPush`          | `boolean` | `false`         | 跳过 Git Push        |
@@ -283,18 +305,18 @@ flowchart TD
 
 ### 流程说明
 
-| 步骤           | 说明                                      | 可跳过                  |
-| -------------- | ----------------------------------------- | ----------------------- |
-| Git 状态检查   | 检查仓库状态，提示初始化/提交/设置 remote | 否                      |
-| 选择包         | 多包模式下选择要发布的包                  | 单包模式自动跳过        |
-| 版本选择       | 选择 patch/minor/major 或自定义版本       | 可指定 `releaseAs`      |
-| 版本检查       | 验证 npm 是否已有该版本                   | 否                      |
-| 发布确认       | 二次确认是否发布                          | `--skip-confirm`        |
-| CHANGELOG      | 自动更新 CHANGELOG.md                     | `--skip-changelog`      |
-| GitHub Release | 创建 GitHub Release 和 Release Notes      | `--skip-github-release` |
-| Git Commit     | 提交更改并打标签                          | 否                      |
-| Git Push       | 推送到远程仓库                            | `--skip-push`           |
-| NPM Publish    | 发布到 npm                                | `--skip-publish`        |
+| 步骤           | 说明                                      | 可跳过                                  |
+| -------------- | ----------------------------------------- | --------------------------------------- |
+| Git 状态检查   | 检查仓库状态，提示初始化/提交/设置 remote | 否                                      |
+| 选择包         | 多包模式下选择要发布的包                  | 单包模式自动跳过                        |
+| 版本选择       | 选择 patch/minor/major 或自定义版本       | 可指定 `patch`/`minor`/`major`/`custom` |
+| 版本检查       | 验证 npm 是否已有该版本                   | 否                                      |
+| 发布确认       | 二次确认是否发布                          | `--skip-confirm`                        |
+| CHANGELOG      | 自动更新 CHANGELOG.md                     | `--skip-changelog`                      |
+| GitHub Release | 创建 GitHub Release 和 Release Notes      | `--skip-github-release`                 |
+| Git Commit     | 提交更改并打标签                          | 否                                      |
+| Git Push       | 推送到远程仓库                            | `--skip-push`                           |
+| NPM Publish    | 发布到 npm                                | `--skip-publish`                        |
 
 ## Error Handling
 

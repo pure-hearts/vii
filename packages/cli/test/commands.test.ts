@@ -46,7 +46,7 @@ describe("CLI Commands", () => {
 
   describe("releaseCommand", () => {
     it("应当正确调用外部 release 函数并传参", async () => {
-      const options = { dryRun: true, releaseAs: "1.0.0" };
+      const options = { dryRun: true, custom: "1.0.0" };
       await releaseCommand.action(options);
       expect(release).toHaveBeenCalledWith(options);
     });

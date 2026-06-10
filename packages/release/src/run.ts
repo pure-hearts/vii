@@ -17,6 +17,17 @@ import { loadConfig } from "./config";
 import type { ReleaseOptions } from "./types";
 
 /**
+ * 从选项中提取 release type
+ */
+function getReleaseType(options: ReleaseOptions): string | null {
+  if (options.patch) return "patch";
+  if (options.minor) return "minor";
+  if (options.major) return "major";
+  if (options.custom) return options.custom;
+  return null;
+}
+
+/**
  * 发布单个包
  */
 async function releaseSingle(cwd: string, pkgName: string, options: ReleaseOptions): Promise<void> {
@@ -26,7 +37,8 @@ async function releaseSingle(cwd: string, pkgName: string, options: ReleaseOptio
 
   try {
     // 1. 计算新版本
-    const releaseType = options.releaseAs ?? (await promptReleaseType(options.releaseAs || ""));
+    const specifiedType = getReleaseType(options);
+    const releaseType = specifiedType ?? (await promptReleaseType(""));
     if (releaseType === null) return;
 
     const newVersion = calculateNewVersion(pkgName, releaseType);

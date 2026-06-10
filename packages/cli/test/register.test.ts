@@ -129,37 +129,37 @@ describe("CLI register.ts", () => {
     it("vii release - 携带所有合法选项", async () => {
       await runRegister([
         "release",
-        "--dryRun",
-        "--skipPush",
-        "--skipPublish",
-        "--releaseAs",
+        "--dry-run",
+        "--skip-push",
+        "--skip-publish",
+        "--custom",
         "1.2.3",
       ]);
       expect(releaseCommand.action).toHaveBeenCalledWith({
         dryRun: true,
         skipPush: true,
         skipPublish: true,
-        releaseAs: "1.2.3",
+        custom: "1.2.3",
       });
     });
 
-    it("vii release --releaseAs=1.2.3 - 应当正确解析等号赋值", async () => {
-      await runRegister(["release", "--releaseAs=1.2.3"]);
+    it("vii release --custom=1.2.3 - 应当正确解析等号赋值", async () => {
+      await runRegister(["release", "--custom=1.2.3"]);
       expect(releaseCommand.action).toHaveBeenCalledWith({
-        releaseAs: "1.2.3",
+        custom: "1.2.3",
       });
     });
 
-    it("vii release --releaseAs - 缺少版本号时报错退出", async () => {
-      await expect(runRegister(["release", "--releaseAs"])).rejects.toThrow();
+    it("vii release --custom - 缺少版本号时报错退出", async () => {
+      await expect(runRegister(["release", "--custom"])).rejects.toThrow();
       expect(exitCode).toBe(1);
-      expect(lastErrorMsg).toContain("选项 --releaseAs 需要指定版本号");
+      expect(lastErrorMsg).toContain("选项 --custom 需要指定版本号");
     });
 
     it("vii release --invalid - 带有不支持的选项时报错退出", async () => {
       await expect(runRegister(["release", "--invalid"])).rejects.toThrow();
       expect(exitCode).toBe(1);
-      expect(lastErrorMsg).toContain("不支持的选项或参数: --invalid");
+      expect(lastErrorMsg).toContain("不支持的选项: --invalid");
     });
 
     it("vii release 执行失败 - 应当捕获错误并以状态码 1 退出", async () => {

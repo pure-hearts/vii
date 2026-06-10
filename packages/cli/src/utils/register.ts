@@ -56,22 +56,22 @@ export async function register(args: string[]): Promise<void> {
       } else if (arg === "--skip-github-release") {
         releaseOptions.skipGithubRelease = true;
       } else if (arg === "--patch" || arg === "-p") {
-        releaseOptions.releaseAs = "patch";
+        releaseOptions.patch = true;
       } else if (arg === "--minor" || arg === "-m") {
-        releaseOptions.releaseAs = "minor";
+        releaseOptions.minor = true;
       } else if (arg === "--major") {
-        releaseOptions.releaseAs = "major";
+        releaseOptions.major = true;
       } else if (arg === "--custom") {
         const nextVal = releaseArgs[i + 1];
         if (nextVal && !nextVal.startsWith("-")) {
-          releaseOptions.releaseAs = nextVal;
+          releaseOptions.custom = nextVal;
           i++;
         } else {
           logger.error(`选项 --custom 需要指定版本号`);
           process.exit(1);
         }
       } else if (arg.startsWith("--custom=")) {
-        releaseOptions.releaseAs = arg.split("=")[1];
+        releaseOptions.custom = arg.split("=")[1];
       } else if (arg.startsWith("-")) {
         logger.error(`不支持的选项: ${arg}`);
         process.exit(1);
