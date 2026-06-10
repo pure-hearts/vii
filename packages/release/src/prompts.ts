@@ -1,6 +1,5 @@
 import prompts from "prompts";
 import { calculateNewVersion } from "./version";
-import { readPkg } from "./pkg";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
