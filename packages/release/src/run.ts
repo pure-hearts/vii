@@ -1,5 +1,5 @@
 import { readPkg, writePkg } from "./pkg";
-import { calculateNewVersion } from "./version";
+import { calculateNewVersion, isValidVersion } from "./version";
 import {
   promptReleaseType,
   promptCommitMessage,
@@ -19,11 +19,27 @@ import type { ReleaseOptions } from "./types";
 /**
  * 从选项中提取 release type
  */
-function getReleaseType(options: ReleaseOptions): string | null {
+export function getReleaseType(options: ReleaseOptions): string | null {
+  const flags = [
+    options.patch && "patch",
+    options.minor && "minor",
+    options.major && "major",
+    options.custom && "custom",
+  ].filter(Boolean) as string[];
+
+  if (flags.length > 1) {
+    throw new Error(`版本标志互斥，只能选择一个: ${flags.join(", ")}`);
+  }
+
   if (options.patch) return "patch";
   if (options.minor) return "minor";
   if (options.major) return "major";
-  if (options.custom) return options.custom;
+  if (options.custom) {
+    if (!isValidVersion(options.custom)) {
+      throw new Error(`无效的版本号: ${options.custom}`);
+    }
+    return options.custom;
+  }
   return null;
 }
 

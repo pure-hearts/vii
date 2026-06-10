@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
+import { writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { run } from "../src/run";
+import { run, getReleaseType } from "../src/run";
 import { calculateNewVersion } from "../src/version";
+import type { ReleaseOptions } from "../src/types";
 
 const TEST_DIR = join(__dirname, "temp-e2e-test");
 
@@ -200,6 +201,18 @@ describe("run E2E", () => {
       });
 
       expect(true).toBe(true);
+    });
+
+    it("同时指定 patch 和 minor 应抛出错误", () => {
+      expect(() => getReleaseType({ patch: true, minor: true } as ReleaseOptions)).toThrow(
+        "版本标志互斥",
+      );
+    });
+
+    it("无效的自定义版本号应抛出错误", () => {
+      expect(() => getReleaseType({ custom: "invalid-version" } as ReleaseOptions)).toThrow(
+        "无效的版本号",
+      );
     });
   });
 });

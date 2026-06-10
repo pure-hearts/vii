@@ -1,6 +1,6 @@
 import prompts from "prompts";
 import { calculateNewVersion } from "./version";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 /**
@@ -12,7 +12,6 @@ export function discoverPackages(cwd: string): string[] {
     return [];
   }
 
-  const { readdirSync } = require("node:fs");
   try {
     return readdirSync(packagesDir, { withFileTypes: true })
       .filter((dirent: { isDirectory: () => boolean }) => dirent.isDirectory())
