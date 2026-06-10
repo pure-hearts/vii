@@ -1,54 +1,29 @@
-# Directory Structure
+# Directory Structure in @vyron/release
 
-> How backend code is organized in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's backend directory structure here.
-
-Questions to answer:
-- How are modules/packages organized?
-- Where does business logic live?
-- Where are API endpoints defined?
-- How are utilities and helpers organized?
--->
-
-(To be filled by the team)
+> Module organization and file layout for the release package.
 
 ---
 
-## Directory Layout
+## File Layout
+
+The release package splits individual bump, commit, push, and publish pipelines into steps:
 
 ```
-<!-- Replace with your actual structure -->
-src/
-├── ...
-└── ...
+packages/release/
+├── src/
+│   ├── steps/        # bump-version, check-git, commit, publish, push scripts
+│   ├── git.ts        # Git commands subprocess wrapper
+│   ├── npm.ts        # NPM publish subprocess wrapper
+│   ├── index.ts      # Runner coordinator
+│   └── types.ts      # Options and config typings
+├── test/
+├── package.json
+└── tsconfig.json
 ```
 
 ---
 
-## Module Organization
+## Coding Rules
 
-<!-- How should new features/modules be organized? -->
-
-(To be filled by the team)
-
----
-
-## Naming Conventions
-
-<!-- File and folder naming rules -->
-
-(To be filled by the team)
-
----
-
-## Examples
-
-<!-- Link to well-organized modules as examples -->
-
-(To be filled by the team)
+- **Modular Steps**: Each release step must live inside `src/steps/` and export a default function executing that specific lifecycle step.
+- **Git and NPM shell integration**: Avoid spawning random processes directly; use the helper functions defined inside `git.ts` and `npm.ts` to ensure consistent execution environment and error capturing.

@@ -1,10 +1,13 @@
-import { readdirSync, rmSync } from "node:fs";
+import { existsSync, readdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
 /**
  * 检查目录是否为空（无文件或只有 .git）
  */
 export function isEmpty(dir: string): boolean {
+  if (!existsSync(dir)) {
+    return true;
+  }
   const files = readdirSync(dir);
   return files.length === 0 || (files.length === 1 && files[0] === ".git");
 }
@@ -13,6 +16,9 @@ export function isEmpty(dir: string): boolean {
  * 清空目录（删除所有文件但保留 .git）
  */
 export function emptyDir(dir: string): void {
+  if (!existsSync(dir)) {
+    return;
+  }
   const files = readdirSync(dir);
   for (const file of files) {
     if (file === ".git") continue;

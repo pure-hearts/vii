@@ -16,6 +16,8 @@ export function copyDir(src: string, dest: string): void {
   const entries = readdirSync(src, { withFileTypes: true });
 
   for (const entry of entries) {
+    if (entry.name === ".git") continue;
+
     const srcPath = join(src, entry.name);
     const destPath = join(dest, entry.name);
 

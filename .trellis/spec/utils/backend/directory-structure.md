@@ -1,54 +1,25 @@
-# Directory Structure
+# Directory Structure in @vyron/utils
 
-> How backend code is organized in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's backend directory structure here.
-
-Questions to answer:
-- How are modules/packages organized?
-- Where does business logic live?
-- Where are API endpoints defined?
-- How are utilities and helpers organized?
--->
-
-(To be filled by the team)
+> Module organization and file layout for the utils package.
 
 ---
 
-## Directory Layout
+## File Layout
+
+The utils package contains shared libraries and helpers:
 
 ```
-<!-- Replace with your actual structure -->
-src/
-├── ...
-└── ...
+packages/utils/
+├── src/
+│   ├── storage.ts    # JSON-based local key-value store database helper
+│   └── index.ts      # Entry exporter
+├── test/
+├── package.json
+└── tsconfig.json
 ```
 
 ---
 
-## Module Organization
+## Coding Rules
 
-<!-- How should new features/modules be organized? -->
-
-(To be filled by the team)
-
----
-
-## Naming Conventions
-
-<!-- File and folder naming rules -->
-
-(To be filled by the team)
-
----
-
-## Examples
-
-<!-- Link to well-organized modules as examples -->
-
-(To be filled by the team)
+- **Minimalist Exporters**: All helper modules (like `storage.ts`) must be re-exported inside `src/index.ts` to allow absolute package level imports from downstream libraries.

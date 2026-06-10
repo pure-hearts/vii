@@ -2,6 +2,7 @@ import { formatTargetDir, validateProjectName, validateTargetDir } from "./valid
 import { downloadTemplate } from "./download";
 import { emptyDir, isEmpty } from "./fs/empty";
 import type { ScaffoldOptions } from "./types";
+import { logger } from "../utils";
 
 /**
  * 脚手架主逻辑
@@ -31,5 +32,5 @@ export async function scaffold(options: ScaffoldOptions): Promise<void> {
   // 下载模板
   await downloadTemplate(template, formattedTargetDir);
 
-  console.log(`✅ 项目 ${projectName} 已创建在 ${formattedTargetDir}`);
+  logger.success(`项目 ${projectName} 已创建在 ${formattedTargetDir}`);
 }

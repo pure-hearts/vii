@@ -1,54 +1,51 @@
-# Directory Structure
+# Directory Structure in @vyron/cli
 
-> How backend code is organized in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's backend directory structure here.
-
-Questions to answer:
-- How are modules/packages organized?
-- Where does business logic live?
-- Where are API endpoints defined?
-- How are utilities and helpers organized?
--->
-
-(To be filled by the team)
+> Module organization and file layout.
 
 ---
 
-## Directory Layout
+## File Layout
+
+The CLI package follows a decoupled directory structure split by commands, user interaction, and filesystem tasks:
 
 ```
-<!-- Replace with your actual structure -->
-src/
-├── ...
-└── ...
+packages/cli/
+├── src/
+│   ├── commands/     # Subcommand definitions and action handlers (init, list, release)
+│   ├── prompts/      # Interactive command line questions and collections
+│   ├── scaffold/     # Scaffolding core logics (fs utilities, git downloaders)
+│   ├── utils/        # Logger, register and core route dispatcher
+│   └── index.ts      # Entry point
+├── test/             # Vitest unit and integration tests
+├── package.json
+└── tsconfig.json
 ```
 
 ---
 
-## Module Organization
+## Coding Rules by Directory
 
-<!-- How should new features/modules be organized? -->
+### `src/commands/`
 
-(To be filled by the team)
+Each file represents a subcommand mapping to the CLI routers. Subcommands should implement a standard action structure:
 
----
+```typescript
+export const myCommand = {
+  name: "mycommand",
+  description: "Description...",
+  async action(options: Options): Promise<void> {
+    // handler...
+  },
+};
+```
 
-## Naming Conventions
+### `src/scaffold/`
 
-<!-- File and folder naming rules -->
+Contains file operations and git clone logic.
 
-(To be filled by the team)
+- Must exclude `.git` from being copied to the project directory during the template cloning phase in `fs/copy.ts`.
+- Validations (NPM package names, folder existence check) should be encapsulated inside `validators.ts`.
 
----
+### `test/`
 
-## Examples
-
-<!-- Link to well-organized modules as examples -->
-
-(To be filled by the team)
+All unit tests should be stored in the root `test/` folder of the package, named `<module>.test.ts`, rather than colocated under `src/` to separate tests from production assets.

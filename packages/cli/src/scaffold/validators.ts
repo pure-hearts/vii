@@ -38,5 +38,5 @@ export function validateTargetDir(
  */
 export function formatTargetDir(targetDir: string): string {
   // 移除末尾的 /
-  return targetDir.replace(/\/$/, "");
+  return targetDir.replace(/\/+$/, "");
 }

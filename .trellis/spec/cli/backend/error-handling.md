@@ -1,51 +1,41 @@
-# Error Handling
+# Error Handling in @vyron/cli
 
-> How errors are handled in this project.
+> Standards for raising, propagating, and logging errors within the CLI.
 
 ---
 
 ## Overview
 
-<!--
-Document your project's error handling conventions here.
-
-Questions to answer:
-- What error types do you define?
-- How are errors propagated?
-- How are errors logged?
-- How are errors returned to clients?
--->
-
-(To be filled by the team)
-
----
-
-## Error Types
-
-<!-- Custom error classes/types -->
-
-(To be filled by the team)
+The CLI must exit gracefully and display clear, colorized error messages when operations fail, inputs are invalid, or unsupported commands are used. Unhandled promise rejections are forbidden.
 
 ---
 
 ## Error Handling Patterns
 
-<!-- Try-catch patterns, error propagation -->
+### 1. Graceful Command Terminations
 
-(To be filled by the team)
+All command actions must handle exceptions using `try-catch` blocks and use `logger.error` to output error context, then exit the process with status code `1`.
 
----
+```typescript
+try {
+  await command.action(options);
+} catch (error) {
+  logger.error(`命令执行失败: ${error}`);
+  process.exit(1);
+}
+```
 
-## API Error Responses
+### 2. Parameter and Command Validation
 
-<!-- Standard error response format -->
+When parsing CLI arguments:
 
-(To be filled by the team)
+- Throw a status-1 exit for unknown options (e.g., starts with `-` but is unrecognized).
+- Throw a status-1 exit for spelling mistakes of known subcommands (within edit distance of 1).
+- Throw a status-1 exit when multiple positional arguments are passed for single-directory routing.
 
 ---
 
 ## Common Mistakes
 
-<!-- Error handling mistakes your team has made -->
-
-(To be filled by the team)
+- **Do not let `process.exit(0)` run on errors**: All validations and lifecycle failures must return `process.exit(1)`.
+- **Do not throw bare Errors to the user**: Always catch internal Node fs/git errors and wrap them in user-friendly tips before printing.

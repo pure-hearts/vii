@@ -95,6 +95,23 @@ pnpm typecheck
 
    进行实时调试。
 
+   **如何移除全局软链接**：
+   如果您调试完毕想要取消全局链接，**建议在项目目录之外（例如 `/tmp` 目录）**运行全局卸载命令，以避免 Monorepo 工作区配置干扰：
+
+   ```bash
+   # 切换到临时目录以避免项目上下文干扰，随后执行卸载
+   cd /tmp && pnpm remove -g @vyron/cli
+
+   # 或者使用 npm 卸载
+   npm uninstall -g @vyron/cli
+   ```
+
+   _提示：若由于系统环境或历史残留导致旧的命令仍被执行，可以先手动删除全局 bin 目录下的残留文件（随后重新运行 pnpm link --global 即可）：_
+
+   ```bash
+   rm -f $(which vii) $(which vi)
+   ```
+
 3. **直接路径调试**（无需 link）：
    也可以直接通过 node 调用 CLI 的开发入口文件：
    ```bash

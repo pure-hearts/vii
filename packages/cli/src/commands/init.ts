@@ -1,5 +1,5 @@
 import { scaffold } from "../scaffold";
-import { promptProjectName, promptTemplate } from "../prompts";
+import { promptProjectName, promptTemplate, BUILTIN_TEMPLATES } from "../prompts";
 import { formatTargetDir } from "../scaffold/validators";
 
 export interface InitOptions {
@@ -21,7 +21,16 @@ export const initCommand = {
       return;
     }
 
-    const template = options.template ?? (await promptTemplate());
+    let template = options.template;
+    if (template) {
+      const found = BUILTIN_TEMPLATES.find((t) => t.name === template);
+      if (found) {
+        template = found.value;
+      }
+    } else {
+      template = await promptTemplate();
+    }
+
     if (!template) {
       console.log("\n⚠️  操作已取消。");
       return;

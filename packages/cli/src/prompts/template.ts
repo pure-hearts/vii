@@ -3,19 +3,24 @@ import prompts from "prompts";
 // 内置模板列表
 export const BUILTIN_TEMPLATES = [
   {
-    name: "vue",
-    value: "github:vfiee/template-vue",
-    description: "Vue 3 + Vite",
+    name: "vue-pc",
+    value: "github:vfiee/template-vue-pc",
+    description: "Vue 3 PC Template",
   },
   {
-    name: "react",
-    value: "github:vfiee/template-react",
-    description: "React 18 + Vite",
+    name: "vue-mobile",
+    value: "github:vfiee/template-vue-mobile",
+    description: "Vue 3 Mobile Template",
   },
   {
-    name: "node",
-    value: "github:vfiee/template-node",
-    description: "Node.js CLI",
+    name: "nest-ts",
+    value: "github:vfiee/template-nest-ts",
+    description: "NestJS TypeScript Template",
+  },
+  {
+    name: "uniapp-ts",
+    value: "github:vfiee/template-uniapp-ts",
+    description: "uni-app TypeScript Template",
   },
 ];
 

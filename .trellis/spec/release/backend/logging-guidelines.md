@@ -1,51 +1,11 @@
-# Logging Guidelines
+# Logging Guidelines in @vyron/release
 
-> How logging is done in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's logging conventions here.
-
-Questions to answer:
-- What logging library do you use?
-- What are the log levels and when to use each?
-- What should be logged?
-- What should NOT be logged (PII, secrets)?
--->
-
-(To be filled by the team)
+> Log levels and step tracking output conventions for release executions.
 
 ---
 
-## Log Levels
+## Log Output Conventions
 
-<!-- When to use each level: debug, info, warn, error -->
-
-(To be filled by the team)
-
----
-
-## Structured Logging
-
-<!-- Log format, required fields -->
-
-(To be filled by the team)
-
----
-
-## What to Log
-
-<!-- Important events to log -->
-
-(To be filled by the team)
-
----
-
-## What NOT to Log
-
-<!-- Sensitive data, PII, secrets -->
-
-(To be filled by the team)
+- **Lifecycle Stage Indicators**: Always log the start and success of each distinct release phase (e.g., `Bumping version...`, `Committed changes...`) so developers know which part of the git/npm release cycle is currently running.
+- **Subprocess Stdout Forwarding**: Forward subprocess output to the user console for debugging when `dryRun` options or verbose configurations are enabled.
+- **Structured Error logs**: Error contexts must include both the release step context and raw subprocess messages.

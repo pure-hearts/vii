@@ -1,51 +1,23 @@
-# Quality Guidelines
+# Quality Guidelines in @vyron/cli
 
-> Code quality standards for backend development.
-
----
-
-## Overview
-
-<!--
-Document your project's quality standards here.
-
-Questions to answer:
-- What patterns are forbidden?
-- What linting rules do you enforce?
-- What are your testing requirements?
-- What code review standards apply?
--->
-
-(To be filled by the team)
+> Code standards, validation rules, and forbidden patterns.
 
 ---
 
-## Forbidden Patterns
+## Code Standards
 
-<!-- Patterns that should never be used and why -->
+To keep the CLI zero-dependency outside `prompts`, the following quality standards are enforced:
 
-(To be filled by the team)
-
----
-
-## Required Patterns
-
-<!-- Patterns that must always be used -->
-
-(To be filled by the team)
+- **No heavy CLI parsers**: Use direct positional argument parsing in `register.ts` using whitelist logic. Do not install heavy argument parsers like commander or yargs.
+- **Strict Whitelists**: Reject all unrecognized options and command inputs.
+- **Fuzzy Autocorrection**: Use the `getEditDistance` edit distance algorithm to detect close typos for known subcommands (`init`, `create`, `release`, `list`) and recommend the correct commands.
+- **Scaffold Isolation**: Never copy template `.git` metadata directories to new project target folders. Keep template directory cleanups inside `finally` blocks in `download.ts`.
 
 ---
 
-## Testing Requirements
+## Testing Verification
 
-<!-- What level of testing is expected -->
+Every newly added CLI command or argument validation logic must have a corresponding integration test in `test/register.test.ts` mock files.
 
-(To be filled by the team)
-
----
-
-## Code Review Checklist
-
-<!-- What reviewers should check -->
-
-(To be filled by the team)
+- Mock all filesystem changes, commands action, and `process.exit` functions to maintain fast unit test cycles.
+- Project test code formatting must be verified via `pnpm run lint` (`vp check`).

@@ -21,10 +21,10 @@ the rest conversationally.
 
 ## Status (update the checkboxes as you complete each item)
 
-- [ ] Fill guidelines for @vyron/cli
-- [ ] Fill guidelines for @vyron/release
-- [ ] Fill guidelines for @vyron/utils
-- [ ] Add code examples
+- [x] Fill guidelines for @vyron/cli
+- [x] Fill guidelines for @vyron/release
+- [x] Fill guidelines for @vyron/utils
+- [x] Add code examples
 
 ---
 

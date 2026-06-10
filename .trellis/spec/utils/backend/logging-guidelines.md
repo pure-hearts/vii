@@ -1,51 +1,10 @@
-# Logging Guidelines
+# Logging Guidelines in @vyron/utils
 
-> How logging is done in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's logging conventions here.
-
-Questions to answer:
-- What logging library do you use?
-- What are the log levels and when to use each?
-- What should be logged?
-- What should NOT be logged (PII, secrets)?
--->
-
-(To be filled by the team)
+> Console print configurations for helpers.
 
 ---
 
-## Log Levels
+## Logging Conventions
 
-<!-- When to use each level: debug, info, warn, error -->
-
-(To be filled by the team)
-
----
-
-## Structured Logging
-
-<!-- Log format, required fields -->
-
-(To be filled by the team)
-
----
-
-## What to Log
-
-<!-- Important events to log -->
-
-(To be filled by the team)
-
----
-
-## What NOT to Log
-
-<!-- Sensitive data, PII, secrets -->
-
-(To be filled by the team)
+- **Silence by default**: Utilities should remain silent. Avoid injecting logs, console statements, or debug notices inside standard utility methods (like local cache writes) to prevent polluting the CLI output streams.
+- **Verbose Error Logging**: When errors are recovered silently (like JSON parse crashes), optionally print debug trace logs under explicit test environments.
