@@ -25,7 +25,7 @@ export async function checkGitStatus(): Promise<void> {
     if (action === "init") {
       const { success } = await runGitInit();
       if (!success) {
-        throw new Error("Git init 失败");
+        throw new Error("Git init 失败，请检查目录权限");
       }
     }
   }
@@ -61,7 +61,7 @@ export async function checkGitStatus(): Promise<void> {
     if (action === "stash") {
       const { success } = await runStash();
       if (!success) {
-        throw new Error("git stash 失败");
+        throw new Error("git stash 失败，请检查工作区状态");
       }
     }
 
@@ -86,7 +86,7 @@ async function runGitInit(): Promise<{ success: boolean }> {
     const { execSync } = await import("node:child_process");
     execSync("git init", { stdio: "pipe" });
     return { success: true };
-  } catch (error: any) {
+  } catch {
     return { success: false };
   }
 }
@@ -96,7 +96,7 @@ async function runStash(): Promise<{ success: boolean }> {
     const { execSync } = await import("node:child_process");
     execSync("git stash", { stdio: "pipe" });
     return { success: true };
-  } catch (error: any) {
+  } catch {
     return { success: false };
   }
 }

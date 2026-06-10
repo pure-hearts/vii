@@ -8,7 +8,7 @@ import type { PkgInfo } from "./types";
 export function readPkg(cwd: string = process.cwd()): PkgInfo {
   const pkgPath = resolve(cwd, "package.json");
   if (!existsSync(pkgPath)) {
-    throw new Error(`未找到 package.json`);
+    throw new Error("未找到 package.json，请在项目根目录执行");
   }
   const content = readFileSync(pkgPath, "utf-8");
   const pkg = JSON.parse(content) as { name: string; version: string };
@@ -26,7 +26,7 @@ export function readPkg(cwd: string = process.cwd()): PkgInfo {
 export function writePkg(cwd: string, newVersion: string): void {
   const pkgPath = resolve(cwd, "package.json");
   if (!existsSync(pkgPath)) {
-    throw new Error(`未找到 package.json`);
+    throw new Error("未找到 package.json，请确认路径是否正确");
   }
   const content = readFileSync(pkgPath, "utf-8");
   const pkg = JSON.parse(content) as { version: string };

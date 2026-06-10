@@ -9,8 +9,8 @@ export function npmPublish(cwd: string): void {
       cwd,
       stdio: "inherit",
     });
-  } catch (error: any) {
-    throw new Error(`npm publish 失败`);
+  } catch {
+    throw new Error("npm publish 失败，请确认已登录 npm（npm login）");
   }
 }
 

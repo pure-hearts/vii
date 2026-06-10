@@ -50,8 +50,8 @@ export function hasRemote(): boolean {
 export function gitAdd(files: string = "."): void {
   try {
     execGit(`add ${files}`);
-  } catch (error: any) {
-    throw new Error(`git add 失败`);
+  } catch {
+    throw new Error("git add 失败，请检查文件权限");
   }
 }
 
@@ -61,8 +61,8 @@ export function gitAdd(files: string = "."): void {
 export function gitCommit(message: string): void {
   try {
     execGit(`commit -m "${message}"`);
-  } catch (error: any) {
-    throw new Error(`git commit 失败`);
+  } catch {
+    throw new Error("git commit 失败，请确认已配置用户名和邮箱");
   }
 }
 
@@ -72,8 +72,8 @@ export function gitCommit(message: string): void {
 export function gitTag(tag: string): void {
   try {
     execGit(`tag ${tag}`);
-  } catch (error: any) {
-    throw new Error(`git tag 失败`);
+  } catch {
+    throw new Error("git tag 失败，标签名可能已存在");
   }
 }
 
@@ -83,8 +83,8 @@ export function gitTag(tag: string): void {
 export function gitPush(): void {
   try {
     execSync("git push", { stdio: "pipe" });
-  } catch (error: any) {
-    throw new Error(`git push 失败`);
+  } catch {
+    throw new Error("git push 失败，请检查网络或 remote 配置");
   }
 }
 
@@ -94,7 +94,7 @@ export function gitPush(): void {
 export function gitPushTags(): void {
   try {
     execSync("git push --tags", { stdio: "pipe" });
-  } catch (error: any) {
-    throw new Error(`git push --tags 失败`);
+  } catch {
+    throw new Error("git push --tags 失败，请检查网络或 remote 配置");
   }
 }
