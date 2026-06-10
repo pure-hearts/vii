@@ -203,3 +203,37 @@ Enriched the packages/cli/README.md documentation by writing comprehensive guide
 ### Next Steps
 
 - None - task complete
+
+
+## Session 7: Add test-mirror command for github latency test
+
+**Date**: 2026-06-10
+**Task**: Add test-mirror command for github latency test
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+Added a standalone command test-mirror (and alias speed) to packages/cli, enabling users to test latencies of built-in GitHub mirrors in real-time. Documented the new command in packages/cli/README.md and implemented comprehensive Vitest tests verifying the action output.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `aa75b94` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
