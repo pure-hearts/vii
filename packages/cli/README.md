@@ -36,25 +36,39 @@ npx @vyron/cli init <your-project-name>
 
 ---
 
-## 🔄 初始化执行流程图 (Workflow)
+## 🔄 初始化与镜像管理执行流程图 (Workflow)
 
 ```mermaid
 graph TD
-    A[执行 vii / vii init] --> B{是否交互模式?}
+    Start[执行 vii 命令行工具] --> Command{识别首个命令参数}
+
+    %% 初始化与创建流程
+    Command -- "init / create / 无参数" --> B{是否交互模式?}
     B -- 否: 命令行指定参数 --> C[解析项目名/模板/镜像等参数]
-    B -- 是: 交互式询问 --> D[输入项目名称]
+    B -- 是: 交互式询问 --> D[输入项目名称并校验]
     D --> E[选择项目模板]
     E --> E1{模板是否为自定义?}
-    E1 -- 是 --> E2[输入自定义 GitHub 仓库地址]
-    E1 -- 否 --> F[执行国内 GitHub 镜像源测速 (不使用代理)]
+    E1 -- 是 --> E2[手动输入自定义 GitHub 仓库地址]
+    E1 -- 否 --> F[从内置与 ~/.viirc 加载最新镜像源列表]
     E2 --> F
-    F --> G[选择或输入加速镜像]
-    G --> H[将最终克隆地址与分支传入脚手架]
+    F --> F1[执行并发非代理 HEAD 延迟测速]
+    F1 --> G[选择或输入要使用的加速镜像源]
+    G --> H[合成最终的 Git 克隆地址]
     C --> H
-    H --> I[执行 git clone 下载到临时目录]
-    I --> J[拷贝文件至目标项目目录]
-    J --> K[过滤清理 .git 模板仓库历史信息]
-    K --> L[提示项目创建成功]
+    H --> I[执行 git clone 镜像加速下载]
+    I --> J[拷贝至目标目录并擦除 .git 痕迹]
+    J --> EndInit[提示项目创建成功]
+
+    %% 镜像源管理器流程
+    Command -- "mirror" --> MirrorSub{识别二级子命令}
+    MirrorSub -- "无参数 / list / ls" --> ReadConfig[读取内置源并合并 ~/.viirc] --> PrintMirrors[控制台打印已有镜像源列表]
+    MirrorSub -- "speed" --> PingMirrors[并发非代理测速所有镜像源] --> PrintSpeed[输出各镜像源延迟及最优推荐]
+    MirrorSub -- "add <name> <url>" --> ValidAdd{校验URL且名称不冲突?}
+    ValidAdd -- 否 --> ErrAdd[输出错误信息并退出]
+    ValidAdd -- 是 --> WriteConfig[将新镜像源持久化写入 ~/.viirc] --> DoneAdd[提示添加镜像源成功]
+    MirrorSub -- "delete <name>" --> ValidDel{是否为内置镜像源?}
+    ValidDel -- 是: 不允许删除 --> ErrDel[输出防呆拦截错误]
+    ValidDel -- 否: 自定义镜像 --> RemoveConfig[从 ~/.viirc 移除该镜像源] --> DoneDel[提示删除镜像源成功]
 ```
 
 ---

@@ -217,25 +217,80 @@ vii release [options]
 
 ## 6. 使用指南 (Usage Guide)
 
-### 🚀 项目初始化命令 (`vii init`)
+### 🚀 脚手架初始化项目
 
-用于快速拉取内置的精美模板并初始化新工程。
+用于快速拉取内置的精美模板或自定义 GitHub 仓库以初始化新工程。
 
-#### 1. 运行方式
+#### 1. 交互模式运行
 
 ```bash
 vii init
+# 或者
+vii create
+# 甚至可以不带命令参数直接运行
+vii
 ```
 
-#### 2. 执行流程
+在交互模式下，CLI 将会按顺序引导您：
 
-1. **项目名称询问**：询问您想创建的项目名称（必须符合 NPM 命名规范）。
-2. **选择模板**：提供以下三个精心准备的内置模板：
-   - `vue` (Vue 3 + Vite)
-   - `react` (React 18 + Vite)
-   - `node` (Node.js CLI)
-3. **确认/清空目录**：检测目标路径。若不为空且未指定 `force`，则提供清空警告。
-4. **拉取与部署**：自动从 GitHub 短地址（如 `github:vfiee/template-vue`）克隆最新模板，静默解压移动，并在退出时自动清除临时垃圾。
+1. 输入项目名称（会检测是否符合 npm 包规范）。
+2. 选择内置模板（`vue-pc`、`vue-mobile`、`nest-ts`、`uniapp-ts`）或选择输入自定义 GitHub 仓库地址。
+3. 从内置镜像和家目录 `~/.viirc` 加载可用的 GitHub 加速镜像列表，进行**零代理干扰的并发延迟测速**，并展示测速结果供您选择（标有 `[推荐]` 的为最快镜像）。
+4. 自动拉取模板、合并及清理 `.git` 模板仓库历史信息。
+
+#### 2. 参数模式运行
+
+您也可以通过传递位置参数与选项直接进行初始化，跳过交互提问。
+
+```bash
+# 语法
+vii init [DIRECTORY] [OPTIONS]
+
+# 示例 1: 拉取内置 vue-pc 模板并指定使用 kkgithub 镜像加速
+vii init my-app -t vue-pc -m https://kkgithub.com
+
+# 示例 2: 从自定义的 GitHub 仓库及指定分支拉取模板
+vii init my-app -t github:my-username/my-template#release
+```
+
+- `-t, --template NAME`：指定要拉取的内置模板名称或自定义的 GitHub 仓库（`github:user/repo#branch`）。
+- `-m, --mirror URL`：指定要使用的 GitHub 加速镜像地址。
+
+---
+
+### 🌐 镜像源配置管理器 (`vii mirror`)
+
+为国内开发者提供加速克隆镜像源的增删改查及延迟测速，配置将自动持久化至用户家目录的 `~/.viirc` 配置文件中。在执行交互式初始化时，CLI 会自动拉取最新的内置与自定义镜像供用户选择。
+
+```bash
+# 1. 展示当前所有的镜像源列表（内置镜像源 + ~/.viirc 中的自定义源）
+vii mirror
+# 或 vii mirror list / vii mirror ls
+
+# 2. 对所有已有镜像源进行并发非代理测速，并在终端输出延迟报告与最优推荐
+vii mirror speed
+# 也可以使用快速测速命令别名： vii speed 或 vii test-mirror
+
+# 3. 添加一个自定义的 GitHub 镜像加速源（校验 URL 合法性且防止与已有源同名）
+vii mirror add my-mirror https://github.com.cnps.org
+
+# 4. 删除指定的自定义镜像源（内置镜像源 GitHub、KKGitHub、GitClone 不允许被删除）
+vii mirror delete my-mirror
+```
+
+---
+
+### 📦 一键版本发布 (`vii release`)
+
+提供规范化的一键版本包升级和发布，自动检查工作区并发布至 NPM 仓库。
+
+```bash
+# 执行自动化版本升级（例如 patch，即 1.2.4 -> 1.2.5）
+vii release --releaseAs patch
+
+# 仅模拟版本发布流程，不修改文件和实际发布
+vii release --dryRun
+```
 
 ---
 
