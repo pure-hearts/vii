@@ -1,13 +1,7 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { register } from "../src/utils/register";
 import { logger } from "../src/utils/logger";
-import {
-  initCommand,
-  releaseCommand,
-  listCommand,
-  testMirrorCommand,
-  mirrorCommand,
-} from "../src/commands";
+import { initCommand, releaseCommand, listCommand, mirrorCommand } from "../src/commands";
 
 // Mock commands
 vi.mock("../src/commands", () => ({
@@ -24,11 +18,6 @@ vi.mock("../src/commands", () => ({
   listCommand: {
     name: "list",
     description: "List all built-in templates",
-    action: vi.fn(),
-  },
-  testMirrorCommand: {
-    name: "test-mirror",
-    description: "测试 GitHub 镜像源延迟",
     action: vi.fn(),
   },
   mirrorCommand: {
@@ -198,24 +187,6 @@ describe("CLI register.ts", () => {
       await expect(runRegister(["list"])).rejects.toThrow();
       expect(exitCode).toBe(1);
       expect(lastErrorMsg).toContain("命令执行失败: Error: list mock error");
-    });
-  });
-
-  describe("test-mirror / speed 命令", () => {
-    it("vii test-mirror - 应当正常调用 testMirrorCommand", async () => {
-      await runRegister(["test-mirror"]);
-      expect(testMirrorCommand.action).toHaveBeenCalled();
-    });
-
-    it("vii speed - 应当正常调用 testMirrorCommand (alias)", async () => {
-      await runRegister(["speed"]);
-      expect(testMirrorCommand.action).toHaveBeenCalled();
-    });
-
-    it("vii speed extra-param - 携带参数时报错退出", async () => {
-      await expect(runRegister(["speed", "extra-param"])).rejects.toThrow();
-      expect(exitCode).toBe(1);
-      expect(lastErrorMsg).toContain('命令 "speed" 不需要任何参数或选项: extra-param');
     });
   });
 

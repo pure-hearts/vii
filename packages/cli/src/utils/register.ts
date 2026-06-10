@@ -1,10 +1,4 @@
-import {
-  initCommand,
-  releaseCommand,
-  listCommand,
-  testMirrorCommand,
-  mirrorCommand,
-} from "../commands";
+import { initCommand, releaseCommand, listCommand, mirrorCommand } from "../commands";
 import { logger } from "./logger";
 
 interface Command<T = object> {
@@ -13,13 +7,7 @@ interface Command<T = object> {
   action: (options: T) => Promise<void>;
 }
 
-const commands: Command[] = [
-  initCommand,
-  releaseCommand,
-  listCommand,
-  testMirrorCommand,
-  mirrorCommand,
-];
+const commands: Command[] = [initCommand, releaseCommand, listCommand, mirrorCommand];
 
 // 计算编辑距离，用于模糊匹配拼写错误
 function getEditDistance(a: string, b: string): number {
@@ -109,25 +97,6 @@ export async function register(args: string[]): Promise<void> {
     }
   }
 
-  // 2.5 兼容子命令：test-mirror 或 speed
-  if (originalFirstArg === "test-mirror" || originalFirstArg === "speed") {
-    const testMirrorArgs = cliArgs.slice(1);
-    if (testMirrorArgs.length > 0) {
-      logger.error(`命令 "${originalFirstArg}" 不需要任何参数或选项: ${testMirrorArgs.join(" ")}`);
-      process.exit(1);
-    }
-    const testMirrorCmd = commands.find((c) => c.name === "test-mirror");
-    if (testMirrorCmd) {
-      try {
-        await testMirrorCmd.action({});
-      } catch (error) {
-        logger.error(`命令执行失败: ${error}`);
-        process.exit(1);
-      }
-      return;
-    }
-  }
-
   // 2.6 兼容子命令：mirror
   if (originalFirstArg === "mirror") {
     const subcommand = cliArgs[1]; // list, ls, speed, add, delete
@@ -149,7 +118,7 @@ export async function register(args: string[]): Promise<void> {
     cliArgs = cliArgs.slice(1);
   } else if (originalFirstArg && !originalFirstArg.startsWith("-")) {
     // 模糊匹配已知命令（防呆纠错），如 "releas" 提示 "release"
-    const knownCommands = ["init", "create", "release", "list", "test-mirror", "speed", "mirror"];
+    const knownCommands = ["init", "create", "release", "list", "mirror"];
     for (const cmd of knownCommands) {
       if (getEditDistance(originalFirstArg, cmd) <= 1) {
         logger.error(`不支持的命令: ${originalFirstArg}。您是不是想输入 "${cmd}"?`);
@@ -216,7 +185,6 @@ Commands:
   create                     Create a new project (alias for init)
   release                    Release a new version
   list                       List all built-in templates
-  test-mirror                测试 GitHub 镜像源延迟 (别名: speed)
   mirror                     管理 GitHub 镜像源 (add/delete/list/speed)
 
 Options:
