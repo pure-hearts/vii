@@ -575,7 +575,6 @@ finish-work 调用：无活动任务，检查工作目录干净
 
 - None - task complete
 
-
 ## Session 18: 优化发布脚本与多包发布体验
 
 **Date**: 2026-06-11
@@ -593,8 +592,8 @@ finish-work 调用：无活动任务，检查工作目录干净
 
 ### Git Commits
 
-| Hash | Message |
-|------|---------|
+| Hash      | Message       |
+| --------- | ------------- |
 | `183d6f2` | (see git log) |
 
 ### Testing
