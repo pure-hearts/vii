@@ -23,9 +23,9 @@ export default defineConfig({
         {
           text: "核心包参考",
           items: [
-            { text: "CLI 命令行工具 (@vyron/cli)", link: "/guide/cli" },
-            { text: "Release 发布流水线 (@vyron/release)", link: "/guide/release" },
-            { text: "Storage 存储管理器 (@vyron/storage)", link: "/guide/storage" },
+            { text: "CLI 命令行工具", link: "/guide/cli" },
+            { text: "Release 发布流水线", link: "/guide/release" },
+            { text: "Storage 存储管理器", link: "/guide/storage" },
           ],
         },
       ],
