@@ -158,7 +158,7 @@ export class MemoryStorageDriver implements StorageDriver {
    */
   subscribe(
     key: string | string[] | null,
-    callback: (key: string, newValue: string | null) => void
+    callback: (key: string, newValue: string | null) => void,
   ): () => void {
     if (key === null) {
       this.globalListeners.add(callback);

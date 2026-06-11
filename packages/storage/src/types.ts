@@ -46,25 +46,36 @@ export interface StorageData<T = any> {
 
 export interface StorageDriver {
   getItem(key: string): string | null | Promise<string | null>;
-  setItem(key: string, value: string, expireTime?: number | null, options?: CookieOptions): void | Promise<void>;
+  setItem(
+    key: string,
+    value: string,
+    expireTime?: number | null,
+    options?: CookieOptions,
+  ): void | Promise<void>;
   removeItem(key: string, options?: CookieOptions): void | Promise<void>;
   hasItem(key: string): boolean | Promise<boolean>;
   clear(options?: CookieOptions): void | Promise<void>;
   keys(): string[] | Promise<string[]>;
   getItems(keys: string[]): Record<string, string | null> | Promise<Record<string, string | null>>;
-  setItems(pairs: Record<string, string>, expireTime?: number | null, options?: CookieOptions): void | Promise<void>;
+  setItems(
+    pairs: Record<string, string>,
+    expireTime?: number | null,
+    options?: CookieOptions,
+  ): void | Promise<void>;
   removeItems(keys: string[], options?: CookieOptions): void | Promise<void>;
-  
+
   // 一个 size 接口同时支持：获取总数(全部)、单键大小(单个)、多键大小(多个)
   size(): number | Promise<number>;
   size(key: string): number | Promise<number>;
   size(keys: string[]): Record<string, number> | Promise<Record<string, number>>;
-  size(keyOrKeys?: string | string[]): number | Record<string, number> | Promise<number | Record<string, number>>;
+  size(
+    keyOrKeys?: string | string[],
+  ): number | Record<string, number> | Promise<number | Record<string, number>>;
 
   // 监听变动
   subscribe(
     key: string | string[] | null,
-    callback: (key: string, newValue: string | null) => void
+    callback: (key: string, newValue: string | null) => void,
   ): () => void;
 
   // 底层物理监控与容量评估接口

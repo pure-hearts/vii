@@ -3,8 +3,10 @@ import type { Serializer } from "./types";
 export const IS_BROWSER = () => typeof window !== "undefined";
 export const HAS_DOCUMENT = () => typeof document !== "undefined";
 export const HAS_INDEXEDDB = () => typeof indexedDB !== "undefined";
-export const HAS_BROADCAST_CHANNEL = () => typeof window !== "undefined" && typeof BroadcastChannel !== "undefined";
-export const HAS_REQUEST_IDLE_CALLBACK = () => typeof window !== "undefined" && typeof (window as any).requestIdleCallback !== "undefined";
+export const HAS_BROADCAST_CHANNEL = () =>
+  typeof window !== "undefined" && typeof BroadcastChannel !== "undefined";
+export const HAS_REQUEST_IDLE_CALLBACK = () =>
+  typeof window !== "undefined" && typeof (window as any).requestIdleCallback !== "undefined";
 
 /**
  * 对象嵌套属性提取器，支持 a.b.c 或者是 items[0].name 等复杂提取
@@ -14,7 +16,10 @@ export const HAS_REQUEST_IDLE_CALLBACK = () => typeof window !== "undefined" && 
  */
 export function getValueByPath(obj: any, path: string, defaultValue: any): any {
   if (!path) return obj;
-  const keys = path.replace(/\[['"]?([^'"]+)['"]?\]/g, ".$1").split(".").filter(Boolean);
+  const keys = path
+    .replace(/\[['"]?([^'"]+)['"]?\]/g, ".$1")
+    .split(".")
+    .filter(Boolean);
   const result = keys.reduce((acc, key) => (acc != null ? acc[key] : undefined), obj);
   return result === undefined ? defaultValue : result;
 }

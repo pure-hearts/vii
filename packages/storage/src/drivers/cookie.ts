@@ -29,7 +29,12 @@ export class CookieStorageDriver implements StorageDriver {
    * @param expireTime 过期的绝对毫秒时间戳
    * @param options Cookie 额外属性
    */
-  setItem(key: string, value: string, expireTime: number | null = null, options?: CookieOptions): void {
+  setItem(
+    key: string,
+    value: string,
+    expireTime: number | null = null,
+    options?: CookieOptions,
+  ): void {
     if (!HAS_DOCUMENT()) return;
     let expiresStr = "";
     if (expireTime !== null) {
@@ -103,7 +108,11 @@ export class CookieStorageDriver implements StorageDriver {
    * @param expireTime 过期的绝对毫秒时间戳
    * @param options Cookie 额外属性
    */
-  setItems(pairs: Record<string, string>, expireTime: number | null = null, options?: CookieOptions): void {
+  setItems(
+    pairs: Record<string, string>,
+    expireTime: number | null = null,
+    options?: CookieOptions,
+  ): void {
     for (const [key, value] of Object.entries(pairs)) {
       this.setItem(key, value, expireTime, options);
     }

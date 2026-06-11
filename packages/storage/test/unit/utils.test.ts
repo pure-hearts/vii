@@ -52,7 +52,7 @@ describe("utils 单元测试", () => {
       const testData = { name: "test", val: 123 };
       const serialized = defaultSerializer.serialize(testData);
       expect(serialized).toBe(JSON.stringify(testData));
-      
+
       const deserialized = defaultSerializer.deserialize(serialized);
       expect(deserialized).toEqual(testData);
     });

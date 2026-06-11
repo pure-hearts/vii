@@ -1,7 +1,23 @@
-import type { CookieOptions, Serializer, StorageOptions, StorageData, StorageDriver, StorageInterceptor, StorageInterceptorContext } from "./types";
+import type {
+  CookieOptions,
+  Serializer,
+  StorageOptions,
+  StorageData,
+  StorageDriver,
+  StorageInterceptor,
+  StorageInterceptorContext,
+} from "./types";
 import { MemoryStorageDriver } from "./drivers/memory";
 import { WebStorageDriver } from "./drivers/web";
-import { getValueByPath, defaultSerializer, isEqual, generateHash, IS_BROWSER, HAS_BROADCAST_CHANNEL, HAS_REQUEST_IDLE_CALLBACK } from "./utils";
+import {
+  getValueByPath,
+  defaultSerializer,
+  isEqual,
+  generateHash,
+  IS_BROWSER,
+  HAS_BROADCAST_CHANNEL,
+  HAS_REQUEST_IDLE_CALLBACK,
+} from "./utils";
 import { DEFAULT_SECRET_SALT, DEFAULT_BROADCAST_CHANNEL } from "./constants";
 
 export { getValueByPath };
@@ -16,7 +32,7 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
   private defaultExpire: number | null;
   private serializer: Serializer;
   private defaultCookieOptions?: CookieOptions;
-  
+
   // 订阅管理
   private listeners = new Map<string, Set<any>>();
   private activeSubscriptions = new Map<string, () => void>();
@@ -56,9 +72,7 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
 
     if (typeof type === "string") {
       const isBrowser = IS_BROWSER();
-      this.driver = !isBrowser
-        ? new MemoryStorageDriver()
-        : new WebStorageDriver(type);
+      this.driver = !isBrowser ? new MemoryStorageDriver() : new WebStorageDriver(type);
     } else {
       this.driver = type;
     }
@@ -186,7 +200,10 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
   /**
    * 内部方法：向全局广播变动以完成多实例与跨页面状态一致同步
    */
-  private sendBroadcast(type: "set" | "remove" | "clear", payload?: { key?: string; keys?: string[]; value?: string | null }): void {
+  private sendBroadcast(
+    type: "set" | "remove" | "clear",
+    payload?: { key?: string; keys?: string[]; value?: string | null },
+  ): void {
     if (this.broadcastChannel) {
       this.broadcastChannel.postMessage({
         instanceId: this.instanceId,
@@ -201,7 +218,9 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
    */
   private checkAsyncDriverConflict(opName: string): void {
     if (this.driver.constructor && this.driver.constructor.name === "IndexedDBStorageDriver") {
-      throw new Error(`[StorageWrapper] Synchronous operation "${opName}" is not supported on Asynchronous Driver "IndexedDBStorageDriver". Please use the async version "${opName}Async" instead.`);
+      throw new Error(
+        `[StorageWrapper] Synchronous operation "${opName}" is not supported on Asynchronous Driver "IndexedDBStorageDriver". Please use the async version "${opName}Async" instead.`,
+      );
     }
   }
 
@@ -326,7 +345,7 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
     if (serialized === null) return null;
     try {
       const data: StorageData = this.serializer.deserialize(serialized);
-      
+
       // 3. 校验时效性
       if (data && data.expire !== null && data.expire < Date.now()) {
         this.driver.removeItem(key, this.defaultCookieOptions);
@@ -337,7 +356,9 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
       if (this.integrity) {
         const expectedSig = generateHash(JSON.stringify(data.value) + this.secretSalt);
         if (!data.signature || data.signature !== expectedSig) {
-          console.warn(`[StorageWrapper] Data integrity check failed for key "${key}". Evicting tampered data.`);
+          console.warn(
+            `[StorageWrapper] Data integrity check failed for key "${key}". Evicting tampered data.`,
+          );
           this.driver.removeItem(key, this.defaultCookieOptions);
           this.cache.delete(key);
           return null;
@@ -375,7 +396,7 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
     if (serialized === null) return null;
     try {
       const data: StorageData = this.serializer.deserialize(serialized);
-      
+
       if (data && data.expire !== null && data.expire < Date.now()) {
         await this.driver.removeItem(key, this.defaultCookieOptions);
         return null;
@@ -384,7 +405,9 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
       if (this.integrity) {
         const expectedSig = generateHash(JSON.stringify(data.value) + this.secretSalt);
         if (!data.signature || data.signature !== expectedSig) {
-          console.warn(`[StorageWrapper] Data integrity check failed for key "${key}". Evicting tampered data.`);
+          console.warn(
+            `[StorageWrapper] Data integrity check failed for key "${key}". Evicting tampered data.`,
+          );
           await this.driver.removeItem(key, this.defaultCookieOptions);
           this.cache.delete(key);
           return null;
@@ -432,8 +455,11 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
 
     const fullKey = this.getFullKey(ctx.key);
     const ctxExpire = ctx.expire;
-    const expireTime = ctxExpire !== undefined && ctxExpire !== null && ctxExpire > 0 ? Date.now() + ctxExpire : null;
-    
+    const expireTime =
+      ctxExpire !== undefined && ctxExpire !== null && ctxExpire > 0
+        ? Date.now() + ctxExpire
+        : null;
+
     // 构建存储对象，如果开启了 integrity，打上哈希签名指纹
     const data: StorageData = {
       value: ctx.value,
@@ -502,8 +528,11 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
 
     const fullKey = this.getFullKey(ctx.key);
     const ctxExpire = ctx.expire;
-    const expireTime = ctxExpire !== undefined && ctxExpire !== null && ctxExpire > 0 ? Date.now() + ctxExpire : null;
-    
+    const expireTime =
+      ctxExpire !== undefined && ctxExpire !== null && ctxExpire > 0
+        ? Date.now() + ctxExpire
+        : null;
+
     const data: StorageData = {
       value: ctx.value,
       expire: expireTime,
@@ -591,7 +620,8 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
     }
 
     const data = this.getStoredData(this.getFullKey(key));
-    let result = data === null ? defaultValue : getValueByPath(data.value, path || "", defaultValue);
+    let result =
+      data === null ? defaultValue : getValueByPath(data.value, path || "", defaultValue);
 
     for (const interceptor of this.interceptors) {
       if (interceptor.afterGet) {
@@ -605,7 +635,11 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
   /**
    * 异步获取值（支持同步与全异步 IndexedDB 引擎）
    */
-  async getAsync<K extends keyof T & string>(key: K, path?: string, defaultValue?: any): Promise<any> {
+  async getAsync<K extends keyof T & string>(
+    key: K,
+    path?: string,
+    defaultValue?: any,
+  ): Promise<any> {
     for (const interceptor of this.interceptors) {
       if (interceptor.beforeGet) {
         interceptor.beforeGet(key);
@@ -613,7 +647,8 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
     }
 
     const data = await this.getStoredDataAsync(this.getFullKey(key));
-    let result = data === null ? defaultValue : getValueByPath(data.value, path || "", defaultValue);
+    let result =
+      data === null ? defaultValue : getValueByPath(data.value, path || "", defaultValue);
 
     for (const interceptor of this.interceptors) {
       if (interceptor.afterGet) {
@@ -659,7 +694,9 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
             if (this.integrity) {
               const expectedSig = generateHash(JSON.stringify(data.value) + this.secretSalt);
               if (!data.signature || data.signature !== expectedSig) {
-                console.warn(`[StorageWrapper] Data integrity check failed for key "${fullKey}". Evicting tampered data.`);
+                console.warn(
+                  `[StorageWrapper] Data integrity check failed for key "${fullKey}". Evicting tampered data.`,
+                );
                 this.driver.removeItem(fullKey, this.defaultCookieOptions);
                 this.cache.delete(fullKey);
                 val = undefined;
@@ -722,7 +759,9 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
             if (this.integrity) {
               const expectedSig = generateHash(JSON.stringify(data.value) + this.secretSalt);
               if (!data.signature || data.signature !== expectedSig) {
-                console.warn(`[StorageWrapper] Data integrity check failed for key "${fullKey}". Evicting tampered data.`);
+                console.warn(
+                  `[StorageWrapper] Data integrity check failed for key "${fullKey}". Evicting tampered data.`,
+                );
                 await this.driver.removeItem(fullKey, this.defaultCookieOptions);
                 this.cache.delete(fullKey);
                 val = undefined;
@@ -754,11 +793,7 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
   /**
    * 批量同步写入（支持完整的事务回滚还原，仅支持同步驱动）
    */
-  setItems(
-    pairs: Partial<T>,
-    expire?: number | null,
-    options?: CookieOptions,
-  ): void {
+  setItems(pairs: Partial<T>, expire?: number | null, options?: CookieOptions): void {
     this.checkAsyncDriverConflict("setItems");
     const keysToUpdate = Object.keys(pairs) as (keyof T & string)[];
     const fullKeys = keysToUpdate.map((k) => this.getFullKey(k));
@@ -789,8 +824,11 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
               oldExpireTime = parsed.expire;
             }
           } catch {}
-          
-          this.driver.setItem(fullKey, oldSerialized, oldExpireTime, { ...this.defaultCookieOptions, ...options });
+
+          this.driver.setItem(fullKey, oldSerialized, oldExpireTime, {
+            ...this.defaultCookieOptions,
+            ...options,
+          });
           if (oldData) {
             this.cache.set(fullKey, oldData);
           }
@@ -844,8 +882,11 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
               oldExpireTime = parsed.expire;
             }
           } catch {}
-          
-          await this.driver.setItem(fullKey, oldSerialized, oldExpireTime, { ...this.defaultCookieOptions, ...options });
+
+          await this.driver.setItem(fullKey, oldSerialized, oldExpireTime, {
+            ...this.defaultCookieOptions,
+            ...options,
+          });
           if (oldData) {
             this.cache.set(fullKey, oldData);
           }
@@ -966,10 +1007,7 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
     keys: K[],
     callback: (key: K, val: T[K] | undefined) => void,
   ): () => void;
-  onChange(
-    keyOrKeys: any,
-    callback: any,
-  ): () => void {
+  onChange(keyOrKeys: any, callback: any): () => void {
     const isArray = Array.isArray(keyOrKeys);
     const keys: string[] = isArray ? keyOrKeys : [keyOrKeys];
     const fullKeys = keys.map((k) => this.getFullKey(k));
@@ -977,7 +1015,7 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
 
     if (!this.listeners.has(subKey)) {
       this.listeners.set(subKey, new Set());
-      
+
       const unsubscribeDriver = this.driver.subscribe(fullKeys, (changedPhysicalKey, newValue) => {
         const rawChangedKey = this.getRawKey(changedPhysicalKey);
         let parsedValue: any = undefined;
@@ -991,7 +1029,10 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
               if (!data.signature || data.signature !== expectedSig) {
                 this.cache.delete(changedPhysicalKey);
                 // 异步清除或同步清除判断
-                if (this.driver.constructor && this.driver.constructor.name === "IndexedDBStorageDriver") {
+                if (
+                  this.driver.constructor &&
+                  this.driver.constructor.name === "IndexedDBStorageDriver"
+                ) {
                   this.driver.removeItem(changedPhysicalKey, this.defaultCookieOptions);
                 } else {
                   this.driver.removeItem(changedPhysicalKey, this.defaultCookieOptions);
@@ -1108,7 +1149,9 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
   sizeAsync(): Promise<number>;
   sizeAsync(key: keyof T & string): Promise<number>;
   sizeAsync(keys: (keyof T & string)[]): Promise<Record<string, number>>;
-  async sizeAsync(keyOrKeys?: (keyof T & string) | (keyof T & string)[]): Promise<number | Record<string, number>> {
+  async sizeAsync(
+    keyOrKeys?: (keyof T & string) | (keyof T & string)[],
+  ): Promise<number | Record<string, number>> {
     if (keyOrKeys === undefined) {
       let count = 0;
       const allKeys = await this.driver.keys();
@@ -1121,7 +1164,7 @@ export class StorageWrapper<T extends Record<string, any> = Record<string, any>>
     }
     if (Array.isArray(keyOrKeys)) {
       const fullKeys = keyOrKeys.map((k) => this.getFullKey(k));
-      const rawSizes = await this.driver.size(fullKeys) as Record<string, number>;
+      const rawSizes = (await this.driver.size(fullKeys)) as Record<string, number>;
       const sizes: Record<string, number> = {};
       keyOrKeys.forEach((key, index) => {
         const fullKey = fullKeys[index];

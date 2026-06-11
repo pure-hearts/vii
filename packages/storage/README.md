@@ -270,13 +270,13 @@ unsubscribeB();
 
 ### 兼容关系速查表
 
-| API 类型 | 包含的方法 | 同步驱动<br>(Memory / Web / Cookie) | 异步驱动<br>(IndexedDB) | 自定义驱动<br>(缺失 keys 遍历) |
-| :--- | :--- | :---: | :---: | :---: |
-| **同步单键 CRUD** | `get`, `set`, `has`, `remove`, `size(key)` 等 | ✅ 支持 | ❌ 报错拦截 | ✅ 支持 |
-| **异步单键 CRUD** | `getAsync`, `setAsync`, `hasAsync`, `removeAsync`, `sizeAsync(key)` 等 | ✅ 支持 | ✅ 支持 | ✅ 支持 |
-| **同步全局遍历** | `clear()`, `keys()`, 无参 `size()`, `runGC()` | ✅ 支持 | ❌ 报错拦截 | ❌ 报错拦截 |
-| **异步全局遍历** | `clearAsync()`, `keysAsync()`, 无参 `sizeAsync()`, `runGCAsync()` | ✅ 支持 | ✅ 支持 | ❌ 报错拦截 |
-| **多键联动监听** | `onChange(...)` | ✅ 支持 | ✅ 支持 | ✅ 支持 |
+| API 类型          | 包含的方法                                                             | 同步驱动<br>(Memory / Web / Cookie) | 异步驱动<br>(IndexedDB) | 自定义驱动<br>(缺失 keys 遍历) |
+| :---------------- | :--------------------------------------------------------------------- | :---------------------------------: | :---------------------: | :----------------------------: |
+| **同步单键 CRUD** | `get`, `set`, `has`, `remove`, `size(key)` 等                          |               ✅ 支持               |       ❌ 报错拦截       |            ✅ 支持             |
+| **异步单键 CRUD** | `getAsync`, `setAsync`, `hasAsync`, `removeAsync`, `sizeAsync(key)` 等 |               ✅ 支持               |         ✅ 支持         |            ✅ 支持             |
+| **同步全局遍历**  | `clear()`, `keys()`, 无参 `size()`, `runGC()`                          |               ✅ 支持               |       ❌ 报错拦截       |          ❌ 报错拦截           |
+| **异步全局遍历**  | `clearAsync()`, `keysAsync()`, 无参 `sizeAsync()`, `runGCAsync()`      |               ✅ 支持               |         ✅ 支持         |          ❌ 报错拦截           |
+| **多键联动监听**  | `onChange(...)`                                                        |               ✅ 支持               |         ✅ 支持         |            ✅ 支持             |
 
 ---
 
@@ -284,5 +284,5 @@ unsubscribeB();
 
 对于全异步的底层驱动（如 `IndexedDBStorageDriver`），除了上述通用包装方法外，驱动本身还额外向外暴露了物理层面的度量 API：
 
--   `totalCount()`: 获取当前数据库仓库中实际存储的物理条目总数（返回 `Promise<number>`）。
--   `totalSize()`: 累加计算当前数据库仓库中所有物理数据的总字符大小（单位：字符数/字节数，返回 `Promise<number>`）。
+- `totalCount()`: 获取当前数据库仓库中实际存储的物理条目总数（返回 `Promise<number>`）。
+- `totalSize()`: 累加计算当前数据库仓库中所有物理数据的总字符大小（单位：字符数/字节数，返回 `Promise<number>`）。

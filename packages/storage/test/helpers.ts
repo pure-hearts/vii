@@ -28,7 +28,7 @@ export const cookieState = {
   clear() {
     this.store = "";
     this.lastSetRawCookie = "";
-  }
+  },
 };
 
 export const documentMock = {
@@ -107,7 +107,7 @@ export function setupTestEnv() {
           req.dispatchEvent(new Event("success"));
         }, 0);
         return req as any;
-      }
+      },
     } as any;
   }
 
@@ -125,7 +125,7 @@ const mockDatabases = new Map<string, MockIDBDatabase>();
 export const mockIndexedDBState = {
   clear() {
     mockDatabases.clear();
-  }
+  },
 };
 
 // --- 简易 Mock IndexedDB 实现 ---
@@ -145,7 +145,7 @@ class MockIDBRequest extends EventTarget {
 
 class MockIDBObjectStore {
   private data = new Map<string, any>();
-  
+
   get(key: string) {
     const req = new MockIDBRequest();
     setTimeout(() => {
@@ -163,7 +163,7 @@ class MockIDBObjectStore {
     }, 0);
     return req;
   }
-  
+
   put(value: any, key: string) {
     const req = new MockIDBRequest();
     setTimeout(() => {
@@ -173,7 +173,7 @@ class MockIDBObjectStore {
     }, 0);
     return req;
   }
-  
+
   delete(key: string) {
     const req = new MockIDBRequest();
     setTimeout(() => {
@@ -183,7 +183,7 @@ class MockIDBObjectStore {
     }, 0);
     return req;
   }
-  
+
   clear() {
     const req = new MockIDBRequest();
     setTimeout(() => {
@@ -193,7 +193,7 @@ class MockIDBObjectStore {
     }, 0);
     return req;
   }
-  
+
   getAllKeys() {
     const req = new MockIDBRequest();
     setTimeout(() => {
@@ -202,7 +202,7 @@ class MockIDBObjectStore {
     }, 0);
     return req;
   }
-  
+
   count() {
     const req = new MockIDBRequest();
     setTimeout(() => {
@@ -221,18 +221,18 @@ class MockIDBTransaction extends EventTarget {
     this.storeName = storeName;
     this.store = store;
   }
-  
+
   objectStore(name: string) {
     return this.store;
   }
-  
+
   set oncomplete(cb: any) {
     this.addEventListener("complete", cb);
   }
   set onerror(cb: any) {
     this.addEventListener("error", cb);
   }
-  
+
   triggerComplete() {
     setTimeout(() => {
       this.dispatchEvent(new Event("complete"));
@@ -242,17 +242,17 @@ class MockIDBTransaction extends EventTarget {
 
 class MockIDBDatabase extends EventTarget {
   objectStoreNames = {
-    contains: (name: string) => true
+    contains: (name: string) => true,
   };
   private stores = new Map<string, MockIDBObjectStore>();
-  
+
   getStore(name: string) {
     if (!this.stores.has(name)) {
       this.stores.set(name, new MockIDBObjectStore());
     }
     return this.stores.get(name)!;
   }
-  
+
   transaction(storeName: string, mode: string) {
     const store = this.getStore(storeName);
     const tx = new MockIDBTransaction(storeName, store);
@@ -302,4 +302,3 @@ class MockBroadcastChannel extends EventTarget {
     this.addEventListener("message", cb);
   }
 }
-

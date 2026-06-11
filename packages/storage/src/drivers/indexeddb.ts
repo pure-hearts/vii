@@ -142,7 +142,7 @@ export class IndexedDBStorageDriver implements StorageDriver {
     await new Promise<void>((resolve, reject) => {
       const transaction = db.transaction(this.storeName, "readwrite");
       const store = transaction.objectStore(this.storeName);
-      
+
       transaction.oncomplete = () => resolve();
       transaction.onerror = () => reject(transaction.error);
 
@@ -208,7 +208,7 @@ export class IndexedDBStorageDriver implements StorageDriver {
 
   subscribe(
     key: string | string[] | null,
-    callback: (key: string, newValue: string | null) => void
+    callback: (key: string, newValue: string | null) => void,
   ): () => void {
     if (key === null) {
       this.globalListeners.add(callback);

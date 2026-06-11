@@ -5,7 +5,7 @@ import {
   WebStorageDriver,
   CookieStorageDriver,
   IndexedDBStorageDriver,
-  CustomStorageDriver
+  CustomStorageDriver,
 } from "../../src/drivers";
 
 beforeAll(() => {
@@ -100,7 +100,7 @@ describe("StorageDrivers 单元测试", () => {
     it("批量操作与大小计算 (size)", () => {
       const driver = new WebStorageDriver("local");
       driver.setItems({ x: "12", y: "345" });
-      
+
       expect(driver.size()).toBe(2);
       expect(driver.size("x")).toBe(2);
       expect(driver.size("y")).toBe(3);

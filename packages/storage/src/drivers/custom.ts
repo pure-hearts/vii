@@ -9,7 +9,7 @@ export interface CustomDriverOptions {
   hasItem?: (key: string) => boolean | Promise<boolean>;
   subscribe?: (
     key: string | string[] | null,
-    callback: (key: string, newValue: string | null) => void
+    callback: (key: string, newValue: string | null) => void,
   ) => () => void;
 }
 
@@ -23,7 +23,9 @@ export class CustomStorageDriver implements StorageDriver {
 
   constructor(options: CustomDriverOptions) {
     if (!options.getItem || !options.setItem || !options.removeItem) {
-      throw new Error("[CustomStorageDriver] getItem, setItem, and removeItem are required methods.");
+      throw new Error(
+        "[CustomStorageDriver] getItem, setItem, and removeItem are required methods.",
+      );
     }
     this.opts = options;
   }
@@ -88,7 +90,9 @@ export class CustomStorageDriver implements StorageDriver {
     if (this.opts.keys) {
       return this.opts.keys();
     }
-    throw new Error("[CustomStorageDriver] 'keys' method is not implemented by the custom driver config. Iterative operations are not supported.");
+    throw new Error(
+      "[CustomStorageDriver] 'keys' method is not implemented by the custom driver config. Iterative operations are not supported.",
+    );
   }
 
   getItems(keys: string[]): Record<string, string | null> | Promise<Record<string, string | null>> {
@@ -98,7 +102,11 @@ export class CustomStorageDriver implements StorageDriver {
     for (const key of keys) {
       const val = this.getItem(key);
       if (val instanceof Promise) {
-        promises.push(val.then((v) => { results[key] = v; }));
+        promises.push(
+          val.then((v) => {
+            results[key] = v;
+          }),
+        );
       } else {
         results[key] = val;
       }
@@ -139,7 +147,9 @@ export class CustomStorageDriver implements StorageDriver {
   size(): number | Promise<number>;
   size(key: string): number | Promise<number>;
   size(keys: string[]): Record<string, number> | Promise<Record<string, number>>;
-  size(keyOrKeys?: string | string[]): number | Record<string, number> | Promise<number | Record<string, number>> {
+  size(
+    keyOrKeys?: string | string[],
+  ): number | Record<string, number> | Promise<number | Record<string, number>> {
     if (keyOrKeys === undefined) {
       const keysVal = this.keys();
       if (keysVal instanceof Promise) {
@@ -175,7 +185,7 @@ export class CustomStorageDriver implements StorageDriver {
 
   subscribe(
     key: string | string[] | null,
-    callback: (key: string, newValue: string | null) => void
+    callback: (key: string, newValue: string | null) => void,
   ): () => void {
     if (this.opts.subscribe) {
       return this.opts.subscribe(key, callback);

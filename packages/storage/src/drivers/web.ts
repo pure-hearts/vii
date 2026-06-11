@@ -129,16 +129,17 @@ export class WebStorageDriver implements StorageDriver {
    */
   subscribe(
     key: string | string[] | null,
-    callback: (key: string, newValue: string | null) => void
+    callback: (key: string, newValue: string | null) => void,
   ): () => void {
     if (!IS_BROWSER() || !this.storage) return () => {};
 
     const handler = (event: StorageEvent) => {
       if (event.storageArea !== this.storage || !event.key) return;
 
-      const isMatch = key === null
-        || (typeof key === "string" && event.key === key)
-        || (Array.isArray(key) && key.includes(event.key));
+      const isMatch =
+        key === null ||
+        (typeof key === "string" && event.key === key) ||
+        (Array.isArray(key) && key.includes(event.key));
 
       if (isMatch) {
         callback(event.key, event.newValue);

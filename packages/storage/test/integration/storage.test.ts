@@ -279,7 +279,12 @@ describe("@vyron/storage 集成测试", () => {
           }
           return (customStoreMap.get(keyOrKeys) ?? "").length;
         },
-        subscribe: (key: string | string[] | null, callback: (key: string, newValue: string | null) => void) => () => {},
+        subscribe:
+          (
+            key: string | string[] | null,
+            callback: (key: string, newValue: string | null) => void,
+          ) =>
+          () => {},
         totalCount: () => customStoreMap.size,
         totalSize: () => Array.from(customStoreMap.values()).reduce((acc, v) => acc + v.length, 0),
       };
@@ -390,7 +395,7 @@ describe("@vyron/storage 集成测试", () => {
 
       store.set("msg", "hello");
       expect(log).toEqual(["beforeSet:msg", "afterSet:msg"]);
-      
+
       const res = store.get("msg");
       expect(res).toBe("hello!?");
       expect(log).toEqual(["beforeSet:msg", "afterSet:msg", "beforeGet:msg", "afterGet:msg"]);
@@ -416,7 +421,12 @@ describe("@vyron/storage 集成测试", () => {
         setItems: () => {},
         removeItems: () => {},
         size: (keyOrKeys?: any): any => 0,
-        subscribe: (key: string | string[] | null, callback: (key: string, newValue: string | null) => void) => () => {},
+        subscribe:
+          (
+            key: string | string[] | null,
+            callback: (key: string, newValue: string | null) => void,
+          ) =>
+          () => {},
         totalCount: () => 1,
         totalSize: () => 0,
       };
@@ -471,7 +481,12 @@ describe("@vyron/storage 集成测试", () => {
         setItems: (pairs: Record<string, string>, expireTime?: number | null, options?: any) => {},
         removeItems: () => {},
         size: (keyOrKeys?: any): any => 0,
-        subscribe: (key: string | string[] | null, callback: (key: string, newValue: string | null) => void) => () => {},
+        subscribe:
+          (
+            key: string | string[] | null,
+            callback: (key: string, newValue: string | null) => void,
+          ) =>
+          () => {},
         totalCount: () => storeMap.size,
         totalSize: () => Array.from(storeMap.values()).reduce((acc, v) => acc + v.length, 0),
       };
@@ -521,7 +536,12 @@ describe("@vyron/storage 集成测试", () => {
         setItems: (pairs: Record<string, string>, expireTime?: number | null, options?: any) => {},
         removeItems: () => {},
         size: (keyOrKeys?: any): any => 0,
-        subscribe: (key: string | string[] | null, callback: (key: string, newValue: string | null) => void) => () => {},
+        subscribe:
+          (
+            key: string | string[] | null,
+            callback: (key: string, newValue: string | null) => void,
+          ) =>
+          () => {},
         totalCount: () => 0,
         totalSize: () => 0,
       };
@@ -590,7 +610,7 @@ describe("@vyron/storage 集成测试", () => {
 
     it("支持 integrity 数据指纹签名校验及防篡改物理擦除", () => {
       const store = createStorage("local", { integrity: true, secretSalt: "my_test_salt" });
-      
+
       store.set("secure_key", "secure_val");
       expect(store.get("secure_key")).toBe("secure_val");
 
@@ -715,8 +735,12 @@ describe("@vyron/storage 集成测试", () => {
         const syncMap = new Map<string, string>();
         const syncCustomDriver = new CustomStorageDriver({
           getItem: (key) => syncMap.get(key) ?? null,
-          setItem: (key, val) => { syncMap.set(key, val); },
-          removeItem: (key) => { syncMap.delete(key); },
+          setItem: (key, val) => {
+            syncMap.set(key, val);
+          },
+          removeItem: (key) => {
+            syncMap.delete(key);
+          },
           keys: () => Array.from(syncMap.keys()),
         });
 
@@ -729,8 +753,12 @@ describe("@vyron/storage 集成测试", () => {
         const asyncMap = new Map<string, string>();
         const asyncCustomDriver = new CustomStorageDriver({
           getItem: async (key) => asyncMap.get(key) ?? null,
-          setItem: async (key, val) => { asyncMap.set(key, val); },
-          removeItem: async (key) => { asyncMap.delete(key); },
+          setItem: async (key, val) => {
+            asyncMap.set(key, val);
+          },
+          removeItem: async (key) => {
+            asyncMap.delete(key);
+          },
         });
 
         const storeAsync = createStorage(asyncCustomDriver);
