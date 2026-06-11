@@ -22,7 +22,7 @@
     "vite-plus": "^0.1.24"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm exec vp check --fix"
+    "pre-commit": "pnpm exec vp check --fix && git add $(git diff --name-only --cached)"
   },
   "engines": {
     "node": ">=20.0.0",
