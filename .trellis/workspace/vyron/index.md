@@ -7,9 +7,8 @@
 ## Current Status
 
 <!-- @@@auto:current-status -->
-
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 18
+- **Total Sessions**: 19
 - **Last Active**: 2026-06-11
 <!-- @@@/auto:current-status -->
 
@@ -18,11 +17,9 @@
 ## Active Documents
 
 <!-- @@@auto:active-documents -->
-
-| File           | Lines | Status |
-| -------------- | ----- | ------ |
-| `journal-1.md` | ~610  | Active |
-
+| File | Lines | Status |
+|------|-------|--------|
+| `journal-1.md` | ~643 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -31,8 +28,9 @@
 
 <!-- @@@auto:session-history -->
 
-| #   | Date       | Title                                                          | Commits                                               | Branch |
-| --- | ---------- | -------------------------------------------------------------- | ----------------------------------------------------- | ------ |
+| # | Date | Title | Commits | Branch |
+|---|------|-------|---------|--------|
+| 19 | 2026-06-11 | 完成 Storage 包插件化重构与文档测试 | `78676e9` | `main` |
 | 18  | 2026-06-11 | 优化发布脚本与多包发布体验                                     | `183d6f2`                                             | `main` |
 | 17  | 2026-06-10 | @vyron/release 包功能优化                                      | `2d3127b`, `d4eb66e`, `b98c307`, `6c68b21`, `39cc9e6` | `main` |
 | 16  | 2026-06-10 | 提交 test-mirror 移除代码                                      | `f9c5160`                                             | `main` |
