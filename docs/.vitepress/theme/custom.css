@@ -23,3 +23,67 @@
   flex-direction: column;
   gap: 1.25rem;
 }
+
+/* Architecture Map Grid Styles */
+.architecture-container {
+  margin: 2rem 0;
+}
+.arch-root-card {
+  text-align: center;
+  background: var(--vp-c-brand-soft);
+  border: 2px solid var(--vp-c-brand-1);
+  border-radius: 12px;
+  padding: 1rem;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--vp-c-brand-1);
+  margin-bottom: 1.5rem;
+}
+.architecture-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+@media (max-width: 768px) {
+  .architecture-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.arch-card {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+}
+.arch-card:hover {
+  border-color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+}
+.arch-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--vp-c-brand-1);
+  border-bottom: 1px dashed var(--vp-c-divider);
+  padding-bottom: 0.5rem;
+}
+.arch-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0 !important;
+}
+.arch-list li {
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+  color: var(--vp-c-text-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.arch-list li::before {
+  content: "•";
+  color: var(--vp-c-brand-1);
+  font-weight: bold;
+}

@@ -22,25 +22,36 @@
 
 ## 模块全景图
 
-```mermaid
-graph TD
-    A[VII Toolchain] --> B[@vyron/cli]
-    A --> C[@vyron/release]
-    A --> D[@vyron/storage]
-
-    B --> B1[项目脚手架初始化]
-    B --> B2[并发非代理测速 GitHub 镜像]
-    B --> B3[智能拼写容错]
-
-    C --> C1[交互式多包升级]
-    C --> C2[CHANGELOG / Release Note 自动生成]
-    C --> C3[版本回滚与 Dry Run]
-
-    D --> D1[前后缀命名空间安全隔离]
-    D --> D2[TTL 过期失效管理与 GC]
-    D --> D3[防篡改数据完整性签名]
-    D --> D4[跨标签实例 BroadcastChannel 同步]
-```
+<div class="architecture-container">
+  <div class="arch-root-card">👑 VII Toolchain</div>
+  <div class="architecture-grid">
+    <div class="arch-card">
+      <div class="arch-title">🛠️ @vyron/cli</div>
+      <ul class="arch-list">
+        <li>项目脚手架一键初始化</li>
+        <li>镜像源并发非代理测速管理</li>
+        <li>拼写错误纠偏模糊匹配</li>
+      </ul>
+    </div>
+    <div class="arch-card">
+      <div class="arch-title">📦 @vyron/release</div>
+      <ul class="arch-list">
+        <li>交互式多包协同发版</li>
+        <li>CHANGELOG / Release Note 自动生成</li>
+        <li>发布异常事务物理级回滚机制</li>
+      </ul>
+    </div>
+    <div class="arch-card">
+      <div class="arch-title">💾 @vyron/storage</div>
+      <ul class="arch-list">
+        <li>前后缀隔离与安全清理</li>
+        <li>灵敏 TTL 过期与自动 GC</li>
+        <li>防篡改加盐数字完整性签名</li>
+        <li>BroadcastChannel 跨实例订阅同步</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 ## 下一步
 
