@@ -8,7 +8,7 @@
 
 - **`@vyron/cli`** (`packages/cli`)：脚手架与命令行交互工具。
 - **`@vyron/release`** (`packages/release`)：自动化版本发布和 Git 流管理工具。
-- **`@vyron/utils`** (`packages/utils`)：通用的基础工具库（如嵌套属性持久化存储等）。
+- **`@vyron/storage`** (`packages/storage`)：多引擎持久化存储管理包（支持 LocalStorage、SessionStorage 和 Cookie，支持过期时间及嵌套属性解析）。
 
 ---
 
@@ -26,9 +26,9 @@
 │   ├── release/         # 2. 版本发布管线工具 (@vyron/release)
 │   │   ├── vite.config.ts # vite-plus 构建配置文件
 │   │   └── src/         # Git 校验/提交、NPM 镜像发布逻辑
-│   └── utils/           # 3. 本地存储等通用基础库 (@vyron/utils)
+│   └── storage/         # 3. 多引擎持久化存储管理包 (@vyron/storage)
 │       ├── vite.config.ts # vite-plus 构建配置文件
-│       └── src/         # 具备嵌套解析的 LocalStorage 操作库
+│       └── src/         # 支持过期时间与嵌套 path 解析的 Local/Session/Cookie 库
 ├── package.json         # 根目录全局配置 (开发依赖、全局脚本及 Git Hook)
 ├── pnpm-workspace.yaml  # Workspace 范围配置定义
 └── tsconfig.json        # 全局 TypeScript 基础配置
@@ -128,7 +128,7 @@ pnpm typecheck
 
 相较于原先的 `unbuild`，新配置文件基于 Vite 标准进行拓展，支持模块别名（alias）与打包配置（`pack` 属性）：
 
-- **`packages/utils`**：打包输出 ESM (`.mjs`) 与 CJS (`.cjs`)，并自动生成 dual-type TS 声明文件 (`.d.mts`, `.d.cts`)。
+- **`packages/storage`**：打包输出 ESM (`.mjs`) 与 CJS (`.cjs`)，并自动生成 dual-type TS 声明文件 (`.d.mts`, `.d.cts`)。
 - **`packages/release`**：打包输出 ESM 及其 TS 声明文件。
 - **`packages/cli`**：作为 Node CLI 工具，打包为压缩后的 ESM 并不输出类型文件，其中别名设置确保了 `prompts` 的轻量引入。
 

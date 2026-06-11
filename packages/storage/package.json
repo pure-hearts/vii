@@ -1,0 +1,68 @@
+{
+  "name": "@vyron/storage",
+  "version": "1.0.0",
+  "description": "多引擎持久化存储管理包，支持 LocalStorage、SessionStorage 和 Cookie 驱动，并提供前/后缀空间安全、过期时长管理和嵌套 path 解析。",
+  "keywords": [],
+  "license": "MIT",
+  "author": "vyron",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/index.d.mts",
+        "require": "./dist/index.d.cts"
+      },
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./drivers": {
+      "types": {
+        "import": "./dist/drivers/index.d.mts",
+        "require": "./dist/drivers/index.d.cts"
+      },
+      "import": "./dist/drivers/index.mjs",
+      "require": "./dist/drivers/index.cjs"
+    },
+    "./drivers/cookie": {
+      "types": {
+        "import": "./dist/drivers/cookie.d.mts",
+        "require": "./dist/drivers/cookie.d.cts"
+      },
+      "import": "./dist/drivers/cookie.mjs",
+      "require": "./dist/drivers/cookie.cjs"
+    },
+    "./drivers/indexeddb": {
+      "types": {
+        "import": "./dist/drivers/indexeddb.d.mts",
+        "require": "./dist/drivers/indexeddb.d.cts"
+      },
+      "import": "./dist/drivers/indexeddb.mjs",
+      "require": "./dist/drivers/indexeddb.cjs"
+    },
+    "./drivers/custom": {
+      "types": {
+        "import": "./dist/drivers/custom.d.mts",
+        "require": "./dist/drivers/custom.d.cts"
+      },
+      "import": "./dist/drivers/custom.mjs",
+      "require": "./dist/drivers/custom.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vp pack src/index.ts src/drivers/index.ts src/drivers/cookie.ts src/drivers/indexeddb.ts src/drivers/custom.ts --watch",
+    "build": "vp pack src/index.ts src/drivers/index.ts src/drivers/cookie.ts src/drivers/indexeddb.ts src/drivers/custom.ts",
+    "typecheck": "vp check --no-fmt --no-lint",
+    "prepublishOnly": "pnpm run build",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vite-plus": "^0.1.24",
+    "vitest": "^4.1.8"
+  }
+}
