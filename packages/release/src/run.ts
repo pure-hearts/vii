@@ -7,7 +7,15 @@ import {
   promptSelectPackages,
 } from "./prompts";
 import { checkGitStatus } from "./steps/check-git";
-import { gitAdd, gitCommit, gitTag, gitPushWithTags } from "./git";
+import {
+  gitAdd,
+  gitCommit,
+  gitTag,
+  gitPushWithTags,
+  gitDeleteTag,
+  gitResetHard,
+  gitDeleteRemoteTag,
+} from "./git";
 import { npmPublish, npmVersionExists } from "./npm";
 import { updateChangelog } from "./changelog";
 import { createGitHubRelease, generateReleaseNotes, getGitHubRemote } from "./github";
@@ -74,6 +82,9 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
   if (!selectedPackages || selectedPackages.length === 0) return;
 
   const updatedPackages: ReleaseContext[] = [];
+  let commitCreated = false;
+  const createdTags: string[] = [];
+  let pushedToRemote = false;
 
   try {
     // 3. 准备阶段 (Prepare Phase)
@@ -167,6 +178,7 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
     // Git Commit
     gitAdd(".");
     gitCommit(commitMsg);
+    commitCreated = true;
 
     // Git Tag
     // 如果只选择发布了一个包，且发布路径就是工作根目录，为了向下兼容打 `v${version}` 格式的 tag
@@ -178,12 +190,14 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
         : `${pkgCtx.pkgName}@${pkgCtx.newVersion}`;
       console.log(`🏷️  打 Git 标签: ${tag}`);
       gitTag(tag);
+      createdTags.push(tag);
     }
 
     // Git Push
     if (!mergedOptions.skipPush) {
       console.log("🚀 推送到 Git 远端...");
       gitPushWithTags();
+      pushedToRemote = true;
     }
 
     // 5. GitHub Release 阶段
@@ -220,17 +234,69 @@ export async function run(options: ReleaseOptions = {}): Promise<void> {
 
     console.log("\n🎉 全部发布完成!");
   } catch (error) {
-    if (updatedPackages.length > 0) {
-      console.log("\n⚠️  发布过程中出错，正在回滚 package.json 版本...");
-      for (const pkgCtx of updatedPackages) {
+    console.error("\n❌ 发布过程中出错:", error);
+    console.log("\n⚠️ 正在启动自动回滚程序...");
+
+    // 1. 回滚远端 Git Tag (如果已推送)
+    if (pushedToRemote && createdTags.length > 0) {
+      console.log("🧹 正在删除远端 Git 标签...");
+      for (const tag of createdTags) {
         try {
-          writePkg(pkgCtx.pkgPath, pkgCtx.originalVersion);
-          console.log(`✅ ${pkgCtx.pkgName} 已回滚到 ${pkgCtx.originalVersion}`);
-        } catch (rollbackErr) {
-          console.error(`❌ 回滚 ${pkgCtx.pkgName} 失败:`, rollbackErr);
+          gitDeleteRemoteTag(tag);
+          console.log(`  ✅ 成功删除远端标签: ${tag}`);
+        } catch (err) {
+          console.error(`  ❌ 删除远端标签 ${tag} 失败:`, (err as Error).message);
         }
       }
     }
+
+    // 2. 回滚本地 Git Tag (如果已创建)
+    if (createdTags.length > 0) {
+      console.log("🧹 正在删除本地 Git 标签...");
+      for (const tag of createdTags) {
+        try {
+          gitDeleteTag(tag);
+          console.log(`  ✅ 成功删除本地标签: ${tag}`);
+        } catch (err) {
+          console.error(`  ❌ 删除本地标签 ${tag} 失败:`, (err as Error).message);
+        }
+      }
+    }
+
+    // 3. 回滚 Git Commit (如果已创建)
+    let resetSuccess = false;
+    if (commitCreated) {
+      console.log("🧹 正在撤销本地 Git 提交...");
+      try {
+        gitResetHard("HEAD~1");
+        console.log("  ✅ 本地 Git 提交已撤销，工作区已重置");
+        resetSuccess = true;
+      } catch (err) {
+        console.error("  ❌ 撤销本地 Git 提交失败:", (err as Error).message);
+      }
+
+      if (pushedToRemote) {
+        console.log(
+          "\n⚠️ [手动干预提示] 本地提交已撤销，但由于更改已推送到远端分支，请手动执行强制推送以回滚远端提交：",
+        );
+        console.log("   git push origin <当前分支> --force\n");
+      }
+    }
+
+    // 4. 回滚 package.json (如果尚未执行 git reset --hard 恢复)
+    if (!resetSuccess && updatedPackages.length > 0) {
+      console.log("🧹 正在回滚 package.json 中的版本号...");
+      for (const pkgCtx of updatedPackages) {
+        try {
+          writePkg(pkgCtx.pkgPath, pkgCtx.originalVersion);
+          console.log(`  ✅ ${pkgCtx.pkgName} 的版本已还原为 ${pkgCtx.originalVersion}`);
+        } catch (rollbackErr) {
+          console.error(`  ❌ 还原 ${pkgCtx.pkgName} 版本失败:`, rollbackErr);
+        }
+      }
+    }
+
+    console.log("\n🛑 自动回滚完成。\n");
     throw error;
   }
 }

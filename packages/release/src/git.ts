@@ -154,3 +154,36 @@ function sleep(seconds: number): void {
     // busy wait
   }
 }
+
+/**
+ * 本地删除 Tag
+ */
+export function gitDeleteTag(tag: string): void {
+  try {
+    execGit(`tag -d ${tag}`);
+  } catch (error) {
+    throw new Error(`本地删除 Tag 失败: ${tag}`);
+  }
+}
+
+/**
+ * 本地 Reset Hard
+ */
+export function gitResetHard(target: string): void {
+  try {
+    execGit(`reset --hard ${target}`);
+  } catch (error) {
+    throw new Error(`本地 reset --hard 失败: ${target}`);
+  }
+}
+
+/**
+ * 远端删除 Tag
+ */
+export function gitDeleteRemoteTag(tag: string): void {
+  try {
+    execGit(`push origin :refs/tags/${tag}`);
+  } catch (error) {
+    throw new Error(`从远端删除 Tag 失败: ${tag}`);
+  }
+}
