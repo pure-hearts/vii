@@ -674,3 +674,36 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+## Session 21: 发包自动回退机制实现
+
+**Date**: 2026-06-11
+**Task**: 发包自动回退机制实现
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+在 @vyron/release 模块中实现了发包失败的自动回滚机制。若发包过程中任何阶段抛出错误，则自动撤销本次产生的本地/远程 Git 提交与标签，并还原 package.json 中的版本号。同时编写了配套的集成测试用例，全量测试已通过。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash      | Message       |
+| --------- | ------------- |
+| `b515da3` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
