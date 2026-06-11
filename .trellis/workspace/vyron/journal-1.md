@@ -574,3 +574,37 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+
+## Session 18: 优化发布脚本与多包发布体验
+
+**Date**: 2026-06-11
+**Task**: 优化发布脚本与多包发布体验
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+修复了 ESM 下 require 加载 JS 配置的崩溃 Bug 和 GitHub GraphQL repositoryId 传参缺陷。重构了 Monorepo 的 Git 提交流，将多次 commit 聚合为一次以避免并发 Git 锁冲突。改进了 Changelog 生成与原子推送机制，并添加了相关的自动化测试用例。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `183d6f2` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
