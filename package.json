@@ -14,6 +14,8 @@
     "lint": "vp check",
     "dev": "pnpm -r --parallel --filter='./packages/cli' run dev",
     "build": "pnpm -r --filter='./packages/*' run build",
+    "docs:dev": "pnpm --filter vii-docs dev",
+    "docs:build": "pnpm --filter vii-docs build",
     "typecheck": "vp check --no-fmt --no-lint"
   },
   "devDependencies": {
