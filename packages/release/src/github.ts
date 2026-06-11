@@ -49,35 +49,39 @@ export async function createGitHubRelease(
     throw new Error("未设置 GITHUB_TOKEN 环境变量");
   }
 
-  const draft = config.draft ? "true" : "false";
-  const prerelease = config.prerelease ? "true" : "false";
+  const isDraft = !!config.draft;
+  const isPrerelease = !!config.prerelease;
 
-  const query = `
-    mutation CreateRelease($input: CreateReleaseInput!) {
-      createRelease(input: $input) {
-        release {
-          url
-          tagName
-        }
-      }
-    }
-  `;
-
-  const variables = {
-    input: {
-      repositoryId: `${owner}/${repo}`,
-      tagName: tag,
+  try {
+    const postData = JSON.stringify({
+      tag_name: tag,
       name: tag,
       body: body,
-      isDraft: draft === "true",
-      isPrerelease: prerelease === "true",
-    },
-  };
+      draft: isDraft,
+      prerelease: isPrerelease,
+    }).replace(/'/g, "'\"'\"'");
 
-  execSync(
-    `curl -s -X POST -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" -d '${JSON.stringify({ query, variables }).replace(/'/g, "'\"'\"'")}' https://api.github.com/graphql`,
-    { stdio: "inherit" },
-  );
+    const response = execSync(
+      `curl -s -w "\\n%{http_code}" -X POST \
+        -H "Authorization: Bearer ${token}" \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        -H "Content-Type: application/json" \
+        -d '${postData}' \
+        https://api.github.com/repos/${owner}/${repo}/releases`,
+      { encoding: "utf-8" },
+    ).trim();
+
+    const lines = response.split("\n");
+    const statusCode = parseInt(lines[lines.length - 1], 10);
+    const responseBody = lines.slice(0, -1).join("\n");
+
+    if (statusCode < 200 || statusCode >= 300) {
+      throw new Error(`HTTP ${statusCode}: ${responseBody}`);
+    }
+  } catch (error) {
+    throw new Error(`创建 GitHub Release 失败: ${(error as Error).message}`);
+  }
 }
 
 /**
@@ -133,19 +137,19 @@ export function generateReleaseNotes(pkgName: string, newVersion: string): strin
   return notes;
 }
 
-interface CategorizedCommit {
+export interface CategorizedCommit {
   message: string;
   hash: string;
 }
 
-interface CategorizedCommits {
+export interface CategorizedCommits {
   features: CategorizedCommit[];
   fixes: CategorizedCommit[];
   breaking: CategorizedCommit[];
   other: CategorizedCommit[];
 }
 
-function categorizeCommits(commits: string[]): CategorizedCommits {
+export function categorizeCommits(commits: string[]): CategorizedCommits {
   const categorized: CategorizedCommits = {
     features: [],
     fixes: [],

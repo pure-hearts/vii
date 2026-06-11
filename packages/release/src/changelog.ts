@@ -1,6 +1,7 @@
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { execSync } from "node:child_process";
+import { categorizeCommits } from "./github";
 
 const CHANGELOG_NAME = "CHANGELOG.md";
 
@@ -9,16 +10,73 @@ const CHANGELOG_NAME = "CHANGELOG.md";
  */
 export function generateChangelog(pkgName: string, newVersion: string): string {
   const date = new Date().toISOString().split("T")[0];
-  const commitMessage = execSync("git log -1 --pretty=format:%s", {
-    encoding: "utf-8",
-    stdio: "pipe",
-  }).trim();
+  let body = "";
 
-  return `## ${newVersion} (${date})
+  try {
+    const lastTag = execSync("git describe --tags --abbrev=0 2>/dev/null || echo ''", {
+      encoding: "utf-8",
+      stdio: "pipe",
+    }).trim();
 
-${commitMessage}
+    let commits = "";
+    if (lastTag) {
+      commits = execSync(`git log ${lastTag}..HEAD --pretty=format:"%s|%h"`, {
+        encoding: "utf-8",
+        stdio: "pipe",
+      }).trim();
+    } else {
+      commits = execSync(`git log --pretty=format:"%s|%h"`, {
+        encoding: "utf-8",
+        stdio: "pipe",
+      }).trim();
+    }
 
-`;
+    if (commits) {
+      const lines = commits.split("\n").filter(Boolean);
+      const categorized = categorizeCommits(lines);
+
+      if (categorized.features.length > 0) {
+        body +=
+          `### ✨ Features\n\n` +
+          categorized.features.map((c) => `- ${c.message} (${c.hash})`).join("\n") +
+          "\n\n";
+      }
+      if (categorized.fixes.length > 0) {
+        body +=
+          `### 🐛 Bug Fixes\n\n` +
+          categorized.fixes.map((c) => `- ${c.message} (${c.hash})`).join("\n") +
+          "\n\n";
+      }
+      if (categorized.breaking.length > 0) {
+        body +=
+          `### ⚠️ Breaking Changes\n\n` +
+          categorized.breaking.map((c) => `- ${c.message} (${c.hash})`).join("\n") +
+          "\n\n";
+      }
+      if (categorized.other.length > 0) {
+        body +=
+          `### Other Changes\n\n` +
+          categorized.other.map((c) => `- ${c.message} (${c.hash})`).join("\n") +
+          "\n\n";
+      }
+    }
+  } catch {
+    // 忽略错误并 fallback
+  }
+
+  if (!body.trim()) {
+    try {
+      const lastCommit = execSync("git log -1 --pretty=format:%s", {
+        encoding: "utf-8",
+        stdio: "pipe",
+      }).trim();
+      body = `- ${lastCommit}\n\n`;
+    } catch {
+      body = "- Initial release\n\n";
+    }
+  }
+
+  return `## ${newVersion} (${date})\n\n${body}`;
 }
 
 /**
@@ -41,7 +99,6 @@ export function updateChangelog(
     // 确保目录存在
     const dir = dirname(changelogPath);
     if (!existsSync(dir)) {
-      const { mkdirSync } = require("node:fs");
       mkdirSync(dir, { recursive: true });
     }
     writeFileSync(changelogPath, `# Changelog\n\n${changelogContent}`, "utf-8");

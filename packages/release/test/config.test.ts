@@ -55,21 +55,27 @@ describe("pkg.ts", () => {
 
 describe("config.ts", () => {
   describe("loadConfig", () => {
-    it("配置文件不存在时返回 null", () => {
-      const result = loadConfig(TEST_DIR);
+    it("配置文件不存在时返回 null", async () => {
+      const result = await loadConfig(TEST_DIR);
       expect(result).toBeNull();
     });
 
-    it("加载 JSON 配置文件", () => {
+    it("加载 JSON 配置文件", async () => {
       writeFileSync(resolve(TEST_DIR, ".releaserc.json"), JSON.stringify({ parallel: true }));
-      const result = loadConfig(TEST_DIR);
+      const result = await loadConfig(TEST_DIR);
       expect(result).toEqual({ parallel: true });
     });
 
-    it("忽略无效的 JSON 配置", () => {
+    it("忽略无效的 JSON 配置", async () => {
       writeFileSync(resolve(TEST_DIR, ".releaserc.json"), "invalid json");
-      const result = loadConfig(TEST_DIR);
+      const result = await loadConfig(TEST_DIR);
       expect(result).toBeNull();
+    });
+
+    it("加载 JS 配置文件", async () => {
+      writeFileSync(resolve(TEST_DIR, ".releaserc.js"), "export default { parallel: true };");
+      const result = await loadConfig(TEST_DIR);
+      expect(result).toEqual({ parallel: true });
     });
   });
 });

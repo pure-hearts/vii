@@ -130,6 +130,24 @@ export function gitPushTags(retries = 3): void {
   }
 }
 
+/**
+ * 带重试的 Git push --follow-tags
+ */
+export function gitPushWithTags(retries = 3): void {
+  for (let i = 0; i < retries; i++) {
+    try {
+      execGitWithSpinner("push --follow-tags", `Git push with tags (${i + 1}/${retries})`);
+      return;
+    } catch {
+      if (i === retries - 1) {
+        throw new Error("git push --follow-tags 失败，请检查网络或 remote 配置");
+      }
+      console.log(`⚠️  push --follow-tags 失败，${i + 1} 秒后重试...\n`);
+      sleep(i + 1);
+    }
+  }
+}
+
 function sleep(seconds: number): void {
   const end = Date.now() + seconds * 1000;
   while (Date.now() < end) {

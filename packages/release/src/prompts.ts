@@ -1,7 +1,7 @@
 import prompts from "prompts";
 import { calculateNewVersion } from "./version";
 import { existsSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, basename } from "node:path";
 
 /**
  * 发现 packages 目录下的所有包
@@ -41,7 +41,7 @@ export async function promptSelectPackages(cwd: string): Promise<string[] | null
   }
 
   const packageOptions = packages.map((pkgPath) => {
-    const name = pkgPath.split("/").pop() || pkgPath;
+    const name = basename(pkgPath);
     return {
       value: pkgPath,
       title: name,
