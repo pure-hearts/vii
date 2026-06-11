@@ -1,15 +1,15 @@
 :root {
-  --vp-c-brand-1: #6366f1; /* Indigo-500 */
-  --vp-c-brand-2: #4f46e5; /* Indigo-600 */
-  --vp-c-brand-3: #818cf8; /* Indigo-400 */
-  --vp-c-brand-soft: rgba(99, 102, 241, 0.12);
+  --vp-c-brand-1: #009678; /* Teal-500 */
+  --vp-c-brand-2: #007a61; /* Teal-600 */
+  --vp-c-brand-3: #05b08e; /* Teal-400 */
+  --vp-c-brand-soft: rgba(0, 150, 120, 0.12);
 }
 
 .dark {
-  --vp-c-brand-1: #818cf8; /* Indigo-400 */
-  --vp-c-brand-2: #6366f1; /* Indigo-500 */
-  --vp-c-brand-3: #a5b4fc; /* Indigo-300 */
-  --vp-c-brand-soft: rgba(129, 140, 248, 0.15);
+  --vp-c-brand-1: #00bfa3; /* Teal-Light-400 */
+  --vp-c-brand-2: #009678; /* Teal-500 */
+  --vp-c-brand-3: #33ccb5; /* Teal-Light-300 */
+  --vp-c-brand-soft: rgba(0, 191, 163, 0.15);
 }
 
 /* Playground Custom Styling Overrides */
@@ -59,7 +59,7 @@
 .arch-card:hover {
   border-color: var(--vp-c-brand-1);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 150, 120, 0.15);
 }
 .arch-title {
   font-weight: 700;
