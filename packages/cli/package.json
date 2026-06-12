@@ -1,6 +1,6 @@
 {
   "name": "@vyron/cli",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "homepage": "https://github.com/vfiee/project-boilerplate",
   "license": "MIT",
   "author": "vyron",
@@ -26,7 +26,8 @@
     "build": "vp pack && node -e \"import('fs').then(fs => fs.writeFileSync('index.js', '#!/usr/bin/env node\\nimport \\\"./dist/index.mjs\\\";\\n', { mode: 0o755 }))\"",
     "typecheck": "vp check --no-fmt --no-lint",
     "test": "vitest run",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "release": "bumpp -y --all"
   },
   "dependencies": {
     "ora": "^9.4.0",

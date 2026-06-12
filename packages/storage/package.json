@@ -61,7 +61,8 @@
     "build": "vp pack src/index.ts src/drivers/index.ts src/drivers/cookie.ts src/drivers/indexeddb.ts src/drivers/custom.ts",
     "typecheck": "vp check --no-fmt --no-lint",
     "prepublishOnly": "pnpm run build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "release": "bumpp -y --all"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

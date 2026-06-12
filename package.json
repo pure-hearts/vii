@@ -22,6 +22,7 @@
     "stackblitz:storage": "pnpm build && pnpm --filter vii-docs dev"
   },
   "devDependencies": {
+    "bumpp": "^11.1.0",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.2",
     "vite-plus": "^0.1.24"

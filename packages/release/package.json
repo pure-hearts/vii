@@ -20,7 +20,8 @@
   "scripts": {
     "build": "vp pack",
     "typecheck": "vp check --no-fmt --no-lint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "release": "bumpp -y --all"
   },
   "dependencies": {
     "prompts": "^2.4.2",
