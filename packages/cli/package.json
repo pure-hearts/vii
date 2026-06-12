@@ -18,6 +18,9 @@
     "dist"
   ],
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "node -e \"import('fs').then(fs => fs.writeFileSync('index.js', '#!/usr/bin/env node\\nimport \\\"./dist/index.mjs\\\";\\n', { mode: 0o755 }))\" && vp pack --watch",
     "build": "vp pack && node -e \"import('fs').then(fs => fs.writeFileSync('index.js', '#!/usr/bin/env node\\nimport \\\"./dist/index.mjs\\\";\\n', { mode: 0o755 }))\"",

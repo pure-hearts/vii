@@ -53,6 +53,9 @@
       "require": "./dist/drivers/custom.cjs"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vp pack src/index.ts src/drivers/index.ts src/drivers/cookie.ts src/drivers/indexeddb.ts src/drivers/custom.ts --watch",
     "build": "vp pack src/index.ts src/drivers/index.ts src/drivers/cookie.ts src/drivers/indexeddb.ts src/drivers/custom.ts",
