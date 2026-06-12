@@ -839,3 +839,36 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+## Session 26: 重构并汉化所有包的新手指引前言
+
+**Date**: 2026-06-12
+**Task**: 重构并汉化所有包的新手指引前言
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+在 VitePress 官方中英文档中，将 CLI、Release、Storage 三个包的核心特性与功能说明章节，使用大白话、极其通俗易懂的场景隐喻（如：精装房生成器、高速公路测速、后悔药机制、本地智能数据保险箱）进行了彻底的描述性重写，屏蔽晦涩的技术黑话，使文档对非技术或入门级小白用户具有极强的友好度。并将文档归档至 Trellis 系统。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash      | Message       |
+| --------- | ------------- |
+| `4209804` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

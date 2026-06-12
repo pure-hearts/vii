@@ -9,7 +9,7 @@
 <!-- @@@auto:current-status -->
 
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 25
+- **Total Sessions**: 26
 - **Last Active**: 2026-06-12
 <!-- @@@/auto:current-status -->
 
@@ -21,7 +21,7 @@
 
 | File           | Lines | Status |
 | -------------- | ----- | ------ |
-| `journal-1.md` | ~842  | Active |
+| `journal-1.md` | ~875  | Active |
 
 <!-- @@@/auto:active-documents -->
 
@@ -33,6 +33,7 @@
 
 | #   | Date       | Title                                                          | Commits                                               | Branch |
 | --- | ---------- | -------------------------------------------------------------- | ----------------------------------------------------- | ------ |
+| 26  | 2026-06-12 | 重构并汉化所有包的新手指引前言                                 | `4209804`                                             | `main` |
 | 25  | 2026-06-12 | 重写并细化 Storage 新手官方文档                                | `a8b77a6`                                             | `main` |
 | 24  | 2026-06-12 | 重写并细化 Release 新手官方文档                                | `f60c9fa`                                             | `main` |
 | 23  | 2026-06-12 | 重写并细化 CLI 新手官方文档                                    | `beb00e7`                                             | `main` |
