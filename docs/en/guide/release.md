@@ -1,6 +1,6 @@
 # Release Pipeline (@vyron/release)
 
-`@vyron/release` orchestrates version increments, changelog writes, Git Tag creation, and npm repository publication. It functions like `bumpp` but features unique **transactional rollback protection**, preventing dirty workspaces when publishing fails.
+`@vyron/release` is like an **"automatic package delivery clerk"** that securely labels your project and ships it to the web. It bumps versions intelligently like `bumpp`, and more importantly, it provides a unique **transactional rollback protection (automatic regret pill)**, avoiding any dirty workspace states.
 
 ---
 
@@ -24,19 +24,19 @@
 
 ## 💡 Core Features
 
-For beginners, publishing package releases (bumping versions, creating tags, pushing commits, and publishing on npm) can be nerve-wracking. A single mistake might result in a broken git tree or incorrect npm package versions. `@vyron/release` resolves this:
+For beginners, publishing package releases (bumping versions, creating tags, pushing commits, and publishing on npm) can be nerve-wracking. A single mistake might result in a broken git tree or incorrect npm package versions. `@vyron/release` acts as your personal automated butler:
 
 ### 1. Three Precondition Checks (Pre-check)
 
 Before mutating any files or tags, the tool runs non-intrusive local validations. If any check fails, execution terminates immediately without changing any files:
 
-- **Git Repository Check**: Verifies if the target directory is a git workspace.
-- **Git Working Tree Cleanliness**: Blocks execution if there are uncommitted changes, preventing unfinished changes from being published.
-- **NPM Credentials Validation**: Runs a silent `npm whoami` to ensure you are logged into your npm account in the current terminal environment, preventing publication failure at the very last step.
+- **Is Git Initialized?**: Verifies if the target directory is a git workspace.
+- **Any Unsaved Drafts?**: Blocks execution if there are uncommitted changes, preventing unfinished changes from being published.
+- **Logged into NPM?**: Runs a silent `npm whoami` to ensure you are logged into your npm account in the current terminal environment, preventing publication failure at the very last step.
 
-### 2. Atomic Physical Rollback
+### 2. Atomic Physical Rollback (Automatic regret pill)
 
-This is the key safety mechanism. If any error (such as network timeout, registry failure, or permission issues) occurs during the bump, commit, tag, push, or publish phases, the tool triggers a full rollback:
+This is the key safety mechanism. If any error (such as network timeout, registry failure, or permission issues) occurs during the bump, commit, tag, push, or publish phases, the tool will **automatically trigger a time-rollback**:
 
 1. Reverts `package.json` to its original version.
 2. Automatically deletes the newly created local git commit and tag.
@@ -44,7 +44,7 @@ This is the key safety mechanism. If any error (such as network timeout, registr
 
 ### 3. Dry Run Simulation Mode
 
-Unsure about what changes the script will perform? Append the `--dry-run` flag. The tool will print the release operation tree in your console, showing planned version increments and command executions without performing any file writes.
+Unsure about what changes the script will perform? Append the `--dry-run` flag. The tool will print the release operation tree in your console, showing planned version increments and command executions **as a simulation run without performing any actual file writes**.
 
 ---
 

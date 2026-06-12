@@ -1,6 +1,6 @@
 # Storage Manager (@vyron/storage)
 
-`@vyron/storage` is a high-availability local storage manager supporting multi-driver extension (Memory, LocalStorage, SessionStorage, Cookie, IndexedDB), expired time caching control (TTL), anti-tampering signature verification, concurrent transaction recovery, and reactive cross-tab data synchronization subscriptions.
+`@vyron/storage` is not just a simple wrapper around browser's native `localStorage`. It acts as an **"intelligent secure vault for storing local data"**, supporting multi-driver extension (Memory, LocalStorage, SessionStorage, Cookie, IndexedDB), expired time caching control (TTL), anti-tampering signature verification, concurrent transaction recovery, and reactive cross-tab data synchronization subscriptions.
 
 ---
 
@@ -65,10 +65,10 @@ import { IndexedDBStorageDriver } from "@vyron/storage/drivers/indexeddb";
 
 ## 🛡️ Core Features & Code Explanations
 
-### Feature 1: Namespace Isolation (Prefix / Suffix)
+### Feature 1: Draw Clear Boundaries (Namespace Isolation Prefix / Suffix)
 
-- **The Problem**: In multi-tenant environments or when multiple sub-projects share a domain, their keys in `localStorage` often override and conflict with each other.
-- **The Solution**: Provide `prefix` or `suffix` configs to automatically bundle keys under safe isolated zones.
+- **The Problem**: If you host multiple sub-projects under the same domain, or deploy multi-tenant portals, keys in `localStorage` often override and conflict with each other.
+- **The Solution**: Provide `prefix` or `suffix` configs to automatically bundle keys under safe isolated zones. No other projects will overwrite your private records.
 - **Example**:
 
   ```typescript
@@ -81,10 +81,10 @@ import { IndexedDBStorageDriver } from "@vyron/storage/drivers/indexeddb";
   // Under the hood, the key written to LocalStorage is: "user_app_token_v1"
   ```
 
-### Feature 2: TTL Caching Controls & GC Cleaning
+### Feature 2: Built-in Expiration Date (Expired data auto-cleanup TTL / GC)
 
-- **The Problem**: Native LocalStorage only supports permanent storage. It fails to configure automated expiration thresholds, leaving outdated data clogging users' disks.
-- **The Solution**: Store values with custom TTL (Time-to-Live) limits configured in **milliseconds**. Clean up space using passive lazy-sweeps on reads, combined with active GC (Garbage Collection) methods.
+- **The Problem**: Native LocalStorage keeps records permanently, leaving obsolete garbage to clog disk space without support for expiration thresholds.
+- **The Solution**: Store values with custom cache expiration limits (TTL in **milliseconds**). Once the duration runs out, the data will self-destruct upon reading, cleaning up your disk space automatically.
 - **Example**:
 
   ```typescript
@@ -97,14 +97,14 @@ import { IndexedDBStorageDriver } from "@vyron/storage/drivers/indexeddb";
   // Read at the 11th second
   console.log(storage.get("temp_code")); // Output: null (expired data deleted automatically)
 
-  // Explicitly scan and recycle all expired cache values globally
+  // Explicitly scan and recycle all expired cache values globally to free up space
   storage.runGC();
   ```
 
-### Feature 3: Data Signature Verification (Anti-Tampering)
+### Feature 3: Anti-Tampering Signatures (Anti-fraud validation)
 
-- **The Problem**: Tech-savvy users can easily open the F12 DevTools console and edit roles, values, or permissions saved in their LocalStorage directly, bypassing frontend constraints.
-- **The Solution**: Set up a custom encryption salt secret. The library writes cryptographical signatures beside key values. When manual modifications occur, signature mismatches instantly flag modifications, clearing corrupted records.
+- **The Problem**: Tech-savvy users can easily open the F12 dev console and edit roles or permissions (e.g. changing `role: guest` to `role: admin`) to bypass frontend permissions.
+- **The Solution**: Set up an encryption salt secret. The library writes cryptographical signatures beside key values. When manual modifications occur, validation checks detect mismatching signatures, delete the corrupted record automatically, and block unauthorized entry.
 - **Example**:
 
   ```typescript
@@ -115,13 +115,13 @@ import { IndexedDBStorageDriver } from "@vyron/storage/drivers/indexeddb";
   secureStorage.set("role", "admin");
 
   // If a user goes to DevTools and modifies "admin" to "super-admin":
-  // The mismatch signature intercepts the request:
-  console.log(secureStorage.get("role")); // Output: null (returns null & wipes tampered records)
+  // The signature check fails and triggers validation block:
+  console.log(secureStorage.get("role")); // Output: null (blocks access and deletes dirty record)
   ```
 
-### Feature 4: Cross-tab Synchronous Subscription (onChange)
+### Feature 4: Cross-tab Synchronous Broadcast (onChange)
 
-- **Core Scenario**: When users log out in tab A (clearing auth tokens), we want tab B to instantly detect the modification and reload or redirect users to the login portal.
+- **Core Scenario**: When users log out in tab A (clearing local tokens), we want tab B to instantly detect the modification and reload or redirect users to the login portal.
 - **Example**:
   ```typescript
   // Listen to changes on the token key

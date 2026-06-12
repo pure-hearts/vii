@@ -1,6 +1,6 @@
 # Storage 存储管理器 (@vyron/storage)
 
-`@vyron/storage` 是一个高可用的本地存储管理器，支持多驱动扩展（Memory、LocalStorage、SessionStorage、Cookie、IndexedDB）、过期缓存（TTL）控制、防篡改签名签名加盐校验、高并发事务回滚以及跨标签页数据同步联动订阅。
+`@vyron/storage` 并不是简单地封装了浏览器自带的 `localStorage`。它就像是**“给浏览器存数据用的智能保险箱”**，支持多驱动扩展（Memory、LocalStorage、SessionStorage、Cookie、IndexedDB）、过期缓存（TTL）控制、防篡改签名加盐校验、高并发事务回滚以及跨标签页数据同步联动订阅。
 
 ---
 
@@ -65,10 +65,10 @@ import { IndexedDBStorageDriver } from "@vyron/storage/drivers/indexeddb";
 
 ## 🛡️ 核心用法与代码详解
 
-### 特性 1：命名空间物理隔离（前缀 Prefix / 后缀 Suffix）
+### 特性 1：自动画地为牢（数据隔离 Prefix / Suffix）
 
-- **新手痛点**：在多租户系统、或同一个域名部署了多个子项目时，不同项目的 `localStorage` 经常会互相覆盖和冲突。
-- **解决方案**：通过配置 `prefix` 或 `suffix`，自动为所有的键拼接安全的隔离空间前/后缀。
+- **新手痛点**：在同一个域名下部署了多个子项目时，不同项目存的数据很容易发生名字冲突，导致互相覆盖和乱套。
+- **解决方案**：通过给 `@vyron/storage` 配置前缀 `prefix` 或后缀 `suffix`，它就会自动在后台为所有的键拼接安全的隔离空间。无论别人怎么在同一个网站里折腾，都不会覆盖你的数据。
 - **代码示例**：
 
   ```typescript
@@ -81,14 +81,14 @@ import { IndexedDBStorageDriver } from "@vyron/storage/drivers/indexeddb";
   // 实际上物理写入浏览器的键为: "user_app_token_v1"
   ```
 
-### 特性 2：过期时长控制 (TTL) 与垃圾回收 (GC)
+### 特性 2：自带保质期（过期自动销毁 TTL / GC）
 
-- **新手痛点**：原生的 `localStorage` 无法设置过期时间，只能永久存储，很容易留下垃圾垃圾缓存。
-- **解决方案**：支持存入键时，指定以**毫秒**为单位的缓存过期时间。并在读取时进行“惰性清理”，同时提供“主动 GC”来定期释放空间。
+- **新手痛点**：浏览器自带的 LocalStorage 是永久存储的，经常会留下堆积如山的过期垃圾，无法配置生存时间。
+- **解决方案**：支持存入数据时，给它贴上一个“保质期”（以**毫秒**为单位的缓存过期时间）。过期之后再读取它，它会自动消失并帮你把浏览器空间清理干净。同时提供“主动 GC”来定期释放空间。
 - **代码示例**：
 
   ```typescript
-  // 写入一个 10 秒后过期的临时缓存
+  // 写入一个 10 秒后过期的临时数据
   storage.set("temp_code", "123456", 10 * 1000);
 
   // 9秒时读取
@@ -97,38 +97,38 @@ import { IndexedDBStorageDriver } from "@vyron/storage/drivers/indexeddb";
   // 11秒时读取
   console.log(storage.get("temp_code")); // 输出: null (数据已过期并被自动清理)
 
-  // 主动清扫全盘所有已过期的键
+  // 主动清扫全盘所有已过期的键，释放浏览器物理空间
   storage.runGC();
   ```
 
-### 特性 3：数据签名防篡改 (Signature)
+### 特性 3：防伪防篡改指纹 (Signature)
 
-- **新手痛点**：有经验的用户可以轻易通过浏览器的 F12 开发者工具，手动修改 LocalStorage 里的高敏感数据（如用户角色权限、余额等），从而绕过前端限制。
-- **解决方案**：配置签名盐值密码。写入数据时工具自动在内部合成不可逆的数据指纹。当用户手动在控制台篡改数据时，工具读取时能识别指纹不符，自动清除脏数据并拦截。
+- **新手痛点**：懂一点技术的人可以轻易通过浏览器的 F12 开发者工具，手动修改 LocalStorage 里的高敏感数据（如用户角色权限由 guest 改为 admin），以此绕过前端限制。
+- **解决方案**：配置签名盐值密码。写入数据时工具会自动生成防伪数字指纹。当坏人强行在控制台修改数据时，网页在读取时一验指纹对不上，会判定数据被篡改并直接将其销毁，从而保护系统安全。
 - **代码示例**：
 
   ```typescript
   const secureStorage = createStorage({
-    // 启用防篡改校验，并传入加盐密码
+    // 启用防篡改校验，并传入防伪密码
     secret: "my_secure_salt_key_123",
   });
 
   secureStorage.set("role", "admin");
 
   // 此时如果在 F12 控制台手动将 "admin" 修改为 "super-admin"
-  // 读取时会触发指纹不匹配:
+  // 读取时由于指纹密码对不上，会触发拦截：
   console.log(secureStorage.get("role")); // 输出: null (安全拦截，防篡改触发)
   ```
 
-### 特性 4：跨标签页实例联动订阅 (onChange)
+### 特性 4：跨标签页联动广播 (onChange)
 
-- **核心场景**：当用户在 A 标签页退出了登录（清除了 token），我们希望 B 标签页也立刻能感知到变动，做出跳转登录页的操作。
+- **核心场景**：当用户在网页 A 标签页退出了登录（清除了 token），我们希望已打开的 B 标签页也立刻能感知到变动，并自动跳转登录页，它能帮你一秒钟完成广播。
 - **代码示例**：
   ```typescript
   // 订阅 token 键的改变
   storage.onChange("token", (newValue, oldValue) => {
     if (!newValue) {
-      alert("登录已失效，正在跳转...");
+      alert("您的登录已在其他窗口失效，正在跳转...");
       window.location.reload();
     }
   });
