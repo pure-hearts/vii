@@ -10,11 +10,11 @@
 > **真实发版命令行沙盒体验**：
 >
 > 1. 点击下方按钮跳转至 StackBlitz 在线工作区。
-> 2. 在打开的 Node 终端中，运行：`npx -y @vyron/release --dry-run`
-> 3. 您也可以指定参数运行，例如 `npx -y @vyron/release --minor --dry-run` 体验无副作用的预览式发布。
+> 2. 等待依赖安装完毕、包构建及全局命令挂载自动完成后（终端中会打印出绿色的初始化成功提示）。
+> 3. 在终端中直接运行：`vii release --dry-run`，即可体验无副作用的事务型版本发布与回滚流程！您也可以尝试 `--minor --dry-run` 等参数。
 
 <div class="playground-container" style="align-items: center; justify-content: center; padding: 2rem 0; margin-top: 1rem;">
-  <a href="https://stackblitz.com/fork/node?title=VII%20Release%20Playground" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background-color: var(--vp-c-brand-1); color: white; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--vp-c-brand-2)'" onmouseout="this.style.backgroundColor='var(--vp-c-brand-1)'">
+  <a href="https://stackblitz.com/github/vfiee/project-boilerplate?file=packages/release/README.md&startScript=stackblitz:release" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background-color: var(--vp-c-brand-1); color: white; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--vp-c-brand-2)'" onmouseout="this.style.backgroundColor='var(--vp-c-brand-1)'">
     ⚡ 立即在 StackBlitz 中尝试 VII Release
   </a>
 </div>

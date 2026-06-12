@@ -10,12 +10,12 @@
 > **Scaffolding Terminal Sandbox**:
 > Try the CLI publish logic using `--dry-run` to test release behaviors safely:
 >
-> 1. Click the button below to fork the Node.js playground.
-> 2. Run: `npx -y @vyron/release --dry-run` to simulate a release.
-> 3. Use options like `npx -y @vyron/release --minor --dry-run` to customize version bumps.
+> 1. Click the button below to open the StackBlitz workspace.
+> 2. Wait for dependencies installation, project build, and global command linking to complete automatically.
+> 3. Run `vii release --dry-run` directly in the terminal to simulate a release safely. You can also try other parameters such as `--minor --dry-run`.
 
 <div class="playground-container" style="align-items: center; justify-content: center; padding: 2rem 0; margin-top: 1rem;">
-  <a href="https://stackblitz.com/fork/node?title=VII%20Release%20Playground" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background-color: var(--vp-c-brand-1); color: white; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--vp-c-brand-2)'" onmouseout="this.style.backgroundColor='var(--vp-c-brand-1)'">
+  <a href="https://stackblitz.com/github/vfiee/project-boilerplate?file=packages/release/README.md&startScript=stackblitz:release" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background-color: var(--vp-c-brand-1); color: white; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--vp-c-brand-2)'" onmouseout="this.style.backgroundColor='var(--vp-c-brand-1)'">
     ⚡ Try VII Release on StackBlitz
   </a>
 </div>

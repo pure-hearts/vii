@@ -8,14 +8,14 @@
 
 > [!TIP]
 > **真实 Node.js 终端沙盒体验**：
-> 依托 StackBlitz Webcontainer 技术，您不需要在本地下载，即可在浏览器的真实 Node.js 虚拟沙盒中运行 `vii` 命令行！
+> 依托 StackBlitz Webcontainer 技术，您不需要在本地配置任何环境，即可在浏览器的真实 Node.js 虚拟沙盒中运行并体验 `vii` 命令行！
 >
 > 1. 点击下方按钮打开 StackBlitz 工作区。
-> 2. 在右下角打开的 Node 终端中，运行：`npm install -g @vyron/cli`
-> 3. 然后输入 `vii init test-project`，选择模板、体验不经代理的镜像并发测速，并极速下载！
+> 2. 等待依赖安装完毕、包构建及全局命令挂载自动完成后（终端中会打印出绿色的初始化成功提示）。
+> 3. 在终端中直接运行：`vii init test-project`，即可体验交互式模板克隆与零代理镜像并发测速！
 
 <div class="playground-container" style="align-items: center; justify-content: center; padding: 2rem 0; margin-top: 1rem;">
-  <a href="https://stackblitz.com/fork/node?title=VII%20CLI%20Playground" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background-color: var(--vp-c-brand-1); color: white; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--vp-c-brand-2)'" onmouseout="this.style.backgroundColor='var(--vp-c-brand-1)'">
+  <a href="https://stackblitz.com/github/vfiee/project-boilerplate?file=packages/cli/README.md&startScript=stackblitz:cli" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background-color: var(--vp-c-brand-1); color: white; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--vp-c-brand-2)'" onmouseout="this.style.backgroundColor='var(--vp-c-brand-1)'">
     ⚡ 立即在 StackBlitz 中尝试 VII CLI
   </a>
 </div>

@@ -10,12 +10,12 @@
 > **Webcontainer Scaffolding Terminal Sandbox**:
 > Experience the `vii` CLI directly in your browser with StackBlitz Webcontainer:
 >
-> 1. Click the button below to fork the Node.js playground.
-> 2. Run: `npm install -g @vyron/cli` inside the lower-right terminal console.
-> 3. Type `vii init test-project` to query mirrors, choose presets, and test downloads!
+> 1. Click the button below to open the StackBlitz workspace.
+> 2. Wait for dependencies installation, project build, and global command linking to complete automatically.
+> 3. Run `vii init test-project` directly in the terminal to experience interactive scaffolding and concurrent mirror benchmarking!
 
 <div class="playground-container" style="align-items: center; justify-content: center; padding: 2rem 0; margin-top: 1rem;">
-  <a href="https://stackblitz.com/fork/node?title=VII%20CLI%20Playground" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background-color: var(--vp-c-brand-1); color: white; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--vp-c-brand-2)'" onmouseout="this.style.backgroundColor='var(--vp-c-brand-1)'">
+  <a href="https://stackblitz.com/github/vfiee/project-boilerplate?file=packages/cli/README.md&startScript=stackblitz:cli" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background-color: var(--vp-c-brand-1); color: white; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--vp-c-brand-2)'" onmouseout="this.style.backgroundColor='var(--vp-c-brand-1)'">
     ⚡ Try VII CLI on StackBlitz
   </a>
 </div>

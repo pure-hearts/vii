@@ -16,7 +16,10 @@
     "build": "pnpm -r --filter='./packages/*' run build",
     "docs:dev": "pnpm --filter vii-docs dev",
     "docs:build": "pnpm --filter vii-docs build",
-    "typecheck": "vp check --no-fmt --no-lint"
+    "typecheck": "vp check --no-fmt --no-lint",
+    "stackblitz:cli": "pnpm build && pnpm --filter @vyron/cli link --global && node scripts/welcome-cli.js",
+    "stackblitz:release": "pnpm build && pnpm --filter @vyron/cli link --global && node scripts/welcome-release.js",
+    "stackblitz:storage": "pnpm build && pnpm --filter vii-docs dev"
   },
   "devDependencies": {
     "simple-git-hooks": "^2.11.1",

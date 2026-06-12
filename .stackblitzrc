@@ -1,0 +1,4 @@
+{
+  "installDependencies": true,
+  "startCommand": "pnpm build && pnpm --filter vii-docs dev"
+}
