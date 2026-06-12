@@ -1,6 +1,6 @@
 {
   "name": "@vyron/storage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "多引擎持久化存储管理包，支持 LocalStorage、SessionStorage 和 Cookie 驱动，并提供前/后缀空间安全、过期时长管理和嵌套 path 解析。",
   "keywords": [],
   "license": "MIT",
