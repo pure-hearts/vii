@@ -773,3 +773,36 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+## Session 24: 重写并细化 Release 新手官方文档
+
+**Date**: 2026-06-12
+**Task**: 重写并细化 Release 新手官方文档
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+在 VitePress 官方文档的中英文档中，以极其详尽、新手友好的逻辑重写了 Release 发版流水线手册。详细阐释了三日前置校验红线（Git、干净度、NPM身份验证）、事务级物理自动回滚机制与只读模拟发布（Dry Run）的设计，极大地帮助新手建立对自动化发版的信任，降低误操作的心理负担。并将文档归档至 Trellis 系统。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash      | Message       |
+| --------- | ------------- |
+| `f60c9fa` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
