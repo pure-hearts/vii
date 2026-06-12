@@ -707,3 +707,36 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+## Session 22: 修复并配置 StackBlitz 在线试用环境
+
+**Date**: 2026-06-12
+**Task**: 修复并配置 StackBlitz 在线试用环境
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+修复了 CLI、Release、Storage 三个模块的 StackBlitz 在线 Playground 链接和配置。新建了 .stackblitzrc 与 scripts 引导文件，更新了中英文档中的按钮链接，使用户一键导入仓库后可全自动编译并配置好全局指令与本地文档预览。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash      | Message       |
+| --------- | ------------- |
+| `cf20b96` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
