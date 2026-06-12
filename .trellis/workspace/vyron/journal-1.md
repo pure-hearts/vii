@@ -740,3 +740,36 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+## Session 23: 重写并细化 CLI 新手官方文档
+
+**Date**: 2026-06-12
+**Task**: 重写并细化 CLI 新手官方文档
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+在 VitePress 官方文档的中英文档中，以极其详尽、新手友好的逻辑重写了 CLI 工具手册。新增了 Node.js 版本环境检查、npx 与全局安装避坑指南、逐步汉化式交互流程剖析以及针对特定开发场景的参数辞典，降低了新手上手与配置镜像源的门槛。并将文档归档至 Trellis 系统。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash      | Message       |
+| --------- | ------------- |
+| `beb00e7` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

@@ -9,7 +9,7 @@
 <!-- @@@auto:current-status -->
 
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 22
+- **Total Sessions**: 23
 - **Last Active**: 2026-06-12
 <!-- @@@/auto:current-status -->
 
@@ -21,7 +21,7 @@
 
 | File           | Lines | Status |
 | -------------- | ----- | ------ |
-| `journal-1.md` | ~743  | Active |
+| `journal-1.md` | ~776  | Active |
 
 <!-- @@@/auto:active-documents -->
 
@@ -33,6 +33,7 @@
 
 | #   | Date       | Title                                                          | Commits                                               | Branch |
 | --- | ---------- | -------------------------------------------------------------- | ----------------------------------------------------- | ------ |
+| 23  | 2026-06-12 | 重写并细化 CLI 新手官方文档                                    | `beb00e7`                                             | `main` |
 | 22  | 2026-06-12 | 修复并配置 StackBlitz 在线试用环境                             | `cf20b96`                                             | `main` |
 | 21  | 2026-06-11 | 发包自动回退机制实现                                           | `b515da3`                                             | `main` |
 | 20  | 2026-06-11 | 为本仓库创建VitePress文档系统                                  | `e36e2fa`, `1c3b614`                                  | `main` |
