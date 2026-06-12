@@ -806,3 +806,36 @@ finish-work 调用：无活动任务，检查工作目录干净
 ### Next Steps
 
 - None - task complete
+
+## Session 25: 重写并细化 Storage 新手官方文档
+
+**Date**: 2026-06-12
+**Task**: 重写并细化 Storage 新手官方文档
+**Package**: cli
+**Branch**: `main`
+
+### Summary
+
+在 VitePress 官方文档的中英文档中，以极其详尽、新手友好的逻辑重写了 Storage 存储管理器手册。详细讲解了按需引入分包机制（避开体积膨胀）、Prefix/Suffix 命名空间物理隔离设计、TTL 缓存周期与垃圾回收（GC）、加盐防篡改数字签名及跨标签 onChange 同步机制。降低了新手配置复杂多驱动本地存储的使用门槛。并将文档归档至 Trellis 系统。
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash      | Message       |
+| --------- | ------------- |
+| `a8b77a6` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete

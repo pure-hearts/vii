@@ -9,7 +9,7 @@
 <!-- @@@auto:current-status -->
 
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 24
+- **Total Sessions**: 25
 - **Last Active**: 2026-06-12
 <!-- @@@/auto:current-status -->
 
@@ -21,7 +21,7 @@
 
 | File           | Lines | Status |
 | -------------- | ----- | ------ |
-| `journal-1.md` | ~809  | Active |
+| `journal-1.md` | ~842  | Active |
 
 <!-- @@@/auto:active-documents -->
 
@@ -33,6 +33,7 @@
 
 | #   | Date       | Title                                                          | Commits                                               | Branch |
 | --- | ---------- | -------------------------------------------------------------- | ----------------------------------------------------- | ------ |
+| 25  | 2026-06-12 | 重写并细化 Storage 新手官方文档                                | `a8b77a6`                                             | `main` |
 | 24  | 2026-06-12 | 重写并细化 Release 新手官方文档                                | `f60c9fa`                                             | `main` |
 | 23  | 2026-06-12 | 重写并细化 CLI 新手官方文档                                    | `beb00e7`                                             | `main` |
 | 22  | 2026-06-12 | 修复并配置 StackBlitz 在线试用环境                             | `cf20b96`                                             | `main` |
